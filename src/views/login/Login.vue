@@ -3,7 +3,9 @@ import { User, Lock } from '@element-plus/icons-vue'
 import { getCode, login } from '../../api/Auth'
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from "vue-router";
+import { useStore } from '@/store/index'
 
+const store = useStore()
 const router = useRouter()
 
 const loginFormRef = ref(null)
@@ -77,12 +79,7 @@ onMounted(() => {
 
 // 登录事件
 const handleLogin = () => {
-  login(loginForm).then(result => {
-    // console.log(result);
-    if (result.token) {
-      router.push('/index')
-    }
-  })
+  store.dispatch('authStore/login', loginForm)
 }
 </script>
 
