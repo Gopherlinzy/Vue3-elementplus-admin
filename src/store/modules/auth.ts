@@ -1,6 +1,7 @@
 import { Module } from "vuex";
 import { RootState } from "../index";
-import { login } from '@/api/auth'
+import { login, loginByToken } from '@/api/auth'
+import router from '@/router'
 
 export interface AuthState {
     token: string,
@@ -12,9 +13,9 @@ export interface AuthState {
 
 export const authStore: Module<AuthState, RootState> = {
     namespaced: true,
-    state:(): AuthState => ({
+    state: (): AuthState => ({
         token: '',
-        userInfo: { },
+        userInfo: {},
         roles: []
     }),
 
@@ -37,7 +38,7 @@ export const authStore: Module<AuthState, RootState> = {
 
     actions: {
         // 账号密码登录
-        login({commit,state,dispatch},requestUser) {
+        login({ commit, state, dispatch }, requestUser) {
             login(requestUser).then(result => {
                 if (sessionStorage.getItem('token')) {
                     commit('delToken')
@@ -45,6 +46,18 @@ export const authStore: Module<AuthState, RootState> = {
                 state.userInfo = result
                 commit('addToken', result.token)
                 // localStorage.setItem('token', result.token)
+            })
+        },
+
+        // token检测
+        loginToken({ commit, state, dispatch }, token) {
+            commit('addToken', token)
+            loginByToken(token).then(result => {
+                if (result.success) {
+                    router.push({ path: '/index' })
+                }
+            }).catch(() => {
+                localStorage.removeItem('token')
             })
         }
     }

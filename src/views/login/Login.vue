@@ -72,10 +72,23 @@ const getValidCode = () => {
   })
 }
 
+
+// token 登录
+const handleToken = () => {
+  const token = sessionStorage.getItem('token')
+  // console.log(token);
+
+  if (token != null) {
+    store.dispatch('authStore/loginToken', token)
+  }
+}
+
 // 初始化
 onMounted(() => {
   getValidCode()
+  handleToken()
 })
+
 
 // 登录事件
 const handleLogin = () => {
