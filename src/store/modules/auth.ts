@@ -32,6 +32,9 @@ export const authStore: Module<AuthState, RootState> = {
             state.token = token
             sessionStorage.token = token
         },
+        addUserInfo(state: AuthState, userinfo: UserType) {
+            state.userInfo = userinfo
+        },
         delToken(state: AuthState) {
             state.token = ''
             sessionStorage.removeItem('token')

@@ -7,13 +7,18 @@
       </el-aside>
       <el-container>
         <el-header>
-          <el-row>
-            <!-- 侧边栏展开折叠按钮 -->
-            <el-icon style="font-size: 20px; margin-right: 15px;" @click="() => (collapsed = !collapsed)">
-              <component :is="collapsed ? Expand : Fold" />
-            </el-icon>
-            <!-- header业务 -->
-            <header-bar />
+          <el-row :gutter="24" style="width: 100%;display:flex; align-Items:center;">
+            <el-col :span="1">
+              <!-- 侧边栏展开折叠按钮 -->
+              <el-icon style="font-size: 20px; margin-right: 15px;" @click="() => (collapsed = !collapsed)">
+                <component :is="collapsed ? Expand : Fold" />
+              </el-icon>
+            </el-col>
+            <el-col :span="23">
+              <!-- header业务 -->
+              <header-bar />
+            </el-col>
+
           </el-row>
         </el-header>
         <el-main>

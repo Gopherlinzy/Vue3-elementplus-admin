@@ -2,11 +2,11 @@
     <div class="userInfo">
         <el-dropdown>
             <div>
-                <img src="../../../assets/login/avatar.jpg ">
+                <img src="@/assets/avatar.jpg" style="width:45px;height: 45px; border-radius: 50%;">
             </div>
             <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item>Action 1</el-dropdown-item>
+                    <el-dropdown-item @click="handlelogout">退出</el-dropdown-item>
                 </el-dropdown-menu>
             </template>
         </el-dropdown>
@@ -27,6 +27,12 @@ import { useStore } from '@/store';
 import { computed, ref } from 'vue';
 
 const store = useStore()
+
+const handlelogout = () => {
+    // 移除 session 和 内存中的token
+    store.commit('authStore/delToken')
+    location.reload()
+}
 
 const userInfo = computed(() => {
     return store.state.authStore.userInfo

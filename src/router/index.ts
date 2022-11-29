@@ -210,10 +210,10 @@ router.beforeEach((to, from, next) => {
     }
   } else if (!store.state.authStore.token && token) {
     // console.log(token);
-
     // 在内存中不存在, 本地中还存在
     loginByToken(token).then(res => {
       if (res.success) {
+        store.commit("authStore/addUserInfo", res.data)
         next()
       }
     })
