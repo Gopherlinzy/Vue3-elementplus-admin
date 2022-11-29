@@ -125,7 +125,7 @@ const handleLogin = () => {
         </el-form-item>
         <el-form-item prop="captcha_answer" class="verify-item">
           <el-input class="captCha" v-model="loginForm.captcha_answer" placeholder="验证码" type="verifyCode"
-            style="margin-left: 10px; width: 40%; height:40px; display:inline-block; border: 1px solid rgba(255, 255, 255, 0.1);">
+            style="margin-left: 2px; width: 40%; height:40px; display:inline-block; border: 1px solid rgba(255, 255, 255, 0.1);">
           </el-input>
           <div style="margin-left: 10px;  display:inline-block; height:40px">
             <img :src="codeUrl" @click="getValidCode" alt=" "

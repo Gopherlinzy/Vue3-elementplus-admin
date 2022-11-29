@@ -1,5 +1,6 @@
 <template>
-  <el-menu default-active="2" active-text-color="#409EFF" text-color="#fff" class="el-menu" :collapse="collapsed">
+  <el-menu default-active="2" active-text-color="#409EFF" text-color="#fff" class="el-menu" :collapse="collapsed"
+    :collapse-transition="false">
     <menu-item :menus="menus"></menu-item>
   </el-menu>
 </template>

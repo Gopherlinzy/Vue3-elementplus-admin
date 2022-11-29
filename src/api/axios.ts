@@ -46,6 +46,9 @@ axiosInstance.interceptors.response.use(
         // console.log(status);
         if (status === 401) { // token 解析失败或者登录失败，需要删除token
             window.alert(message);
+
+            sessionStorage.removeItem('token')
+            sessionStorage.clear()
         } else if (status === 403) { // 没有权限
         } else if (status === 404) { // 资源不存在
             window.alert("请求资源不存在");
