@@ -214,6 +214,12 @@ router.beforeEach((to, from, next) => {
     loginByToken(token).then(res => {
       if (res.success) {
         store.commit("authStore/addUserInfo", res.data)
+        router.addRoute({
+          path: "/test",
+          component: () => import('@/views/system/setting.vue'),
+        })
+        console.log(router.getRoutes());
+
         next()
       }
     })
