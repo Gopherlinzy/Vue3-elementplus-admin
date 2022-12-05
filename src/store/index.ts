@@ -1,9 +1,11 @@
 import {createStore, useStore as baseUseStore, Store} from 'vuex'
 import { InjectionKey } from 'vue'
-import { tabStore,TabState } from './modules/tabs'
+import { tabStore, TabState } from './modules/tabs'
+import { AuthState, authStore } from './modules/auth'
 
 export interface RootState{
-    tabStore:TabState
+    tabStore: TabState,
+    authStore: AuthState
 }
 
 export const key : InjectionKey<Store<RootState>> = Symbol()
@@ -11,7 +13,8 @@ export const key : InjectionKey<Store<RootState>> = Symbol()
 
 export const store:Store<RootState> = createStore({
     modules: {
-        tabStore
+        tabStore,
+        authStore
     }
 })
 

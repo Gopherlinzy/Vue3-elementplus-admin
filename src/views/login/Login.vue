@@ -3,7 +3,9 @@ import { User, Lock } from '@element-plus/icons-vue'
 import { getCode, login } from '../../api/Auth'
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from "vue-router";
+import { useStore } from '@/store/index'
 
+const store = useStore()
 const router = useRouter()
 
 const loginFormRef = ref(null)
@@ -70,19 +72,27 @@ const getValidCode = () => {
   })
 }
 
+
+// token 登录
+const handleToken = () => {
+  const token = sessionStorage.getItem('token')
+  // console.log(token);
+
+  if (token != null) {
+    store.dispatch('authStore/loginToken', token)
+  }
+}
+
 // 初始化
 onMounted(() => {
   getValidCode()
+  handleToken()
 })
+
 
 // 登录事件
 const handleLogin = () => {
-  login(loginForm).then(result => {
-    // console.log(result);
-    if (result.token) {
-      router.push('/index')
-    }
-  })
+  store.dispatch('authStore/login', loginForm)
 }
 </script>
 
@@ -115,7 +125,7 @@ const handleLogin = () => {
         </el-form-item>
         <el-form-item prop="captcha_answer" class="verify-item">
           <el-input class="captCha" v-model="loginForm.captcha_answer" placeholder="验证码" type="verifyCode"
-            style="margin-left: 10px; width: 40%; height:40px; display:inline-block; border: 1px solid rgba(255, 255, 255, 0.1);">
+            style="margin-left: 2px; width: 40%; height:40px; display:inline-block; border: 1px solid rgba(255, 255, 255, 0.1);">
           </el-input>
           <div style="margin-left: 10px;  display:inline-block; height:40px">
             <img :src="codeUrl" @click="getValidCode" alt=" "

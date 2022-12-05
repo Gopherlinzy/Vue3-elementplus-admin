@@ -7,31 +7,31 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 // https://vitejs.dev/config/
 export default defineConfig({
- server:{
-  port:3000,
-  proxy:{
-    '/api':{
-      target:'http://127.0.0.1:8888/api/',
-      changeOrigin:true,
-      rewrite:(path) => path.replace(/^\/api/, '')
+  server: {
+    port: 3000,
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8888/api/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
     }
-  }
- },
- resolve:{
-  alias:{
-      "@":path.resolve(__dirname,"src"),
-      "com":path.resolve(__dirname,"src/components")
-  }
- },
- css:{
-  //css预处理
-  preprocessorOptions:{
-    scss:{
-      //引入varibles.scss全局预定义变量
-      additionalData:`@import "./src/styles/variables.scss";`,
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+      "com": path.resolve(__dirname, "src/components")
     }
-  }
-},
+  },
+  css: {
+    //css预处理
+    preprocessorOptions: {
+      scss: {
+        //引入varibles.scss全局预定义变量
+        additionalData: `@import "./src/styles/variables.scss";`,
+      }
+    }
+  },
   plugins: [
     vue(),
     AutoImport({

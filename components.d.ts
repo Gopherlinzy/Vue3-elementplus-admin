@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     DefineEmits: typeof import('./src/components/DefineEmits.vue')['default']
     DefineExpose: typeof import('./src/components/DefineExpose.vue')['default']
     DefineProps: typeof import('./src/components/DefineProps.vue')['default']
+    ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']

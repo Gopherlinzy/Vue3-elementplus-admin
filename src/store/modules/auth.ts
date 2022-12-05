@@ -1,28 +1,28 @@
 import { Module } from "vuex";
 import { RootState } from "../index";
-import { login, loginByToken } from '@/api/Auth'
+import { login, loginByToken } from '@/api/auth'
 import router from '@/router'
-import { UserType } from '../type'
+import { UserType } from "../type";
+
 
 
 export interface AuthState {
     token: string,
     userInfo: UserType,
-    roles: string[]
+    roles: string[],
 }
 
 
 
 export const authStore: Module<AuthState, RootState> = {
     namespaced: true,
-
     state: (): AuthState => ({
         token: '',
         userInfo: {
+            name: '',
             avatar: '',
-            username: '',
-            roleName: '',
-            status: 1
+            city: '',
+            rolename: '',
         },
         roles: []
     }),
@@ -30,9 +30,14 @@ export const authStore: Module<AuthState, RootState> = {
     mutations: {
         addToken(state: AuthState, token: string) {
             state.token = token
+            sessionStorage.token = token
         },
-        addUserInfo(state:AuthState,userinfo:UserType) {
+        addUserInfo(state: AuthState, userinfo: UserType) {
             state.userInfo = userinfo
+        },
+        delToken(state: AuthState) {
+            state.token = ''
+            sessionStorage.removeItem('token')
         }
     },
 
@@ -47,26 +52,17 @@ export const authStore: Module<AuthState, RootState> = {
         login({ commit, state, dispatch }, requestUser) {
             login(requestUser).then(result => {
                 state.userInfo = result.data
-
-                commit('addToken', result.data.token)
-                localStorage.setItem('token', result.data.token)
-                console.log(result);
-                if (result.data.status) {
-                    router.push({ path: '/index' })
-                }
-
+                commit('addToken', result.token)
+                router.push({ path: '/index' })
             })
         },
 
-
-        // token登录
-        loginByToken({ commit, state, dispatch }, token) {
+        // token检测
+        loginToken({ commit, state, dispatch }, token) {
             commit('addToken', token)
             loginByToken(token).then(result => {
                 state.userInfo = result.data
-                localStorage.setItem('token', result.data.token)
-                console.log(result)
-                if (result.data.status) {
+                if (result.success) {
                     router.push({ path: '/index' })
                 }
             }).catch(() => {

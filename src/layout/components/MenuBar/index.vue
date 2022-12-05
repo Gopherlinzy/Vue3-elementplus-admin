@@ -1,5 +1,6 @@
 <template>
-  <el-menu default-active="2" active-text-color="#409EFF" text-color="#fff" class="el-menu" :collapse="collapsed">
+  <el-menu default-active="2" active-text-color="#409EFF" text-color="#fff" class="el-menu" :collapse="collapsed"
+    :collapse-transition="false">
     <menu-item :menus="menus"></menu-item>
   </el-menu>
 </template>
@@ -55,27 +56,6 @@ const menus = reactive([
         meta: {
           title: '用户管理',
           icon: 'UserFilled',
-
-        },
-      },
-    ],
-  }, {
-    path: '/storesLocation',
-    redirect: '/storesLocation',
-    name: 'storesLocation',
-
-    meta: {
-      title: '门店管理',
-      icon: 'LocationInformation',
-    },
-    children: [
-      {
-        path: 'storesLocation',
-        name: 'storesLocation',
-        component: () => import('@/views/storesLocation/StoresLocation.vue'),
-        meta: {
-          title: '门店管理',
-          icon: 'LocationInformation',
 
         },
       },
@@ -146,7 +126,7 @@ const menus = reactive([
     name: 'system',
 
     meta: {
-      title: 'system',
+      title: '系统管理',
       icon: 'Wallet',
       roles: ['admin', 'editor']
     },
