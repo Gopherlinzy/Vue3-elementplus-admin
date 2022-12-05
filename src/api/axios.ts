@@ -9,6 +9,7 @@ declare module "axios" {
         captcha_id: string;
         token: string;
         success: boolean;
+        pager: Array<any>;
         // 这里追加你的参数
     }
     export function create(config?: AxiosRequestConfig): AxiosInstance;

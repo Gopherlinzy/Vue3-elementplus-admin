@@ -29,6 +29,22 @@ export function getAllSysUsers() {
     })
 }
 
+// 获取分页用户
+export function getPaginationSysUsers(page: number, sort: string, order: string, per_page: number) {
+    return axiosInstance({
+        url: "v1/users?page=" + page + "&sort=" + sort + "&order=" + order + "&per_page=" + per_page,
+        method: "get"
+    })
+}
+
+// 前往上一页/下一页
+export function getPaginationPrevNextUsers(URL: string) {
+    return axiosInstance({
+        url: URL,
+        method: "get"
+    })
+}
+
 // 添加用户
 export function addSysUser(sysUser: UserInfo) {
     return axiosInstance({
@@ -57,12 +73,12 @@ export function deleteSysUsers(userRequest: UserInfo) {
 }
 
 
-// 修改密码
-export function resetPassword(userPassword: ResetPassword) {
+// 重置密码
+export function resetPassword(userRequest: UserInfo) {
     return axiosInstance({
-        url: "v1/users/password",
-        method: "put",
-        data: userPassword
+        url: "v1/users/reset",
+        method: "post",
+        data: userRequest
     })
 }
 

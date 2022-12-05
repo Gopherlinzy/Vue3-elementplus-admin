@@ -25,15 +25,7 @@
 
 <script lang="ts" setup>
 import 'element-plus/es/components/message-box/style/css'
-import { ComponentInternalInstance, getCurrentInstance, onMounted, reactive } from 'vue';
-import {
-  addSysUser,
-  getAllSysUsers,
-  updateSysUser,
-  deleteSysUsers,
-  resetPassword,
-  setRole
-} from "@/api/system/user"
+import { ComponentInternalInstance, getCurrentInstance, onMounted, reactive } from 'vue'
 import { getAllRoles } from "@/api/system/role"
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const add = () => {
