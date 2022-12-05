@@ -132,11 +132,11 @@ const menus = reactive([
     },
     children: [
       {
-        path: 'account',
-        name: 'account',
-        component: () => import('@/views/system/Account.vue'),
+        path: 'role',
+        name: 'role',
+        component: () => import('@/views/system/Role.vue'),
         meta: {
-          title: 'account',
+          title: '角色管理',
           icon: 'User',
           roles: ['editor']
         }

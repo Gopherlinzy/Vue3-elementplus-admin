@@ -124,11 +124,11 @@ const routes: Array<RouteRecordRaw> = [
     },
     children: [
       {
-        path: 'account',
-        name: 'account',
-        component: () => import('@/views/system/Account.vue'),
+        path: 'role',
+        name: 'role',
+        component: () => import('@/views/system/Role.vue'),
         meta: {
-          title: 'account',
+          title: '角色管理',
           icon: 'User',
           roles: ['editor']
         }
@@ -197,7 +197,7 @@ router.beforeEach((to, from, next) => {
           path: "/test",
           component: () => import('@/views/system/setting.vue'),
         })
-        console.log(router.getRoutes());
+        // console.log(router.getRoutes());
 
         next()
       }
