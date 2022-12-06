@@ -65,25 +65,6 @@ export function addSysUser(sysUser: AddUpdateUserInfo) {
     })
 }
 
-// 修改用户信息
-export function updateSysUser(userRequest: AddUpdateUserInfo) {
-    return axiosInstance({
-        url: "v1/users",
-        method: "put",
-        data: userRequest
-    })
-}
-
-// 删除用户
-export function deleteSysUsers(userRequest: UserIDInfo) {
-    return axiosInstance({
-        url: "v1/users",
-        method: "delete",
-        data: userRequest
-    })
-}
-
-
 // 重置密码
 export function resetPassword(userRequest: UserIDInfo) {
     return axiosInstance({
@@ -106,7 +87,7 @@ export function getUser(userRequest: UserIDInfo) {
 export function setRole(sysUserRole: UserRole) {
     return axiosInstance({
         url: "v1/users/role",
-        method: "post",
+        method: "put",
         data: sysUserRole
     })
 }
@@ -119,3 +100,22 @@ export function updateStatus(sysUserStatus: UserStatus) {
         data: sysUserStatus
     })
 }
+
+// 修改用户信息
+export function updateSysUser(userRequest: AddUpdateUserInfo) {
+    return axiosInstance({
+        url: "v1/users",
+        method: "put",
+        data: userRequest
+    })
+}
+
+// 删除用户
+export function deleteSysUsers(userRequest: UserIDInfo) {
+    return axiosInstance({
+        url: "v1/users",
+        method: "delete",
+        data: userRequest
+    })
+}
+
