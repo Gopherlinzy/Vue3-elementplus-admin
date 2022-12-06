@@ -27,7 +27,7 @@ const loginRules = reactive({
       trigger: 'blur',
     },
     {
-      pattern: /^[a-zA_Z0-9]{2,10}$/,
+      pattern: /^[a-zA-Z0-9]{2,10}$/,
       message: '请输入2到10位数字或字母',
       trigger: 'blur'
     },
@@ -107,7 +107,7 @@ const handleLogin = () => {
       <!-- 标题 -->
       <header>
         <img src="@/assets/logo.png" />
-        <h3 style="color:white">Vue3-admin</h3>
+        <h3 style="color:white">gin-vue3-admin</h3>
       </header>
       <!-- form组件 -->
       <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules">

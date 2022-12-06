@@ -23,6 +23,6 @@ export function loginByToken(token: string) {
     return axiosInstance({
         url: 'v1/user',
         method: 'get',
-        headers: { "Authorization": token }
+        // headers: { "Authorization": token }
     })
 }
