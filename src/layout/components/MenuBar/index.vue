@@ -186,7 +186,8 @@ const menus = reactive([
 
   .el-sub-menu {
     .el-menu-item {
-      background-color: $subMenuBg
+      background-color: $subMenuBg;
+      color: rgb(184, 188, 185);
     }
   }
 }
@@ -197,6 +198,7 @@ const menus = reactive([
 .el-menu-item:hover {
   background-color: rgba(77, 177, 135, 0.933);
 }
+
 
 /* 导航二级菜单栏点击之后的一像素边的问题 */
 .el-menu {

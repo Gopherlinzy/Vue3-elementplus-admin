@@ -55,8 +55,8 @@
       </el-table>
       <!-- 分页 -->
       <el-row style="float:right;">
-        <el-pagination background layout="total, prev, pager, next, jumper" :page-count="state.rolesPag.TotalPage"
-          :total="state.rolesPag.TotalCount" :current-page="state.rolesPag.CurrentPage"
+        <el-pagination v-model:current-page="state.currentPage" background layout="total, prev, pager, next, jumper"
+          :page-count="state.rolesPag.TotalPage" :total="state.rolesPag.TotalCount"
           @current-change="handelCurrentChange" @prev-click="handelPrevNextPage(state.rolesPag.PrevPageURL)"
           @next-click="handelPrevNextPage(state.rolesPag.NextPageURL)">
         </el-pagination>

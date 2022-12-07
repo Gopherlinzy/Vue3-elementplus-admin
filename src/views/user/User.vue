@@ -103,7 +103,7 @@
       <!-- 分页 -->
       <el-row style="float:right;">
         <el-pagination background layout="total, prev, pager, next, jumper" :page-count="state.usersPag.TotalPage"
-          :total="state.usersPag.TotalCount" :current-page="state.usersPag.CurrentPage"
+          :total="state.usersPag.TotalCount" v-model:current-page="state.currentPage"
           @current-change="handelCurrentChange" @prev-click="handelPrevNextPage(state.usersPag.PrevPageURL)"
           @next-click="handelPrevNextPage(state.usersPag.NextPageURL)">
         </el-pagination>
