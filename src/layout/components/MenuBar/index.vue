@@ -187,7 +187,20 @@ const menus = reactive([
   .el-sub-menu {
     .el-menu-item {
       background-color: $subMenuBg;
-      color: rgb(184, 188, 185);
+      color: rgb(175, 178, 175);
+    }
+
+    // 二级菜单
+    /* 修改导航菜单栏悬浮时的背景颜色 */
+    .el-sub-menu__title:hover,
+    .el-menu-item:focus,
+    .el-menu-item:hover {
+      color: white;
+    }
+
+    /* 导航二级菜单栏点击之后的一像素边的问题 */
+    .el-menu {
+      border-right: none;
     }
   }
 }

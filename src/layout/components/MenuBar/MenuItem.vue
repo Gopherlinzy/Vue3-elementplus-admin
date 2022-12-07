@@ -29,23 +29,5 @@ const toPath = (item: string) => {
 
 </script>
 <style lang='scss' scoped>
-/* 修改导航菜单栏悬浮时的背景颜色 */
-.el-sub-menu__title:hover,
-.el-menu-item:focus,
-.el-menu-item:hover {
-  color: white;
-}
 
-
-/* 导航二级菜单栏点击之后的一像素边的问题 */
-.el-menu {
-  border-right: none;
-}
-
-/* 导航栏点击后,左边的颜色设置 */
-.el-menu-item.is-active {
-  border-left: solid 3px #26a1fa;
-  color: white;
-  background-color: #72bbef;
-}
 </style>
