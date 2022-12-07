@@ -54,7 +54,8 @@ axiosInstance.interceptors.response.use(
             window.alert("请求资源不存在");
         } else if (status === 415) { // 没有权限
             window.alert("权限不足");
-        } else if (status < 500 && message) { // 服务端异常
+        }
+        else if (status < 500 && message) { // 服务端异常
             const errors = error.response.data.errors
             window.alert(message);
             console.log(errors);

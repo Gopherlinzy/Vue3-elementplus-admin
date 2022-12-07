@@ -7,7 +7,7 @@
         </el-icon>&nbsp;新增系统用户</el-button>
     </div>
 
-    <!-- 新增用户form表单 -->
+    <!-- 用户form表单 -->
     <el-dialog v-model="state.userFormDialogVis" :title="state.tips">
       <el-form ref="userForm" :model="state.userFormData" :rules="state.rules" label-width="100px">
         <el-form-item label="用户名" prop="name">
@@ -103,7 +103,7 @@
       <!-- 分页 -->
       <el-row style="float:right;">
         <el-pagination background layout="total, prev, pager, next, jumper" :page-count="state.usersPag.TotalPage"
-          :total="state.usersPag.TotalCount" v-model:current-page="state.usersPag.CurrentPage"
+          :total="state.usersPag.TotalCount" :current-page="state.usersPag.CurrentPage"
           @current-change="handelCurrentChange" @prev-click="handelPrevNextPage(state.usersPag.PrevPageURL)"
           @next-click="handelPrevNextPage(state.usersPag.NextPageURL)">
         </el-pagination>
@@ -119,8 +119,6 @@ import { ComponentInternalInstance, getCurrentInstance, onMounted, reactive } fr
 import {
   addSysUser,
   getAllSysUsers,
-  getPaginationSysUsers,
-  getPaginationPrevNextUsers,
   updateSysUser,
   deleteSysUsers,
   resetPassword,
@@ -129,7 +127,7 @@ import {
   updateStatus
 } from "@/api/system/user"
 import { getAllRoles } from '@/api/system/role';
-import { tr } from 'element-plus/es/locale';
+import { getPagination, getPaginationPrevNext } from '@/api/pagination'
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const state = reactive({
@@ -223,6 +221,27 @@ onMounted(() => {
   getRoles()
 })
 
+// 分页
+// 跳转到指定页数
+const handelCurrentChange = (val: number) => {
+  getPagination("users", val, "id", "asc", state.usersPag.PerPage).then(result => {
+    // console.log(result);
+
+    state.users = result.data
+    state.usersPag = result.pager
+    state.currentPage = val
+  })
+}
+
+// 跳转上一页/下一页
+const handelPrevNextPage = (URL: string) => {
+  getPaginationPrevNext(URL).then(result => {
+    state.users = result.data
+    state.usersPag = result.pager
+    state.currentPage = result.pager.CurrentPage
+  })
+}
+
 // 获取系统角色
 const getUsers = () => {
   getAllSysUsers().then(result => {
@@ -239,26 +258,6 @@ const getRoles = () => {
   })
 }
 
-// 跳转到指定页数
-const handelCurrentChange = (val: number) => {
-  getPaginationSysUsers(val, "id", "asc", state.usersPag.PerPage).then(result => {
-    // console.log(result);
-
-    state.users = result.data
-    state.usersPag = result.pager
-    state.currentPage = val
-  })
-}
-
-// 跳转上一页/下一页
-const handelPrevNextPage = (URL: string) => {
-  getPaginationPrevNextUsers(URL).then(result => {
-    state.users = result.data
-    state.usersPag = result.pager
-    state.currentPage = result.pager.CurrentPage
-  })
-}
-
 // 添加用户
 const toAddUser = () => {
   state.userFormDialogVis = true
@@ -270,6 +269,7 @@ const toAddUser = () => {
 const updateUser = (id: string) => {
   state.userFormData.id = id.toString()
   state.userIDInfo.id = id.toString()
+  resetForm()
   getUser(state.userIDInfo).then(res => {
     state.userFormData.name = res.data.name
     state.userFormData.email = res.data.email
@@ -285,23 +285,23 @@ const updateUser = (id: string) => {
 
 // 确认添加/修改用户
 const handelAddUpdateConfirm = (id: string) => {
-  // id 为空表示新增
-  if (id == '') {
+  // tips 为新增用户表示新增
+  if (state.tips.startsWith('新增用户')) {
     // console.log(state.userFormData);
     addSysUser(state.userFormData).then(res => {
       // console.log(res);
       if (res.success) {
         state.userFormDialogVis = false
-        proxy?.$Alert('添加成功', '新增系统用户')
         getUsers()
+        proxy?.$Notify.success("添加用户成功")
       }
     })
-  } else {
+  } else if (state.tips.startsWith('更新用户信息')) {
     updateSysUser(state.userFormData).then(res => {
       if (res.success) {
         state.userFormDialogVis = false
-        proxy?.$Alert('更新成功', '更新系统用户')
         getUsers()
+        proxy?.$Notify.success("更新用户信息成功")
       }
     })
   }
@@ -329,6 +329,7 @@ const deleteUser = (id: number) => {
     deleteSysUsers(state.userIDInfo).then(res => {
       // console.log(res);
       handelCurrentChange(state.usersPag.CurrentPage)
+      proxy?.$Notify.success("删除用户成功")
     })
   })
 }

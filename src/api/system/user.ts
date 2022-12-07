@@ -40,21 +40,6 @@ export function getAllSysUsers() {
     })
 }
 
-// 获取分页用户
-export function getPaginationSysUsers(page: number, sort: string, order: string, per_page: number) {
-    return axiosInstance({
-        url: "v1/users?page=" + page + "&sort=" + sort + "&order=" + order + "&per_page=" + per_page,
-        method: "get"
-    })
-}
-
-// 前往上一页/下一页
-export function getPaginationPrevNextUsers(URL: string) {
-    return axiosInstance({
-        url: URL,
-        method: "get"
-    })
-}
 
 // 添加用户
 export function addSysUser(sysUser: AddUpdateUserInfo) {

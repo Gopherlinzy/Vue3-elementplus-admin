@@ -7,6 +7,24 @@ interface RoleInfo {
     des: string
 }
 
+interface RoleID {
+    id: string
+}
+
+interface RoleStatus {
+    id: string
+    status: string
+}
+
+// 获取指定角色
+export function getRole(roleRequest: RoleID) {
+    return axiosInstance({
+        url: "v1/roles/id",
+        method: "post",
+        data: roleRequest
+    })
+}
+
 // 获取所有角色
 export function getAllRoles() {
     return axiosInstance({
@@ -25,7 +43,7 @@ export function addRole(roleRequest: RoleInfo) {
 }
 
 // 修改角色信息
-export function updateSysUser(roleRequest: RoleInfo) {
+export function updateRole(roleRequest: RoleInfo) {
     return axiosInstance({
         url: "v1/roles",
         method: "put",
@@ -33,8 +51,17 @@ export function updateSysUser(roleRequest: RoleInfo) {
     })
 }
 
+// 更新角色状态
+export function updateRoleStatus(roleRequest: RoleStatus) {
+    return axiosInstance({
+        url: "v1/roles/status",
+        method: "put",
+        data: roleRequest
+    })
+}
+
 // 删除角色
-export function deleteSysUsers(roleRequest: RoleInfo) {
+export function deleteRole(roleRequest: RoleID) {
     return axiosInstance({
         url: "v1/roles",
         method: "delete",
