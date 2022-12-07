@@ -4,7 +4,7 @@
     <div style="text-align:left; margin:5px 10px;">
       <el-button type="primary" @click="toAddUser"><el-icon>
           <Plus />
-        </el-icon>&nbsp;新增系统用户</el-button>
+        </el-icon>&nbsp;新增</el-button>
     </div>
 
     <!-- 用户form表单 -->
@@ -25,8 +25,8 @@
         <el-form-item label="所在城市" prop="city">
           <el-input v-model="state.userFormData.city" placeholder="请输入所在城市"></el-input>
         </el-form-item>
-        <el-form-item label="个人简介" prop="introduction">
-          <el-input v-model="state.userFormData.introduction" placeholder="请输入个人简介"></el-input>
+        <el-form-item label="用户描述" prop="introduction">
+          <el-input v-model="state.userFormData.introduction" placeholder="请输入用户描述"></el-input>
         </el-form-item>
         <el-form-item label="用户角色" prop="role_name">
           <el-dropdown>
@@ -70,12 +70,12 @@
     <!-- 用户表格 -->
     <div style="margin:0px 10px; text-align:left;">
       <el-table stripe :data="state.users">
-        <el-table-column prop="name" label="用户名" width="120px"></el-table-column>
+        <el-table-column prop="name" label="用户名称" width="120px"></el-table-column>
         <el-table-column prop="role_name" label="角色" width="150px"></el-table-column>
         <el-table-column prop="email" label="邮箱" width="180px"></el-table-column>
         <el-table-column prop="phone" label="手机号" width="150px"></el-table-column>
         <el-table-column prop="city" label="所在城市"></el-table-column>
-        <el-table-column prop="introduction" label="用户简介" width="280px"></el-table-column>
+        <el-table-column prop="introduction" label="用户描述" width="280px"></el-table-column>
         <el-table-column prop="created_at" label="Date" width="220px"></el-table-column>
         <el-table-column label="启用状态" width="80px">
           <template #default="scope">

@@ -4,20 +4,20 @@
     <div style="text-align:left; margin:5px 10px;">
       <el-button type="primary" @click="toAddRole"><el-icon>
           <Plus />
-        </el-icon>&nbsp;新增角色</el-button>
+        </el-icon>&nbsp;新增</el-button>
     </div>
 
     <!-- 角色Form表单 -->
     <el-dialog v-model="state.roleFormDataVis" :title="state.tips">
       <el-form ref="roleForm" :model="state.roleFormData" :rules="state.rules" label-width="100px">
-        <el-form-item label="角色名" prop="role_name">
+        <el-form-item label="角色名称" prop="role_name">
           <el-input v-if="state.tips.startsWith('新增角色')" v-model="state.roleFormData.role_name"
-            placeholder="请输入角色名"></el-input>
+            placeholder="请输入角色名称"></el-input>
           <el-input v-else-if="state.tips.startsWith('更新角色信息')" disabled v-model="state.roleFormData.role_name"
-            placeholder="请输入角色名"></el-input>
+            placeholder="请输入角色名称"></el-input>
         </el-form-item>
-        <el-form-item label="角色介绍" prop="des">
-          <el-input v-model="state.roleFormData.des" placeholder="请输入角色介绍"></el-input>
+        <el-form-item label="描述" prop="des">
+          <el-input v-model="state.roleFormData.des" placeholder="请输入角色描述"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="resetForm">重置</el-button>
@@ -30,9 +30,9 @@
     <!-- 角色表格 -->
     <div style="margin:0px 10px; text-align:left;">
       <el-table stripe :data="state.roles">
-        <el-table-column prop="role_name" label="角色名"></el-table-column>
-        <el-table-column prop="des" label="角色介绍"></el-table-column>
-        <el-table-column label="状态" width="100px">
+        <el-table-column prop="role_name" label="角色名称"></el-table-column>
+        <el-table-column prop="des" label="描述"></el-table-column>
+        <el-table-column label="启用状态" width="100px">
           <template #default="scope">
             <el-switch v-model="scope.row.status" active-color="green" inactive-color="gray"
               @change="(value: string | number | boolean) => commitStatusChange(value, scope.row.id)" />

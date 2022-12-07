@@ -54,10 +54,6 @@ export const tabStore: Module<TabState, RootState> = {
                 state.tabsList.splice(index + 1)
             }
         }
-
-
-
-
     },
 
     getters: {

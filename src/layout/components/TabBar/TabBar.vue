@@ -1,5 +1,5 @@
 <template>
-  <el-tabs v-model="activeKey" type="card" @tab-click="clickHandle" @tab-remove="removeTab"
+  <el-tabs class="tabs" v-model="activeKey" type="card" @tab-click="clickHandle" @tab-remove="removeTab"
     @contextmenu.prevent.native="openContextMenu($event)">
     <el-tab-pane v-for="item in tabsList" :key="item.path" :label="item.title" :name="item.path" closable>{{
         item.content
@@ -15,14 +15,20 @@
   </ul>
 </template>
 <script lang="ts" setup>
-import { computed, onMounted, Ref, ref, watch } from 'vue';
+import 'element-plus/es/components/message-box/style/css'
+import { ComponentInternalInstance, getCurrentInstance, onMounted, Ref, ref, watch, computed, reactive } from 'vue'
 import { useStore } from '@/store/index'
 import { useRoute, useRouter } from 'vue-router';
 import { Itab } from '@/store/type'
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
+const state = reactive({
+  activePath: ''
+})
+
 const tabsList = computed(() => {
   return store.getters["tabStore/getAddTab"]
 })
@@ -37,6 +43,7 @@ const addTab = () => {
     title: meta.title as string
   }
   store.commit('tabStore/addTab', tab)
+  sessionStorage.setItem('ACTIVE_TAB', JSON.stringify(path))
 }
 // 监控
 watch(() => route.path, () => {
@@ -47,6 +54,7 @@ watch(() => route.path, () => {
 // 点击tab
 const clickHandle = (event: any) => {
   router.push({ path: event.props.name })
+  sessionStorage.setItem('ACTIVE_TAB', JSON.stringify(event.props.name))
 }
 
 // 移除tab
@@ -62,13 +70,13 @@ const removeTab = (targetName: string) => {
         const nextTab = tabsList.value[index + 1] || tabsList.value[index - 1]
         if (nextTab) {
           activeKey.value = nextTab.path
+          router.push(nextTab.path)
+          sessionStorage.setItem('ACTIVE_TAB', JSON.stringify(nextTab.path))
         }
       }
     })
   }
-
   store.commit('tabStore/closeCurrentTab', targetName)
-
 }
 
 // 刷新缓存数据
@@ -77,12 +85,18 @@ const refresh = () => {
     sessionStorage.setItem('TABS_ROUTES', JSON.stringify(tabsList.value))
   })
 
-  let session = sessionStorage.getItem('TABS_ROUTES')
-  if (session) {
-    let tabItem = JSON.parse(session)
+  let sessionTABS = sessionStorage.getItem('TABS_ROUTES')
+  if (sessionTABS) {
+    let tabItem = JSON.parse(sessionTABS)
     tabItem.forEach((tab: Itab) => {
       store.commit('tabStore/addTab', tab)
     })
+    let sessionActiveTAB = sessionStorage.getItem('ACTIVE_TAB')
+    if (sessionActiveTAB) {
+      let activeTab = JSON.parse(sessionActiveTAB)
+      activeKey.value = activeTab
+      router.push(activeTab)
+    }
   }
 
 }
@@ -99,6 +113,7 @@ onMounted(() => {
 const contextMenuVisible: Ref<boolean> = ref(false)
 const left = ref('')
 const top = ref('')
+
 const openContextMenu = (e: any) => {
 
   if (e.srcElement.id) {
@@ -135,6 +150,13 @@ watch(() => contextMenuVisible.value, () => {
 </script>
 
 <style lang="scss" scoped>
+.tabs>.el-tabs__content {
+  padding: 32px;
+  color: #6b778c;
+  font-size: 32px;
+  font-weight: 600;
+}
+
 .contextmenu {
   width: 100px;
   margin: 0;
