@@ -29,8 +29,9 @@ import { computed, ref } from 'vue';
 const store = useStore()
 
 const handlelogout = () => {
-    // 移除 session 和 内存中的token
+    // 移除 session 和 内存中的token 和 tab标签页
     store.commit('authStore/delToken')
+    store.commit('tabStore/closeAllTabs')
     location.reload()
 }
 

@@ -1,20 +1,26 @@
-import {createStore, useStore as baseUseStore, Store} from 'vuex'
+import { createStore, useStore as baseUseStore, Store } from 'vuex'
 import { InjectionKey } from 'vue'
 import { tabStore, TabState } from './modules/tabs'
 import { AuthState, authStore } from './modules/auth'
+import { menuStore, MenuState } from './modules/menu'
 
-export interface RootState{
+
+
+
+export interface RootState {
     tabStore: TabState,
-    authStore: AuthState
+    authStore: AuthState,
+    menuStore: MenuState,
 }
 
-export const key : InjectionKey<Store<RootState>> = Symbol()
+export const key: InjectionKey<Store<RootState>> = Symbol()
 
 
-export const store:Store<RootState> = createStore({
+export const store: Store<RootState> = createStore({
     modules: {
         tabStore,
-        authStore
+        authStore,
+        menuStore,
     }
 })
 

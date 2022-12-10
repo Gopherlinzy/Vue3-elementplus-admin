@@ -6,8 +6,10 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue';
 import MenuItem from './MenuItem.vue'
+import { useStore } from '@/store'
+
+const store = useStore()
 
 defineProps({
   collapsed: {
@@ -15,153 +17,7 @@ defineProps({
   }
 })
 
-const menus = reactive([
-  {
-    path: '/',
-    redirect: '/index',
-    name: 'Index',
-
-    meta: {
-      title: '首页',
-      icon: 'house',
-    },
-    children: [
-      {
-        path: 'index',
-        name: 'Index',
-        component: () => import('@/views/index/Index.vue'),
-        meta: {
-          title: '首页',
-          icon: 'house',
-
-        },
-      },
-    ],
-  },
-  {
-    path: '/superAdmin',
-    name: 'superAdmin',
-
-    meta: {
-      title: '超级管理员',
-      icon: 'Wallet',
-      roles: ['admin', 'editor']
-    },
-    children: [
-      {
-        path: 'roles',
-        name: 'roles',
-        component: () => import('@/views/superAdmin/Role.vue'),
-        meta: {
-          title: '角色管理',
-          icon: 'User',
-          roles: ['editor']
-        }
-
-      },
-      {
-        path: 'apis',
-        name: 'apis',
-        component: () => import('@/views/superAdmin/Api.vue'),
-        meta: {
-          title: 'API管理',
-          icon: 'Refrigerator',
-          roles: ['admin']
-        }
-      }, {
-        path: 'menus',
-        name: 'menus',
-        component: () => import('@/views/superAdmin/Menu.vue'),
-        meta: {
-          title: '菜单管理',
-          icon: 'Clock',
-          roles: ['editor']
-        }
-
-      }, {
-        path: 'users',
-        name: 'users',
-        component: () => import('@/views/superAdmin/User.vue'),
-        meta: {
-          title: '用户管理',
-          icon: 'User',
-          roles: ['editor']
-        }
-
-      },
-      {
-        path: 'setting',
-        name: 'setting',
-        component: () => import('@/views/system/SysSetting.vue'),
-        meta: {
-          title: '系统设置',
-          icon: 'Setting',
-          roles: ['admin']
-        }
-      }
-    ]
-
-  },
-
-  {
-    path: '/order',
-    name: 'order',
-
-    meta: {
-      title: '订单管理',
-      icon: 'Notebook',
-      roles: ['admin', 'editor']
-    },
-    children: [
-      {
-        path: 'orderInfo',
-        name: 'orderInfo',
-        component: () => import('@/views/orders/OrderInfo.vue'),
-        meta: {
-          title: '订单查询',
-          icon: 'Notification',
-        },
-      },
-      {
-        path: 'orderManage',
-        name: 'orderManage',
-        component: () => import('@/views/orders/OrderManage.vue'),
-        meta: {
-          title: '订单处理',
-          icon: 'Money',
-        },
-      },
-    ],
-  }, {
-    path: '/goods',
-    name: 'goods',
-
-    meta: {
-      title: '商品管理',
-      icon: 'TakeawayBox',
-    },
-    children: [
-      {
-        path: 'goodsCategory',
-        name: 'goodsCategory',
-        component: () => import('@/views/goods/GoodsCategory.vue'),
-        meta: {
-          title: '商品种类',
-          icon: 'ShoppingBag',
-        },
-      },
-      {
-        path: 'goodsInfo',
-        name: 'goodsInfo',
-        component: () => import('@/views/goods/GoodsInfo.vue'),
-        meta: {
-          title: '商品信息',
-          icon: 'SoldOut',
-        },
-      },
-    ],
-  }
-])
+const menus = store.getters['menuStore/getMenus']
 
 </script>
 

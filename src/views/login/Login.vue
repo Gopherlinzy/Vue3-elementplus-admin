@@ -93,6 +93,7 @@ onMounted(() => {
 // 登录事件
 const handleLogin = () => {
   store.dispatch('authStore/login', loginForm)
+  getValidCode()
 }
 </script>
 

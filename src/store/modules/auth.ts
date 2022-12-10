@@ -3,7 +3,7 @@ import { RootState } from "../index";
 import { login, loginByToken } from '@/api/auth'
 import router from '@/router'
 import { UserType } from "../type";
-
+import { store } from "@/store";
 
 
 export interface AuthState {
@@ -55,15 +55,19 @@ export const authStore: Module<AuthState, RootState> = {
 
                 state.userInfo = result.data
                 commit('addToken', result.token)
+                // console.log(result.permissions);
+                store.dispatch('menuStore/generateSystemMenus', result.permissions)
                 router.push({ path: '/index' })
             })
         },
 
         // token检测
         loginToken({ commit, state, dispatch }, token) {
-            commit('addToken', token)
-            loginByToken(token).then(result => {
+            loginByToken().then(result => {
+                // console.log(result);
+                commit('addToken', token)
                 state.userInfo = result.data
+                store.dispatch('menuStore/generateSystemMenus', result.permissions)
                 if (result.success) {
                     router.push({ path: '/index' })
                 }

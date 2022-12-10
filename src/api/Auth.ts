@@ -19,7 +19,7 @@ export function login(requestUser: object) {
 }
 
 //  通过token登录
-export function loginByToken(token: string) {
+export function loginByToken() {
     return axiosInstance({
         url: 'v1/user',
         method: 'get',

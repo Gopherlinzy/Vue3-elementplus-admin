@@ -12,6 +12,7 @@ declare module "axios" {
         token: string;
         success: boolean;
         pager: Array<never>;
+        permissions: object[];
         // 这里追加你的参数
     }
     export function create(config?: AxiosRequestConfig): AxiosInstance;
