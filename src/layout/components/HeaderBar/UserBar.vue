@@ -6,7 +6,7 @@
             </div>
             <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item @click="handlelogout">退出</el-dropdown-item>
+                    <el-dropdown-item class="el-dropdown-link" @click="handlelogout">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
             </template>
         </el-dropdown>
@@ -46,5 +46,12 @@ const userInfo = computed(() => {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+
+.example-showcase .el-dropdown-link {
+    cursor: pointer;
+    color: var(--el-color-primary);
+    display: flex;
+    align-items: center;
 }
 </style>

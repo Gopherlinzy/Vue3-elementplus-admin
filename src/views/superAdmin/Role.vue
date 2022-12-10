@@ -70,9 +70,10 @@
       </el-table>
       <!-- 分页 -->
       <el-row style="float:right;">
-        <el-pagination v-model:current-page="state.currentPage" background layout="total, prev, pager, next, jumper"
-          :page-count="state.rolesPag.TotalPage" :total="state.rolesPag.TotalCount"
-          @current-change="handelCurrentChange">
+        <el-pagination v-model:current-page="state.currentPage" background
+          layout="total, sizes, prev, pager, next, jumper" v-model:page-size="state.pageSize"
+          :page-sizes="[5, 10, 15, 20, 25]" :page-count="state.rolesPag.TotalPage" :total="state.rolesPag.TotalCount"
+          @current-change="handelCurrentChange" @size-change="handleSizeChange">
         </el-pagination>
       </el-row>
     </div>
@@ -106,6 +107,7 @@ const state = reactive({
   roleFormDataVis: false,
   toSetPermissionsVis: false,
   currentPage: 1,
+  pageSize: 5,
   tips: '',
   roleFormData: {
     id: '',
@@ -153,11 +155,23 @@ onMounted(() => {
 // 分页
 // 跳转到指定页数
 const handelCurrentChange = (val: number) => {
-  getPagination("roles", val, "id", "asc", state.rolesPag.PerPage).then(result => {
+  getPagination("roles", val, "id", "asc", state.pageSize).then(result => {
     // console.log(result);
     state.roles = result.data
     state.rolesPag = result.pager
     state.currentPage = val
+  })
+}
+
+// 制定每页条数
+const handleSizeChange = (val: number) => {
+  state.pageSize = val
+  getPagination("roles", 1, "id", "asc", state.pageSize).then(result => {
+    // console.log(result);
+
+    state.roles = result.data
+    state.rolesPag = result.pager
+    state.currentPage = 1
   })
 }
 

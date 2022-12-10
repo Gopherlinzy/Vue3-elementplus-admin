@@ -14,7 +14,7 @@ function hasPermission(permsID: object[], needpermID: number) {
     for (let i = 0; i < permsID?.length; i++) {
         // console.log(permsID[i].id);
 
-        if (permsID[i]?.id === needpermID) {
+        if (permsID[i].id === needpermID) {
             return true
         }
     }
@@ -63,6 +63,7 @@ export const menuStore: Module<MenuState, RootState> = {
 
             // 添加到动态路由
             routers.forEach(route => {
+                // 只有一个二级菜单权限，直接变为一级菜单
                 if (route.redirect == null && route.children?.length == 1) {
                     route.redirect = route.path + "/" + route.children[0].path
                     route.meta = route.children[0].meta

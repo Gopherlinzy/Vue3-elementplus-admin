@@ -104,9 +104,10 @@
       </el-table>
       <!-- 分页 -->
       <el-row style="float:right;">
-        <el-pagination background layout="total, prev, pager, next, jumper" :page-count="state.usersPag.TotalPage"
-          :total="state.usersPag.TotalCount" v-model:current-page="state.currentPage"
-          @current-change="handelCurrentChange">
+        <el-pagination background layout="total, sizes, prev, pager, next, jumper" v-model:page-size="state.pageSize"
+          :page-sizes="[5, 10, 15, 20, 25]" :page-count="state.usersPag.TotalPage" :total="state.usersPag.TotalCount"
+          v-model:current-page="state.currentPage" @current-change="handelCurrentChange"
+          @size-change="handleSizeChange">
         </el-pagination>
       </el-row>
     </div>
@@ -139,6 +140,7 @@ const state = reactive({
   userFormDialogVis: false,
   roleInfoDialogVis: false,
   status: false,
+  pageSize: 5,
   userFormData: {
     id: '',
     name: '',
@@ -225,7 +227,7 @@ onMounted(() => {
 // 分页
 // 跳转到指定页数
 const handelCurrentChange = (val: number) => {
-  getPagination("users", val, "id", "asc", state.usersPag.PerPage).then(result => {
+  getPagination("users", val, "id", "asc", state.pageSize).then(result => {
     // console.log(result);
 
     state.users = result.data
@@ -234,14 +236,18 @@ const handelCurrentChange = (val: number) => {
   })
 }
 
-// 跳转上一页/下一页
-// const handelPrevNextPage = (URL: string) => {
-//   getPaginationPrevNext(URL).then(result => {
-//     state.users = result.data
-//     state.usersPag = result.pager
-//     state.currentPage = result.pager[<any>'CurrentPage']
-//   })
-// }
+// 制定每页条数
+const handleSizeChange = (val: number) => {
+  state.pageSize = val
+  getPagination("users", 1, "id", "asc", state.pageSize).then(result => {
+    // console.log(result);
+
+    state.users = result.data
+    state.usersPag = result.pager
+    state.currentPage = 1
+  })
+}
+
 
 // 获取系统角色
 const getUsers = () => {

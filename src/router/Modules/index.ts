@@ -9,5 +9,4 @@ export const asyncRoutes: RouteRecordRaw[] = [
     systemRouter,
     goodsRouter,
     orderRouter,
-
 ]

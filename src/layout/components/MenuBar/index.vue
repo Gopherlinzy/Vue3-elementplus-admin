@@ -1,6 +1,6 @@
 <template>
-  <el-menu default-active="2" active-text-color="#409EFF" text-color="#fff" class="el-menu" :collapse="collapsed"
-    :collapse-transition="false">
+  <el-menu :default-active="defaultActive" active-text-color="#409EFF" text-color="#fff" class="el-menu"
+    :collapse="collapsed" :collapse-transition="false">
     <menu-item :menus="menus"></menu-item>
   </el-menu>
 </template>
@@ -8,8 +8,18 @@
 <script lang="ts" setup>
 import MenuItem from './MenuItem.vue'
 import { useStore } from '@/store'
+import { useRoute } from 'vue-router';
+import { watch } from 'vue';
 
+const route = useRoute()
 const store = useStore()
+const defaultActive = "users"
+
+// 监控
+watch(() => route.path, () => {
+  console.log(route.path);
+
+})
 
 defineProps({
   collapsed: {

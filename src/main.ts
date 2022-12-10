@@ -14,6 +14,17 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 // 启动我们需要的插件
 app.use(router).use(store, key).mount('#app')
 
+// 自定义指令 按钮权限
+app.directive("BTNVis", {
+  // 当元素挂载dom元素
+  mounted(el, binding) {
+    let buttonList = ['a', 'b']
+    if (!buttonList.includes(binding.value)) {
+      el.parentNode.removeChild(el)
+    }
+  }
+})
+
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $Alert: (message: string, title: string) => Promise<MessageBoxData>,
