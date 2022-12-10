@@ -1,5 +1,7 @@
 import { store } from '@/store/index';
 import axios, { AxiosRequestConfig } from 'axios'
+import 'element-plus/es/components/message/style/css'
+import { ElMessageBox } from 'element-plus'
 
 
 // 处理  类型“AxiosResponse<any, any>”上不存在属性“errorinfo”。ts(2339) 脑壳疼！关键一步。
@@ -46,22 +48,26 @@ axiosInstance.interceptors.response.use(
         const message = error.response.data.message
         // console.log(status);
         if (status === 401) { // token 解析失败或者登录失败，需要删除token
-            window.alert(message);
-
+            ElMessageBox.alert(message, "token 解析失败或者登录失败")
             sessionStorage.removeItem('token')
             sessionStorage.clear()
         } else if (status === 404) { // 资源不存在
-            window.alert("请求资源不存在");
-        } else if (status === 415) { // 没有权限
-            window.alert("权限不足");
+            ElMessageBox.alert(message, "请求资源不存在")
+        } else if (status === 403) { // 没有权限
+            ElMessageBox.alert(message, "权限不足")
         }
-        else if (status < 500 && message) { // 服务端异常
-            const errors = error.response.data.errors
-            window.alert(message);
-            console.log(errors);
+        else if (status < 500) { // 请求错误
+            if (error.response.data.errors) {
+                const errors = error.response.data.errors
+                ElMessageBox.alert(message, "请求错误")
+                console.log(errors);
+            } else {
+                ElMessageBox.alert(message, error.response.data.error)
+                // console.log(error.response.data);
+            }
         }
         else if (status >= 500) { // 服务端异常
-            window.alert("服务端异常，请稍后重试");
+            ElMessageBox.alert(message, error.response.data.error)
         }
         // 将未处理的异常往外抛
         return Promise.reject(error)

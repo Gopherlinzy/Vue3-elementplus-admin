@@ -9,6 +9,8 @@
 
     <!-- 用户form表单 -->
     <el-dialog v-model="state.userFormDialogVis" :title="state.tips">
+      <el-alert title="用户默认启用状态为未启用，需要到手动启用" type="info" :closable="false" center show-icon
+        style="background-color: #f8dac7  ;size: 16px; color: #dd5e58; margin-bottom: 15px;" />
       <el-form ref="userForm" :model="state.userFormData" :rules="state.rules" label-width="100px">
         <el-form-item label="用户名" prop="name">
           <el-input v-model="state.userFormData.name" placeholder="请输入用户名"></el-input>
@@ -91,7 +93,7 @@
             <el-button type="primary" link size="small" @click="resetPass(scope.row.id)"><el-icon>
                 <MagicStick />
               </el-icon>&nbsp;重置密码</el-button>
-            <el-button type="primary" link size="small" @click="updateUser(scope.row.id)"><el-icon>
+            <el-button type="primary" link size="small" @click="updateUser(scope.row)"><el-icon>
                 <Edit />
               </el-icon>&nbsp;编辑</el-button>
             <el-button type="primary" link size="small" @click="deleteUser(scope.row.id)"><el-icon>
@@ -104,8 +106,7 @@
       <el-row style="float:right;">
         <el-pagination background layout="total, prev, pager, next, jumper" :page-count="state.usersPag.TotalPage"
           :total="state.usersPag.TotalCount" v-model:current-page="state.currentPage"
-          @current-change="handelCurrentChange" @prev-click="handelPrevNextPage(state.usersPag.PrevPageURL)"
-          @next-click="handelPrevNextPage(state.usersPag.NextPageURL)">
+          @current-change="handelCurrentChange">
         </el-pagination>
       </el-row>
     </div>
@@ -234,13 +235,13 @@ const handelCurrentChange = (val: number) => {
 }
 
 // 跳转上一页/下一页
-const handelPrevNextPage = (URL: string) => {
-  getPaginationPrevNext(URL).then(result => {
-    state.users = result.data
-    state.usersPag = result.pager
-    state.currentPage = result.pager.CurrentPage
-  })
-}
+// const handelPrevNextPage = (URL: string) => {
+//   getPaginationPrevNext(URL).then(result => {
+//     state.users = result.data
+//     state.usersPag = result.pager
+//     state.currentPage = result.pager[<any>'CurrentPage']
+//   })
+// }
 
 // 获取系统角色
 const getUsers = () => {
@@ -248,6 +249,7 @@ const getUsers = () => {
     // console.log(result);
     state.users = result.data
     state.usersPag = result.pager
+    handelCurrentChange(state.currentPage)
   })
 }
 
@@ -266,21 +268,11 @@ const toAddUser = () => {
 }
 
 // 修改用户信息
-const updateUser = (id: string) => {
-  state.userFormData.id = id.toString()
-  state.userIDInfo.id = id.toString()
-  resetForm()
-  getUser(state.userIDInfo).then(res => {
-    state.userFormData.name = res.data.name
-    state.userFormData.email = res.data.email
-    state.userFormData.phone = res.data.phone
-    state.userFormData.city = res.data.city
-    state.userFormData.introduction = res.data.introduction
-    state.userFormData.role_name = res.data.role_name
-    state.tips = '更新用户信息'
-    state.userFormDialogVis = true
-  })
-
+const updateUser = (selectUser: object) => {
+  state.tips = '更新用户信息'
+  state.userFormDialogVis = true
+  state.userFormData = JSON.parse(JSON.stringify(selectUser))
+  state.userFormData.id = state.userFormData.id.toString()
 }
 
 // 确认添加/修改用户
@@ -309,8 +301,12 @@ const handelAddUpdateConfirm = (id: string) => {
 
 // 重置用户信息
 const resetForm = () => {
+  let userid = ''
+  if (state.tips === '更新角色') {
+    userid = state.userFormData.id.toString()
+  }
   state.userFormData = {
-    id: '',
+    id: userid,
     name: '',
     email: '',
     phone: '',
@@ -328,10 +324,10 @@ const deleteUser = (id: number) => {
     state.userIDInfo.id = id.toString()
     deleteSysUsers(state.userIDInfo).then(res => {
       // console.log(res);
-      handelCurrentChange(state.usersPag.CurrentPage)
+      handelCurrentChange(state.currentPage)
       proxy?.$Notify.success("删除用户成功")
     })
-  })
+  }).catch(() => { })
 }
 
 
@@ -343,7 +339,7 @@ const resetPass = (id: number) => {
       // console.log(res);
       handelCurrentChange(state.usersPag.CurrentPage)
     })
-  })
+  }).catch(() => { })
 }
 
 // 更新用户的状态

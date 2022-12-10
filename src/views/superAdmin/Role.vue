@@ -9,6 +9,8 @@
 
     <!-- 角色Form表单 -->
     <el-dialog v-model="state.roleFormDataVis" :title="state.tips">
+      <el-alert title="角色默认启用状态为未启用，需要到手动启用" type="info" :closable="false" center show-icon
+        style="background-color: #f8dac7  ;size: 16px; color: #dd5e58; margin-bottom: 15px;" />
       <el-form ref="roleForm" :model="state.roleFormData" :rules="state.rules" label-width="100px">
         <el-form-item label="角色名称" prop="role_name">
           <el-input v-if="state.tips.startsWith('新增角色')" v-model="state.roleFormData.role_name"
@@ -21,11 +23,25 @@
         </el-form-item>
         <el-form-item>
           <el-button @click="resetForm">重置</el-button>
-          <el-button type="primary" @click="handelAddUpdateConfirm(state.roleFormData.id)">确定</el-button>
+          <el-button type="primary" @click="handelAddUpdateConfirm">确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
 
+    <!-- 角色授权树形窗口 -->
+    <el-dialog v-model="state.toSetPermissionsVis" title="角色授权" destroy-on-close>
+      <el-form>
+        <el-form-item>
+          <el-tree :data="state.permissionTree" show-checkbox :props="state.defaultProps" node-key="permission"
+            :default-checked-keys="state.permissions" highlight-current default-expand-all
+            ref="permissionRef"></el-tree>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="resetChecked">清空</el-button>
+          <el-button type="primary" @click="setPermission">确定</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
 
     <!-- 角色表格 -->
     <div style="margin:0px 10px; text-align:left;">
@@ -40,11 +56,10 @@
         </el-table-column>
         <el-table-column label="操作" width="220px">
           <template #default="scope">
-            <el-button type="primary" link size="small" @click="updateRolePolicy(scope.row.id)"><el-icon>
+            <el-button type="primary" link size="small" @click="toSetPermissions(scope.row.id)"><el-icon>
                 <User />
               </el-icon>&nbsp;授权</el-button>
-            <el-button type="primary" link size="small"
-              @click="updateCurrRole(scope.row.id, scope.row.role_name)"><el-icon>
+            <el-button type="primary" link size="small" @click="updateCurrRole(scope.row)"><el-icon>
                 <Edit />
               </el-icon>&nbsp;编辑</el-button>
             <el-button type="primary" link size="small" @click="deleteCurrRole(scope.row.id)"><el-icon>
@@ -57,8 +72,7 @@
       <el-row style="float:right;">
         <el-pagination v-model:current-page="state.currentPage" background layout="total, prev, pager, next, jumper"
           :page-count="state.rolesPag.TotalPage" :total="state.rolesPag.TotalCount"
-          @current-change="handelCurrentChange" @prev-click="handelPrevNextPage(state.rolesPag.PrevPageURL)"
-          @next-click="handelPrevNextPage(state.rolesPag.NextPageURL)">
+          @current-change="handelCurrentChange">
         </el-pagination>
       </el-row>
     </div>
@@ -68,22 +82,29 @@
 <script lang="ts" setup>
 import 'element-plus/es/components/message-box/style/css'
 import 'element-plus/es/components/notification/style/css'
-import { ComponentInternalInstance, getCurrentInstance, onMounted, reactive } from 'vue'
+import { ComponentInternalInstance, getCurrentInstance, onMounted, reactive, ref } from 'vue'
+import permissionTree from "@/router/permissionTree"
 import {
   getRole,
+  getRoleAllPolicies,
+  getRoleMenus,
   getAllRoles,
   addRole,
   updateRole,
+  updateRoleMenuPermissions,
   updateRoleStatus,
-  deleteRole
+  deleteRole,
 } from "@/api/system/role"
+import type { ElTree } from 'element-plus'
 import { getPagination, getPaginationPrevNext } from '@/api/pagination'
+import { List } from '@element-plus/icons-vue'
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const state = reactive({
   roles: [],
   rolesPag: [] as any,
   roleFormDataVis: false,
+  toSetPermissionsVis: false,
   currentPage: 1,
   tips: '',
   roleFormData: {
@@ -112,8 +133,17 @@ const state = reactive({
   roleStatusInfo: {
     id: '',
     status: ''
-  }
+  },
+  permissionTree: permissionTree,
+  defaultProps: {
+    id: "title",
+    label: "title",
+    children: "children"
+  },
+  permissions: []
 })
+
+const permissionRef = ref<InstanceType<typeof ElTree>>()
 
 // 初始化
 onMounted(() => {
@@ -125,7 +155,6 @@ onMounted(() => {
 const handelCurrentChange = (val: number) => {
   getPagination("roles", val, "id", "asc", state.rolesPag.PerPage).then(result => {
     // console.log(result);
-
     state.roles = result.data
     state.rolesPag = result.pager
     state.currentPage = val
@@ -133,13 +162,13 @@ const handelCurrentChange = (val: number) => {
 }
 
 // 跳转上一页/下一页
-const handelPrevNextPage = (URL: string) => {
-  getPaginationPrevNext(URL).then(result => {
-    state.roles = result.data
-    state.rolesPag = result.pager
-    state.currentPage = result.pager.CurrentPage
-  })
-}
+// const handelPrevNextPage = (URL: string) => {
+//   getPaginationPrevNext(URL).then(result => {
+//     state.roles = result.data
+//     state.rolesPag = result.pager
+//     state.currentPage = result.pager[<any>'CurrentPage']
+//   })
+// }
 
 // 获取角色
 const getRoles = () => {
@@ -147,6 +176,7 @@ const getRoles = () => {
     // console.log(result);
     state.roles = result.data
     state.rolesPag = result.pager
+    handelCurrentChange(state.currentPage)
   })
 }
 
@@ -159,22 +189,25 @@ const toAddRole = () => {
 
 // 重置信息
 const resetForm = () => {
-  state.roleFormData.id = ''
-  state.roleFormData.role_name = ''
+  if (state.tips === '新增角色') {
+    state.roleFormData.id = ''
+    state.roleFormData.role_name = ''
+  }
   state.roleFormData.des = ''
 }
 
 // 更新角色信息
-const updateCurrRole = (id: string, roleName: string) => {
-  resetForm()
+const updateCurrRole = (selectRole: object) => {
   state.roleFormDataVis = true
-  state.roleFormData.id = id.toString()
-  state.roleFormData.role_name = roleName
+  state.roleFormData = JSON.parse(JSON.stringify(selectRole))
+  state.roleFormData.id = state.roleFormData.id.toString()
+  // console.log(state.roleFormData);
+
   state.tips = '更新角色信息'
 }
 
 // 确认新增/更新角色
-const handelAddUpdateConfirm = (id: string) => {
+const handelAddUpdateConfirm = () => {
   // console.log(state.roleFormData);
   if (state.tips.startsWith('新增角色')) {
     addRole(state.roleFormData).then(res => {
@@ -205,7 +238,7 @@ const deleteCurrRole = (id: string) => {
       handelCurrentChange(state.rolesPag.CurrentPage)
       proxy?.$Notify.success("删除角色成功")
     })
-  })
+  }).catch(() => { })
 }
 
 // 更新角色的状态
@@ -218,4 +251,45 @@ const commitStatusChange = (value: string | number | boolean, id: string) => {
     }
   })
 }
+
+// 点击授权按钮
+const toSetPermissions = (id: string) => {
+  // console.log(id);
+
+  state.roleFormData.id = id.toString()
+  state.permissions = []
+  getRoleMenus(state.roleFormData).then(res => {
+    for (let i of res.data) {
+      state.permissions.push(i.permissions as never)
+    }
+    state.toSetPermissionsVis = true
+  })
+}
+
+// 清空 checked-box
+const resetChecked = () => {
+  permissionRef.value!.setCheckedKeys([], false)
+}
+
+const setPermission = () => {
+  let nodes = permissionRef.value!.getCheckedNodes(false, false)
+  let permissions = <any>[]
+  nodes.forEach(node => {
+    if (node.id) {
+      permissions.push(node.id.toString())
+    }
+  })
+  // console.log(permissions);
+  let vo = {
+    id: state.roleFormData.id.toString(),
+    permissions: permissions,
+  }
+  // console.log(vo);
+  updateRoleMenuPermissions(vo).then(res => {
+    proxy?.$Notify.success("更新成功")
+    state.toSetPermissionsVis = false
+  })
+}
+
+
 </script>

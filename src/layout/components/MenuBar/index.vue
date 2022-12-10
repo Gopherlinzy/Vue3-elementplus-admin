@@ -39,102 +39,19 @@ const menus = reactive([
     ],
   },
   {
-    path: '/user',
-    redirect: '/user',
-    name: 'User',
+    path: '/superAdmin',
+    name: 'superAdmin',
 
     meta: {
-      title: '用户管理',
-      affix: true,
-      icon: 'UserFilled',
-    },
-    children: [
-      {
-        path: 'manger',
-        name: 'UserManger',
-        component: () => import('@/views/user/User.vue'),
-        meta: {
-          title: '用户管理',
-          icon: 'UserFilled',
-
-        },
-      },
-    ],
-  },
-
-  {
-    path: '/order',
-    name: 'Order',
-
-    meta: {
-      title: '订单管理',
-      icon: 'Notebook',
-      roles: ['admin', 'editor']
-    },
-    children: [
-      {
-        path: 'orderQuery',
-        name: 'orderQuery',
-        component: () => import('@/views/orders/OrderQuery.vue'),
-        meta: {
-          title: '订单查询',
-          icon: 'Notification',
-        },
-      },
-      {
-        path: 'orderAction',
-        name: 'orderAction',
-        component: () => import('@/views/orders/OrderAction.vue'),
-        meta: {
-          title: '订单处理',
-          icon: 'Money',
-        },
-      },
-    ],
-  }, {
-    path: '/good',
-    name: 'good',
-
-    meta: {
-      title: '商品管理',
-      icon: 'TakeawayBox',
-    },
-    children: [
-      {
-        path: 'category',
-        name: 'category',
-        component: () => import('@/views/goods/Goods.vue'),
-        meta: {
-          title: '商品种类',
-          icon: 'ShoppingBag',
-        },
-      },
-      {
-        path: 'goodQuery',
-        name: 'goodQuery',
-        component: () => import('@/views/goods/Category.vue'),
-        meta: {
-          title: '商品查询',
-          icon: 'SoldOut',
-        },
-      },
-    ],
-  },
-
-  {
-    path: '/system',
-    name: 'system',
-
-    meta: {
-      title: '系统管理',
+      title: '超级管理员',
       icon: 'Wallet',
       roles: ['admin', 'editor']
     },
     children: [
       {
-        path: 'role',
-        name: 'role',
-        component: () => import('@/views/system/Role.vue'),
+        path: 'roles',
+        name: 'roles',
+        component: () => import('@/views/superAdmin/Role.vue'),
         meta: {
           title: '角色管理',
           icon: 'User',
@@ -143,29 +60,39 @@ const menus = reactive([
 
       },
       {
-        path: 'group',
-        name: 'group',
-        component: () => import('@/views/system/Group.vue'),
+        path: 'apis',
+        name: 'apis',
+        component: () => import('@/views/superAdmin/Api.vue'),
         meta: {
-          title: 'group',
+          title: 'API管理',
           icon: 'Refrigerator',
           roles: ['admin']
         }
       }, {
-        path: 'task',
-        name: 'task',
-        component: () => import('@/views/system/Task.vue'),
+        path: 'menus',
+        name: 'menus',
+        component: () => import('@/views/superAdmin/Menu.vue'),
         meta: {
-          title: 'account',
+          title: '菜单管理',
           icon: 'Clock',
+          roles: ['editor']
+        }
+
+      }, {
+        path: 'users',
+        name: 'users',
+        component: () => import('@/views/superAdmin/User.vue'),
+        meta: {
+          title: '用户管理',
+          icon: 'User',
           roles: ['editor']
         }
 
       },
       {
-        path: 'Setting',
-        name: 'Setting',
-        component: () => import('@/views/system/Setting.vue'),
+        path: 'setting',
+        name: 'setting',
+        component: () => import('@/views/system/SysSetting.vue'),
         meta: {
           title: '系统设置',
           icon: 'Setting',
@@ -174,6 +101,65 @@ const menus = reactive([
       }
     ]
 
+  },
+
+  {
+    path: '/order',
+    name: 'order',
+
+    meta: {
+      title: '订单管理',
+      icon: 'Notebook',
+      roles: ['admin', 'editor']
+    },
+    children: [
+      {
+        path: 'orderInfo',
+        name: 'orderInfo',
+        component: () => import('@/views/orders/OrderInfo.vue'),
+        meta: {
+          title: '订单查询',
+          icon: 'Notification',
+        },
+      },
+      {
+        path: 'orderManage',
+        name: 'orderManage',
+        component: () => import('@/views/orders/OrderManage.vue'),
+        meta: {
+          title: '订单处理',
+          icon: 'Money',
+        },
+      },
+    ],
+  }, {
+    path: '/goods',
+    name: 'goods',
+
+    meta: {
+      title: '商品管理',
+      icon: 'TakeawayBox',
+    },
+    children: [
+      {
+        path: 'goodsCategory',
+        name: 'goodsCategory',
+        component: () => import('@/views/goods/GoodsCategory.vue'),
+        meta: {
+          title: '商品种类',
+          icon: 'ShoppingBag',
+        },
+      },
+      {
+        path: 'goodsInfo',
+        name: 'goodsInfo',
+        component: () => import('@/views/goods/GoodsInfo.vue'),
+        meta: {
+          title: '商品信息',
+          icon: 'SoldOut',
+        },
+      },
+    ],
   }
 ])
 
