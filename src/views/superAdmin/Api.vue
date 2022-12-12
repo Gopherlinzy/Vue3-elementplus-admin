@@ -9,12 +9,12 @@
     <!-- api表格 -->
     <div style="margin:0px 10px; text-align:left;">
       <el-table stripe :data="state.apis">
-        <el-table-column prop="id" label="ID" width="50px"></el-table-column>
-        <el-table-column prop="api_path" label="API路由" width="180px"></el-table-column>
-        <el-table-column prop="api_group" label="API分组" width="100px"></el-table-column>
-        <el-table-column prop="description" label="API描述" width="220px"></el-table-column>
+        <el-table-column prop="id" label="ID" width="80px"></el-table-column>
+        <el-table-column prop="path" label="API路由"></el-table-column>
+        <el-table-column prop="api_group" label="API分组" width="120px"></el-table-column>
+        <el-table-column prop="description" label="API描述"></el-table-column>
         <el-table-column prop="method" label="请求" width="80px"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="220px">
+        <el-table-column fixed="right" label="操作" width="180px">
           <template #default="scope">
             <el-button type="primary" link size="small" @click="updateCurrRole(scope.row)"><el-icon>
                 <Edit />
@@ -89,7 +89,7 @@ const handleSizeChange = (val: number) => {
 // 获取角色
 const getApis = () => {
   getPagApis().then(result => {
-    // console.log(result);
+    console.log(result);
     state.apis = result.data
     state.apisPag = result.pager
     handelCurrentChange(state.currentPage)

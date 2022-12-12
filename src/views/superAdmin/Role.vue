@@ -8,9 +8,10 @@
     </div>
 
     <!-- 角色Form表单 -->
-    <el-dialog v-model="state.roleFormDataVis" :title="state.tips">
+    <el-dialog v-model="state.roleFormDataVis" :title="state.tips" height="80">
       <el-alert title="角色默认启用状态为未启用，需要到手动启用" type="info" :closable="false" center show-icon
-        style="background-color: #f8dac7  ;size: 16px; color: #dd5e58; margin-bottom: 15px;" />
+        style="background-color: #f8dac7  ;size: 16px; color: #dd5e58; margin-bottom: -15px; margin-top: -30px;" />
+      <el-divider />
       <el-form ref="roleForm" :model="state.roleFormData" :rules="state.rules" label-width="100px">
         <el-form-item label="角色名称" prop="role_name">
           <el-input v-if="state.tips.startsWith('新增角色')" v-model="state.roleFormData.role_name"
@@ -29,19 +30,44 @@
     </el-dialog>
 
     <!-- 角色授权树形窗口 -->
-    <el-dialog v-model="state.toSetPermissionsVis" title="角色授权" destroy-on-close>
-      <el-form>
-        <el-form-item>
-          <el-tree :data="state.permissionTree" show-checkbox :props="state.defaultProps" node-key="permission"
-            :default-checked-keys="state.permissions" highlight-current default-expand-all
-            ref="permissionRef"></el-tree>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="resetChecked">清空</el-button>
-          <el-button type="primary" @click="setPermission">确定</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+    <el-drawer v-model="state.toSetPermissionsVis" custom-class="auth-drawer" :with-header="false" size="30%"
+      title="角色配置" destroy-on-close>
+      <el-tabs v-model="activePolicy" class="tabs">
+        <el-tab-pane label="角色菜单" name="menus">
+          <el-form>
+            <el-scrollbar height="530px" style="padding-bottom: 10px;">
+              <el-form-item>
+                <el-tree :data="state.permissionTree" show-checkbox :props="state.defaultProps" node-key="permission"
+                  :default-checked-keys="state.permissions" highlight-current default-expand-all
+                  ref="permissionRef"></el-tree>
+              </el-form-item>
+            </el-scrollbar>
+            <el-form-item>
+              <el-button @click="resetCheckedMenu">清空</el-button>
+              <el-button type="primary" @click="setPermission">确定</el-button>
+            </el-form-item>
+          </el-form>
+
+        </el-tab-pane>
+        <el-tab-pane label="角色api" name="apis">
+
+          <el-form>
+            <el-scrollbar height="530px" style="padding-bottom: 10px;">
+              <el-form-item>
+                <el-tree :data="state.apiPolicyTree" show-checkbox :props="state.defaultProps" node-key="apiPolicy"
+                  :default-checked-keys="state.apiPolicies" highlight-current default-expand-all
+                  ref="apiPolicyRef"></el-tree>
+              </el-form-item>
+            </el-scrollbar>
+            <el-form-item>
+              <el-button @click="resetCheckedApi">清空</el-button>
+              <el-button type="primary" @click="setApiPolicy">确定</el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+      </el-tabs>
+
+    </el-drawer>
 
     <!-- 角色表格 -->
     <div style="margin:0px 10px; text-align:left;">
@@ -85,20 +111,23 @@ import 'element-plus/es/components/message-box/style/css'
 import 'element-plus/es/components/notification/style/css'
 import { ComponentInternalInstance, getCurrentInstance, onMounted, reactive, ref } from 'vue'
 import permissionTree from "@/router/permissionTree"
+import apiPolicyTree from "@/router/apiPolicyTree"
 import {
   getRole,
   getRoleAllPolicies,
   getRoleMenus,
+  getRoleApis,
   getAllRoles,
   addRole,
   updateRole,
   updateRoleMenuPermissions,
+  updateRoleApiPolicies,
   updateRoleStatus,
   deleteRole,
 } from "@/api/system/role"
 import type { ElTree } from 'element-plus'
 import { getPagination, getPaginationPrevNext } from '@/api/pagination'
-import { List } from '@element-plus/icons-vue'
+import { tr } from 'element-plus/es/locale'
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const state = reactive({
@@ -137,15 +166,19 @@ const state = reactive({
     status: ''
   },
   permissionTree: permissionTree,
+  apiPolicyTree: apiPolicyTree,
   defaultProps: {
     id: "title",
     label: "title",
     children: "children"
   },
-  permissions: []
+  permissions: [],
+  apiPolicies: [],
 })
 
 const permissionRef = ref<InstanceType<typeof ElTree>>()
+const apiPolicyRef = ref<InstanceType<typeof ElTree>>()
+const activePolicy = ref('')
 
 // 初始化
 onMounted(() => {
@@ -174,15 +207,6 @@ const handleSizeChange = (val: number) => {
     state.currentPage = 1
   })
 }
-
-// 跳转上一页/下一页
-// const handelPrevNextPage = (URL: string) => {
-//   getPaginationPrevNext(URL).then(result => {
-//     state.roles = result.data
-//     state.rolesPag = result.pager
-//     state.currentPage = result.pager[<any>'CurrentPage']
-//   })
-// }
 
 // 获取角色
 const getRoles = () => {
@@ -269,22 +293,44 @@ const commitStatusChange = (value: string | number | boolean, id: string) => {
 // 点击授权按钮
 const toSetPermissions = (id: string) => {
   // console.log(id);
-
   state.roleFormData.id = id.toString()
   state.permissions = []
+  state.apiPolicies = []
+  let menu = false
+  let api = false
   getRoleMenus(state.roleFormData).then(res => {
     for (let i of res.data) {
       state.permissions.push(i.permissions as never)
     }
-    state.toSetPermissionsVis = true
+    activePolicy.value = 'menus'
+    menu = true
+    if (api == true) {
+      state.toSetPermissionsVis = true
+    }
+  })
+  getRoleApis(state.roleFormData).then(res => {
+    for (let i of res.data) {
+      state.apiPolicies.push(i.path + ":" + i.method as never)
+    }
+    // console.log(state.apiPolicies);
+    api = true
+    if (menu == true) {
+      state.toSetPermissionsVis = true
+    }
   })
 }
 
 // 清空 checked-box
-const resetChecked = () => {
+const resetCheckedMenu = () => {
   permissionRef.value!.setCheckedKeys([], false)
 }
 
+// 清空 checked-box
+const resetCheckedApi = () => {
+  apiPolicyRef.value!.setCheckedKeys([], false)
+}
+
+// 设置 角色菜单权限
 const setPermission = () => {
   let nodes = permissionRef.value!.getCheckedNodes(false, false)
   let permissions = <any>[]
@@ -298,12 +344,39 @@ const setPermission = () => {
     id: state.roleFormData.id.toString(),
     permissions: permissions,
   }
-  // console.log(vo);
+  console.log(vo);
   updateRoleMenuPermissions(vo).then(res => {
     proxy?.$Notify.success("更新成功")
     state.toSetPermissionsVis = false
   })
 }
 
-
+// 设置 角色api权限
+const setApiPolicy = () => {
+  let nodes = apiPolicyRef.value!.getCheckedNodes(false, false)
+  let apiPolicies = <any>[]
+  nodes.forEach(node => {
+    if (node.id) {
+      apiPolicies.push(node.id.toString())
+    }
+  })
+  // console.log(permissions);
+  let vo = {
+    id: state.roleFormData.id.toString(),
+    api_policies: apiPolicies,
+  }
+  console.log(vo);
+  updateRoleApiPolicies(vo).then(res => {
+    proxy?.$Notify.success("更新成功")
+    state.toSetPermissionsVis = false
+  })
+}
 </script>
+
+<style lang="scss">
+.auth-drawer {
+  .el-drawer__body {
+    overflow: hidden;
+  }
+}
+</style>

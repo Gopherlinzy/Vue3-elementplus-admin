@@ -10,7 +10,8 @@
     <!-- 用户form表单 -->
     <el-dialog v-model="state.userFormDialogVis" :title="state.tips">
       <el-alert title="用户默认启用状态为未启用，需要到手动启用" type="info" :closable="false" center show-icon
-        style="background-color: #f8dac7  ;size: 16px; color: #dd5e58; margin-bottom: 15px;" />
+        style="background-color: #f8dac7  ;size: 16px; color: #dd5e58; margin-bottom: -15px; margin-top: -30px;" />
+      <el-divider />
       <el-form ref="userForm" :model="state.userFormData" :rules="state.rules" label-width="100px">
         <el-form-item label="用户名" prop="name">
           <el-input v-model="state.userFormData.name" placeholder="请输入用户名"></el-input>
@@ -103,11 +104,10 @@
         </el-table-column>
       </el-table>
       <!-- 分页 -->
-      <el-row style="float:right;">
-        <el-pagination background layout="total, sizes, prev, pager, next, jumper" v-model:page-size="state.pageSize"
+      <el-row style="float:right">
+        <el-pagination background layout="total,sizes,prev,pager,next,jumper" v-model:page-size="state.pageSize"
           :page-sizes="[5, 10, 15, 20, 25]" :page-count="state.usersPag.TotalPage" :total="state.usersPag.TotalCount"
-          v-model:current-page="state.currentPage" @current-change="handelCurrentChange"
-          @size-change="handleSizeChange">
+          :current-page="state.currentPage" @current-change="handelCurrentChange" @size-change="handleSizeChange">
         </el-pagination>
       </el-row>
     </div>
@@ -117,7 +117,7 @@
 <script setup lang='ts'>
 import 'element-plus/es/components/message-box/style/css'
 import 'element-plus/es/components/notification/style/css'
-import { ComponentInternalInstance, getCurrentInstance, onMounted, reactive } from 'vue';
+import { ComponentInternalInstance, getCurrentInstance, onMounted, reactive, ref } from 'vue';
 import {
   addSysUser,
   getAllSysUsers,
@@ -129,7 +129,7 @@ import {
   updateStatus
 } from "@/api/system/user"
 import { getAllRoles } from '@/api/system/role';
-import { getPagination, getPaginationPrevNext } from '@/api/pagination'
+import { getPagination } from '@/api/pagination'
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const state = reactive({
@@ -215,8 +215,10 @@ const state = reactive({
     id: '',
     role_name: '',
   },
-  tips: ''
+  tips: '',
 })
+
+
 
 // 初始化
 onMounted(() => {
@@ -380,5 +382,10 @@ const setSysUserRole = (role_name: string) => {
 }
 </script>
 <style lang='scss' scoped>
-
+.tabs>.el-tabs__content {
+  padding: 32px;
+  color: #6b778c;
+  font-size: 32px;
+  font-weight: 600;
+}
 </style>

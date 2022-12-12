@@ -1,6 +1,6 @@
 /**
  * 权限树 授权的时候使用 细粒度
- id: 'title',
+ id: number,
  label: 'title',
  children: 'children'
 
@@ -76,18 +76,6 @@ const permissionTree = [
                 id: 13,
                 title: '商品信息',
                 permission: 'system:goods:goodsInfo',
-                children: [
-                    {
-                        id: 14,
-                        title: '添加商品',
-                        permission: "system:goods:goodsInfo:add" // TODO 真正可以添加到数据库的权限值, 对应到具体的后台接口权限
-                    },
-                    {
-                        id: 15,
-                        title: '修改商品',
-                        permission: "system:goods:goodsInfo:update"
-                    }
-                ]
             }
         ]
     },

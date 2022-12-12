@@ -58,6 +58,15 @@ export function getRoleMenus(roleRequest: object) {
     })
 }
 
+// 获取指定角色的 apis 菜单
+export function getRoleApis(roleRequest: object) {
+    return axiosInstance({
+        url: "v1/roles/apis",
+        method: "post",
+        data: roleRequest
+    })
+}
+
 // 添加角色
 export function addRole(roleRequest: object) {
     return axiosInstance({
@@ -89,6 +98,15 @@ export function updateRoleStatus(roleRequest: object) {
 export function updateRoleMenuPermissions(roleRequest: object) {
     return axiosInstance({
         url: "v1/roles/menuPermissions",
+        method: "put",
+        data: roleRequest
+    })
+}
+
+// 更新角色api权限
+export function updateRoleApiPolicies(roleRequest: object) {
+    return axiosInstance({
+        url: "v1/roles/apiPolicy",
         method: "put",
         data: roleRequest
     })

@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-active="defaultActive" active-text-color="#409EFF" text-color="#fff" class="el-menu"
+  <el-menu :default-active="activeMenu" active-text-color="#409EFF" text-color="#fff" class="el-menu"
     :collapse="collapsed" :collapse-transition="false">
     <menu-item :menus="menus"></menu-item>
   </el-menu>
@@ -9,17 +9,30 @@
 import MenuItem from './MenuItem.vue'
 import { useStore } from '@/store'
 import { useRoute } from 'vue-router';
-import { watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 
 const route = useRoute()
 const store = useStore()
-const defaultActive = "users"
+const activeMenu = computed(() => {
+  let path = sessionStorage.getItem('ACTIVE_TAB')
+  // console.log(path);
+  if (path == null) {
+    return '/'
+  }
+  let s = path.split('"')[1].split('/')
+
+  if (s[s.length - 1] == 'index') {
+    return '/'
+  }
+  console.log(s[s.length - 1]);
+  return s[s.length - 1]
+})
 
 // 监控
-watch(() => route.path, () => {
-  console.log(route.path);
+// watch(() => route.path, () => {
+//   console.log(route.path);
 
-})
+// })
 
 defineProps({
   collapsed: {
