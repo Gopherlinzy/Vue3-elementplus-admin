@@ -50,6 +50,7 @@ router.beforeEach((to, from, next) => {
       if (res.success) {
         store.commit("authStore/addUserInfo", res.data)
         store.dispatch('menuStore/generateSystemMenus', res.permissions)
+        store.dispatch('buttonStore/generateButtons', res.apiPolicies)
         // console.log(router.getRoutes());
         if (to.matched.length == 0) {
           router.push(to.path)

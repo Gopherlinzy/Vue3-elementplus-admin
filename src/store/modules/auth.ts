@@ -51,12 +51,13 @@ export const authStore: Module<AuthState, RootState> = {
         // 账号密码登录
         login({ commit, state, dispatch }, requestUser) {
             login(requestUser).then(result => {
-                // console.log(requestUser);
+                console.log(requestUser);
 
                 state.userInfo = result.data
                 commit('addToken', result.token)
                 // console.log(result.permissions);
                 store.dispatch('menuStore/generateSystemMenus', result.permissions)
+                store.dispatch('buttonStore/generateButtons', result.apiPolicies)
                 router.push({ path: '/index' })
             })
         },
@@ -68,6 +69,7 @@ export const authStore: Module<AuthState, RootState> = {
                 commit('addToken', token)
                 state.userInfo = result.data
                 store.dispatch('menuStore/generateSystemMenus', result.permissions)
+                store.dispatch('buttonStore/generateButtons', result.apiPolicies)
                 if (result.success) {
                     router.push({ path: '/index' })
                 }

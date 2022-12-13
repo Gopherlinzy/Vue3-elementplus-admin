@@ -28,7 +28,7 @@ const apiPolicyTree = [
             {
                 id: 4,
                 title: '查询指定角色 id 的所有api权限',
-                apiPolicy: '/api/v1/roles/policies:POST'
+                apiPolicy: '/api/v1/roles/apis:POST'
             },
             {
                 id: 5,
@@ -139,21 +139,26 @@ const apiPolicyTree = [
             },
             {
                 id: 24,
+                title: '查询菜单分页列表',
+                apiPolicy: '/api/v1/menus/pag:GET'
+            },
+            {
+                id: 25,
                 title: '新增菜单信息',
                 apiPolicy: '/api/v1/menus:POST'
             },
             {
-                id: 25,
+                id: 26,
                 title: '查询指定菜单 id 数据',
                 apiPolicy: '/api/v1/menus/id:POST'
             },
             {
-                id: 26,
+                id: 27,
                 title: '更新菜单信息',
                 apiPolicy: '/api/v1/menus:PUT'
             },
             {
-                id: 27,
+                id: 28,
                 title: '删除菜单信息',
                 apiPolicy: '/api/v1/menus:DELETE'
             },
@@ -164,27 +169,32 @@ const apiPolicyTree = [
         apiPolicy: 'apiGroup',
         children: [
             {
-                id: 28,
+                id: 29,
                 title: '查询api列表',
                 apiPolicy: '/api/v1/apis:GET'
             },
             {
-                id: 29,
+                id: 30,
+                title: '查询api分页列表',
+                apiPolicy: '/api/v1/apis/pag:GET'
+            },
+            {
+                id: 31,
                 title: '新增api信息',
                 apiPolicy: '/api/v1/apis:POST'
             },
             {
-                id: 30,
+                id: 32,
                 title: '查询指定api id 数据',
                 apiPolicy: '/api/v1/apis/id:POST'
             },
             {
-                id: 31,
+                id: 33,
                 title: '更新api信息',
                 apiPolicy: '/api/v1/apis:PUT'
             },
             {
-                id: 32,
+                id: 34,
                 title: '删除api信息',
                 apiPolicy: '/api/v1/apis:DELETE'
             },

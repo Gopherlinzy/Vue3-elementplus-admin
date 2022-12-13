@@ -2,7 +2,7 @@
 
   <div>
     <div style="text-align:left; margin:5px 10px;">
-      <el-button type="primary" @click="toAddRole"><el-icon>
+      <el-button v-BTNVis="'/api/v1/roles:POST'" type="primary" @click="toAddRole"><el-icon>
           <Plus />
         </el-icon>&nbsp;新增</el-button>
     </div>
@@ -33,7 +33,7 @@
     <el-drawer v-model="state.toSetPermissionsVis" custom-class="auth-drawer" :with-header="false" size="30%"
       title="角色配置" destroy-on-close>
       <el-tabs v-model="activePolicy" class="tabs">
-        <el-tab-pane label="角色菜单" name="menus">
+        <el-tab-pane v-BTNVis="'/api/v1/roles/menus:POST'" label="角色菜单" name="menus">
           <el-form>
             <el-scrollbar height="530px" style="padding-bottom: 10px;">
               <el-form-item>
@@ -44,12 +44,13 @@
             </el-scrollbar>
             <el-form-item>
               <el-button @click="resetCheckedMenu">清空</el-button>
-              <el-button type="primary" @click="setPermission">确定</el-button>
+              <el-button v-BTNVis="'/api/v1/roles/menuPermissions:PUT'" type="primary"
+                @click="setPermission">确定</el-button>
             </el-form-item>
           </el-form>
 
         </el-tab-pane>
-        <el-tab-pane label="角色api" name="apis">
+        <el-tab-pane v-BTNVis="'/api/v1/roles/apis:POST'" label="角色api" name="apis">
 
           <el-form>
             <el-scrollbar height="530px" style="padding-bottom: 10px;">
@@ -61,7 +62,7 @@
             </el-scrollbar>
             <el-form-item>
               <el-button @click="resetCheckedApi">清空</el-button>
-              <el-button type="primary" @click="setApiPolicy">确定</el-button>
+              <el-button v-BTNVis="'/api/v1/roles/apiPolicy:PUT'" type="primary" @click="setApiPolicy">确定</el-button>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -85,10 +86,12 @@
             <el-button type="primary" link size="small" @click="toSetPermissions(scope.row.id)"><el-icon>
                 <User />
               </el-icon>&nbsp;授权</el-button>
-            <el-button type="primary" link size="small" @click="updateCurrRole(scope.row)"><el-icon>
+            <el-button v-BTNVis="'/api/v1/roles:PUT'" type="primary" link size="small"
+              @click="updateCurrRole(scope.row)"><el-icon>
                 <Edit />
               </el-icon>&nbsp;编辑</el-button>
-            <el-button type="primary" link size="small" @click="deleteCurrRole(scope.row.id)"><el-icon>
+            <el-button v-BTNVis="'/api/v1/roles:DELETE'" type="primary" link size="small"
+              @click="deleteCurrRole(scope.row.id)"><el-icon>
                 <DeleteFilled />
               </el-icon>&nbsp;删除</el-button>
           </template>
@@ -300,7 +303,7 @@ const toSetPermissions = (id: string) => {
   let api = false
   getRoleMenus(state.roleFormData).then(res => {
     for (let i of res.data) {
-      state.permissions.push(i.permissions as never)
+      state.permissions.push(i.permission as never)
     }
     activePolicy.value = 'menus'
     menu = true
@@ -344,7 +347,7 @@ const setPermission = () => {
     id: state.roleFormData.id.toString(),
     permissions: permissions,
   }
-  console.log(vo);
+  // console.log(vo);
   updateRoleMenuPermissions(vo).then(res => {
     proxy?.$Notify.success("更新成功")
     state.toSetPermissionsVis = false
@@ -365,7 +368,7 @@ const setApiPolicy = () => {
     id: state.roleFormData.id.toString(),
     api_policies: apiPolicies,
   }
-  console.log(vo);
+  // console.log(vo);
   updateRoleApiPolicies(vo).then(res => {
     proxy?.$Notify.success("更新成功")
     state.toSetPermissionsVis = false

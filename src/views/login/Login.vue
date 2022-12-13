@@ -94,6 +94,7 @@ onMounted(() => {
 const handleLogin = () => {
   store.dispatch('authStore/login', loginForm)
   getValidCode()
+  loginForm.captcha_answer = ''
 }
 </script>
 

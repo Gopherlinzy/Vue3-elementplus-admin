@@ -13,9 +13,23 @@ import { computed, onMounted, watch } from 'vue';
 
 const route = useRoute()
 const store = useStore()
+
+// 当前激活菜单(刷新后依旧选中)
 const activeMenu = computed(() => {
-  let path = sessionStorage.getItem('ACTIVE_TAB')
-  // console.log(path);
+  const { meta, path } = route
+  // console.log("----------------", meta, path);
+  if (path == null) {
+    let currpath = sessionStorage.getItem('ACTIVE_TAB')
+    return getPath(currpath)
+  } else {
+    // console.log(path);
+
+    return getPath('"' + path + '"')
+  }
+})
+
+// 获取当前path
+const getPath = (path: string | null) => {
   if (path == null) {
     return '/'
   }
@@ -24,13 +38,24 @@ const activeMenu = computed(() => {
   if (s[s.length - 1] == 'index') {
     return '/'
   }
-  console.log(s[s.length - 1]);
+  // console.log(s[s.length - 1]);
   return s[s.length - 1]
-})
+}
 
 // 监控
 // watch(() => route.path, () => {
-//   console.log(route.path);
+//   let path = sessionStorage.getItem('ACTIVE_TAB')
+//   // console.log(path);
+//   if (path == null) {
+//     return "/"
+//   }
+//   let s = path.split('"')[1].split('/')
+
+//   if (s[s.length - 1] == 'index') {
+//     return '/'
+//   }
+//   console.log(s[s.length - 1]);
+//   return s[s.length - 1]
 
 // })
 

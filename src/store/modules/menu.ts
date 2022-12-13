@@ -12,7 +12,6 @@ export interface MenuState {
 function hasPermission(permsID: object[], needpermID: number) {
     for (let i = 0; i < permsID?.length; i++) {
         // console.log(permsID[i].id);
-
         if (permsID[i].id === needpermID) {
             return true
         }

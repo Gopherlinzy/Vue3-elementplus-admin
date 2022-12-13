@@ -6,7 +6,7 @@ export interface ButtonState {
     buttonList: string[],
 }
 
-export const buttonState: Module<ButtonState, RootState> = {
+export const buttonStore: Module<ButtonState, RootState> = {
     namespaced: true,
     state: (): ButtonState => ({
         buttonList: []
@@ -21,7 +21,12 @@ export const buttonState: Module<ButtonState, RootState> = {
     },
     actions: {
         generateButtons({ commit, state }, buttons: object[]) {
+            let bList: string[] = []
+            buttons.forEach(button => {
+                bList.push(button.path + ':' + button.method)
+            })
 
+            commit('addButton', bList)
         }
     }
 }

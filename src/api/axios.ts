@@ -1,7 +1,7 @@
 import { store } from '@/store/index';
 import axios, { AxiosRequestConfig } from 'axios'
 import 'element-plus/es/components/message/style/css'
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox, ElMessage } from 'element-plus'
 
 
 // 处理  类型“AxiosResponse<any, any>”上不存在属性“errorinfo”。ts(2339) 脑壳疼！关键一步。
@@ -13,6 +13,7 @@ declare module "axios" {
         success: boolean;
         pager: Array<never>;
         permissions: object[];
+        apiPolicies: object[];
         // 这里追加你的参数
     }
     export function create(config?: AxiosRequestConfig): AxiosInstance;
@@ -53,9 +54,10 @@ axiosInstance.interceptors.response.use(
             sessionStorage.removeItem('token')
             sessionStorage.clear()
         } else if (status === 404) { // 资源不存在
-            ElMessageBox.alert(message, "请求资源不存在")
+            // ElMessageBox.alert(message, "请求资源不存在")
+            ElMessage.error(message)
         } else if (status === 403) { // 没有权限
-            ElMessageBox.alert(message, "权限不足")
+            ElMessage.error('权限不足')
         }
         else if (status < 500) { // 请求错误
             if (error.response.data.errors) {

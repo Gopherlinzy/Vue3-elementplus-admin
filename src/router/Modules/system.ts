@@ -9,7 +9,7 @@ const systemRouter: RouteRecordRaw = {
         id: 2,
         title: '超级管理员',
         permission: "system:superAdmin",
-        icon: 'Wallet',
+        icon: 'Avatar',
         roles: ['admin', 'editor']
     },
     children: [
@@ -21,7 +21,7 @@ const systemRouter: RouteRecordRaw = {
                 id: 3,
                 title: '角色管理',
                 permission: "system:superAdmin:role",
-                icon: 'User',
+                icon: 'UserFilled',
                 roles: ['editor']
             }
 
@@ -34,7 +34,7 @@ const systemRouter: RouteRecordRaw = {
                 id: 4,
                 title: 'API管理',
                 permission: 'system:superAdmin:api',
-                icon: 'Refrigerator',
+                icon: 'Platform',
                 roles: ['admin']
             }
         }, {
@@ -45,7 +45,7 @@ const systemRouter: RouteRecordRaw = {
                 id: 5,
                 title: '菜单管理',
                 permission: "system:superAdmin:menu",
-                icon: 'Clock',
+                icon: 'Memo',
                 roles: ['editor']
             }
 

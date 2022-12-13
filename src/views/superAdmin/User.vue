@@ -2,7 +2,7 @@
 <template>
   <div>
     <div style="text-align:left; margin:5px 10px;">
-      <el-button type="primary" @click="toAddUser"><el-icon>
+      <el-button v-BTNVis="'/api/v1/users:POST'" type="primary" @click="toAddUser"><el-icon>
           <Plus />
         </el-icon>&nbsp;新增</el-button>
     </div>
@@ -86,18 +86,22 @@
               @change="(value: string | number | boolean) => commitStatusChange(value, scope.row.id)" />
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="300px">
+        <el-table-column fixed="right" label="操作" width="230px">
           <template #default="scope">
-            <el-button type="primary" link size="small" @click="updateUserRole(scope.row.id)"><el-icon>
+            <el-button v-BTNVis="'/api/v1/users/role:PUT'" type="primary" link size="small"
+              @click="updateUserRole(scope.row.id)"><el-icon>
                 <User />
               </el-icon>&nbsp;授权</el-button>
-            <el-button type="primary" link size="small" @click="resetPass(scope.row.id)"><el-icon>
+            <el-button v-BTNVis="'/api/v1/users/reset:POST'" type="primary" link size="small"
+              @click="resetPass(scope.row.id)"><el-icon>
                 <MagicStick />
               </el-icon>&nbsp;重置密码</el-button>
-            <el-button type="primary" link size="small" @click="updateUser(scope.row)"><el-icon>
+            <el-button v-BTNVis="'/api/v1/users/reset:PUT'" type="primary" link size="small"
+              @click="updateUser(scope.row)"><el-icon>
                 <Edit />
               </el-icon>&nbsp;编辑</el-button>
-            <el-button type="primary" link size="small" @click="deleteUser(scope.row.id)"><el-icon>
+            <el-button v-BTNVis="'/api/v1/users:DELETE'" type="primary" link size="small"
+              @click="deleteUser(scope.row.id)"><el-icon>
                 <DeleteFilled />
               </el-icon>&nbsp;删除</el-button>
           </template>
@@ -223,7 +227,6 @@ const state = reactive({
 // 初始化
 onMounted(() => {
   getUsers()
-  getRoles()
 })
 
 // 分页
@@ -251,7 +254,7 @@ const handleSizeChange = (val: number) => {
 }
 
 
-// 获取系统角色
+// 获取系统用户
 const getUsers = () => {
   getAllSysUsers().then(result => {
     // console.log(result);
@@ -270,6 +273,7 @@ const getRoles = () => {
 
 // 添加用户
 const toAddUser = () => {
+  getRoles()
   state.userFormDialogVis = true
   resetForm()
   state.tips = '新增用户'
@@ -277,6 +281,7 @@ const toAddUser = () => {
 
 // 修改用户信息
 const updateUser = (selectUser: object) => {
+  getRoles()
   state.tips = '更新用户信息'
   state.userFormDialogVis = true
   state.userFormData = JSON.parse(JSON.stringify(selectUser))
@@ -310,7 +315,7 @@ const handelAddUpdateConfirm = (id: string) => {
 // 重置用户信息
 const resetForm = () => {
   let userid = ''
-  if (state.tips === '更新角色') {
+  if (state.tips === '更新用户信息') {
     userid = state.userFormData.id.toString()
   }
   state.userFormData = {

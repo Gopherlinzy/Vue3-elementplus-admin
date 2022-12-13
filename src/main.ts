@@ -18,8 +18,7 @@ app.use(router).use(store, key).mount('#app')
 app.directive("BTNVis", {
   // 当元素挂载dom元素
   mounted(el, binding) {
-    let buttonList = ['a', 'b']
-    if (!buttonList.includes(binding.value)) {
+    if (!store.state.buttonStore.buttonList.includes(binding.value)) {
       el.parentNode.removeChild(el)
     }
   }

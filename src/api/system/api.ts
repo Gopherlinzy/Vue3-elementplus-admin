@@ -15,3 +15,29 @@ export function getPagApis() {
         method: "get"
     })
 }
+
+// 新增api
+export function addApi(apiRequest: object) {
+    return axiosInstance({
+        url: "v1/apis",
+        method: "post",
+        data: apiRequest
+    })
+}
+// 更新api
+export function updateApi(apiRequest: object) {
+    return axiosInstance({
+        url: "v1/apis",
+        method: "put",
+        data: apiRequest
+    })
+}
+
+// 删除api
+export function deleteApi(apiRequest: object) {
+    return axiosInstance({
+        url: "v1/apis",
+        method: "delete",
+        data: apiRequest
+    })
+}
