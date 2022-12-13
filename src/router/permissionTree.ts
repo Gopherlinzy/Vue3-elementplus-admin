@@ -1,4 +1,3 @@
-import i18n from '@/i18n';
 /**
  * 权限树 授权的时候使用 细粒度
  id: number,
@@ -10,72 +9,72 @@ import i18n from '@/i18n';
 const permissionTree = [
     {
         id: 1,
-        title: i18n.global.t('menus.wIndex'),
+        title: '首页',
         permission: "system:index",
     },
     {
         id: 2,
-        title: i18n.global.t('menus.wSuperAdmin'),
+        title: '超级管理员',
         permission: "system:superAdmin",
         children: [
             {
                 id: 3,
-                title: i18n.global.t('menus.wRoleManger'),
+                title: '角色管理',
                 permission: "system:superAdmin:role",
             },
             {
                 id: 4,
-                title: i18n.global.t('menus.wApiManger'),
+                title: 'API管理',
                 permission: 'system:superAdmin:api'
             },
             {
                 id: 5,
-                title: i18n.global.t('menus.wMenuManger'),
+                title: '菜单管理',
                 permission: "system:superAdmin:menu"
 
             },
             {
                 id: 6,
-                title: i18n.global.t('menus.wUserManger'),
+                title: '用户管理',
                 permission: "system:superAdmin:user"
             },
             {
                 id: 7,
-                title: i18n.global.t('menus.wSystemConfig'),
+                title: '系统设置',
                 permission: "system:superAdmin:sysSetting"
             },
         ]
     },
     {
         id: 8,
-        title: i18n.global.t('menus.wOrderManger'),
+        title: '订单管理',
         permission: "system:order",
         children: [
             {
                 id: 9,
-                title: i18n.global.t('menus.wOrderQuery'),
+                title: '订单查询',
                 permission: 'system:order:orderInfo'
             },
             {
                 id: 10,
-                title: i18n.global.t('menus.worderProcess'),
+                title: '订单管理',
                 permission: 'system:order:orderManage'
             }
         ]
     },
     {
         id: 11,
-        title: i18n.global.t('menus.wGoodsManger'),
+        title: '商品管理',
         permission: "system:goods",
         children: [
             {
                 id: 12,
-                title: i18n.global.t('menus.wGoodsCategory'),
+                title: '商品种类',
                 permission: 'system:goods:goodsCategory'
             },
             {
                 id: 13,
-                title: i18n.global.t('menus.wGoodsInfo'),
+                title: '商品信息',
                 permission: 'system:goods:goodsInfo',
             }
         ]

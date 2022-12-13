@@ -2,7 +2,6 @@ import Layout from '@/layout/index.vue'
 import {
     RouteRecordRaw,
 } from "vue-router";
-import i18n from '@/i18n';
 
 const homeRouter: RouteRecordRaw = {
     path: '/',
@@ -11,7 +10,7 @@ const homeRouter: RouteRecordRaw = {
     component: Layout,
     meta: {
         id: 1,
-        title: i18n.global.t('menus.wIndex'),
+        title: '首页',
         permission: "system:index",
         icon: 'house',
     },

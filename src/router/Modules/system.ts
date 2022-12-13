@@ -1,6 +1,5 @@
 import Layout from '@/layout/index.vue'
 import { RouteRecordRaw } from 'vue-router'
-import i18n from '@/i18n';
 
 const systemRouter: RouteRecordRaw = {
     path: '/superAdmin',
@@ -8,7 +7,7 @@ const systemRouter: RouteRecordRaw = {
     component: Layout,
     meta: {
         id: 2,
-        title: i18n.global.t('menus.wSuperAdmin'),
+        title: '超级管理员',
         permission: "system:superAdmin",
         icon: 'Avatar',
         roles: ['admin', 'editor']
@@ -20,7 +19,7 @@ const systemRouter: RouteRecordRaw = {
             component: () => import('@/views/superAdmin/Role.vue'),
             meta: {
                 id: 3,
-                title: i18n.global.t('menus.wRoleManger'),
+                title: '角色管理',
                 permission: "system:superAdmin:role",
                 icon: 'UserFilled',
                 roles: ['editor']
@@ -33,7 +32,7 @@ const systemRouter: RouteRecordRaw = {
             component: () => import('@/views/superAdmin/Api.vue'),
             meta: {
                 id: 4,
-                title: i18n.global.t('menus.wApiManger'),
+                title: 'API管理',
                 permission: 'system:superAdmin:api',
                 icon: 'Platform',
                 roles: ['admin']
@@ -44,7 +43,7 @@ const systemRouter: RouteRecordRaw = {
             component: () => import('@/views/superAdmin/Menu.vue'),
             meta: {
                 id: 5,
-                title: i18n.global.t('menus.wMenuManger'),
+                title: '菜单管理',
                 permission: "system:superAdmin:menu",
                 icon: 'Memo',
                 roles: ['editor']
@@ -56,7 +55,7 @@ const systemRouter: RouteRecordRaw = {
             component: () => import('@/views/superAdmin/User.vue'),
             meta: {
                 id: 6,
-                title: i18n.global.t('menus.wUserManger'),
+                title: '用户管理',
                 permission: "system:superAdmin:user",
                 icon: 'User',
                 roles: ['editor']
@@ -69,7 +68,7 @@ const systemRouter: RouteRecordRaw = {
             component: () => import('@/views/superAdmin/SysSetting.vue'),
             meta: {
                 id: 7,
-                title: i18n.global.t('menus.wSystemConfig'),
+                title: '系统设置',
                 permission: "system:superAdmin:sysSetting",
                 icon: 'Setting',
                 roles: ['admin']

@@ -4,7 +4,7 @@
     <div style="text-align:left; margin:5px 10px;">
       <el-button v-BTNVis="'/api/v1/users:POST'" type="primary" @click="toAddUser"><el-icon>
           <Plus />
-        </el-icon>&nbsp;{{ i18n.global.t('button.wadd') }}</el-button>
+        </el-icon>&nbsp;新增</el-button>
     </div>
 
     <!-- 用户form表单 -->
@@ -45,10 +45,8 @@
           </el-dropdown>
         </el-form-item>
         <el-form-item>
-          <el-button @click="resetForm">{{ i18n.global.t('button.wreset') }}</el-button>
-          <el-button type="primary" @click="handelAddUpdateConfirm(state.userFormData.id)">{{
-              i18n.global.t('button.wadd')
-          }}</el-button>
+          <el-button @click="resetForm">重置</el-button>
+          <el-button type="primary" @click="handelAddUpdateConfirm(state.userFormData.id)">确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -88,24 +86,24 @@
               @change="(value: string | number | boolean) => commitStatusChange(value, scope.row.id)" />
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="300px">
+        <el-table-column fixed="right" label="操作" width="230px">
           <template #default="scope">
             <el-button v-BTNVis="'/api/v1/users/role:PUT'" type="primary" link size="small"
               @click="updateUserRole(scope.row.id)"><el-icon>
                 <User />
-              </el-icon>&nbsp;{{ i18n.global.t('button.wempower') }}</el-button>
+              </el-icon>&nbsp;授权</el-button>
             <el-button v-BTNVis="'/api/v1/users/reset:POST'" type="primary" link size="small"
               @click="resetPass(scope.row.id)"><el-icon>
                 <MagicStick />
-              </el-icon>&nbsp;{{ i18n.global.t('button.wresetPassword') }}</el-button>
+              </el-icon>&nbsp;重置密码</el-button>
             <el-button v-BTNVis="'/api/v1/users/reset:PUT'" type="primary" link size="small"
               @click="updateUser(scope.row)"><el-icon>
                 <Edit />
-              </el-icon>&nbsp;{{ i18n.global.t('button.wedit') }}</el-button>
+              </el-icon>&nbsp;编辑</el-button>
             <el-button v-BTNVis="'/api/v1/users:DELETE'" type="primary" link size="small"
               @click="deleteUser(scope.row.id)"><el-icon>
                 <DeleteFilled />
-              </el-icon>&nbsp;{{ i18n.global.t('button.wdelete') }}</el-button>
+              </el-icon>&nbsp;删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -136,7 +134,6 @@ import {
 } from "@/api/system/user"
 import { getAllRoles } from '@/api/system/role';
 import { getPagination } from '@/api/pagination'
-import i18n from '@/i18n';
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const state = reactive({

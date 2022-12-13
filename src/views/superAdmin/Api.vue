@@ -4,7 +4,7 @@
     <div style="text-align:left; margin:5px 10px;">
       <el-button v-BTNVis="'/api/v1/apis:POST'" type="primary" @click="toAddApi"><el-icon>
           <Plus />
-        </el-icon>&nbsp;{{ i18n.global.t('button.wadd') }}</el-button>
+        </el-icon>&nbsp;新增</el-button>
     </div>
 
     <!-- api form表单 -->
@@ -34,10 +34,8 @@
           </el-dropdown>
         </el-form-item>
         <el-form-item>
-          <el-button @click="resetForm">{{ i18n.global.t('button.wreset') }}</el-button>
-          <el-button type="primary" @click="handelAddUpdateConfirm(state.apiFormData.id)">{{
-              i18n.global.t('button.wconfirm')
-          }}</el-button>
+          <el-button @click="resetForm">重置</el-button>
+          <el-button type="primary" @click="handelAddUpdateConfirm(state.apiFormData.id)">确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -56,11 +54,11 @@
             <el-button v-BTNVis="'/api/v1/apis:PUT'" type="primary" link size="small"
               @click="updateCurrApi(scope.row)"><el-icon>
                 <Edit />
-              </el-icon>&nbsp;{{ i18n.global.t('button.wedit') }}</el-button>
+              </el-icon>&nbsp;编辑</el-button>
             <el-button v-BTNVis="'/api/v1/apis:DELETE'" type="primary" link size="small"
               @click="deleteCurrApi(scope.row.id)"><el-icon>
                 <DeleteFilled />
-              </el-icon>&nbsp;{{ i18n.global.t('button.wdelete') }}</el-button>
+              </el-icon>&nbsp;删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -88,7 +86,6 @@ import {
   deleteApi,
 } from "@/api/system/api"
 import { getPagination } from '@/api/pagination'
-import i18n from '@/i18n'
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const state = reactive({
