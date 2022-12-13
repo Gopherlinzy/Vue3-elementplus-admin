@@ -11,7 +11,7 @@
 import screenfull from 'screenfull'
 import { onMounted, ref, onUnmounted } from 'vue';
 
-const isFullScreen = ref(false)
+const isFullScreen = ref(true)
 
 const change = (vis: boolean) => {
     isFullScreen.value = vis
