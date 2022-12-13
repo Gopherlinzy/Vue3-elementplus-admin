@@ -45,7 +45,7 @@ const systemRouter: RouteRecordRaw = {
                 id: 5,
                 title: '菜单管理',
                 permission: "system:superAdmin:menu",
-                icon: 'Memo',
+                icon: 'Menu',
                 roles: ['editor']
             }
 

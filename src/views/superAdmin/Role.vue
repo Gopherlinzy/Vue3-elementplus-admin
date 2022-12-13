@@ -29,9 +29,9 @@
       </el-form>
     </el-dialog>
 
-    <!-- 角色授权树形窗口 -->
-    <el-drawer v-model="state.toSetPermissionsVis" custom-class="auth-drawer" :with-header="false" size="30%"
-      title="角色配置" destroy-on-close>
+    <!-- 角色授权树形抽屉窗口 -->
+    <el-drawer v-model="state.toSetPermissionsVis" class="auth-drawer" :with-header="false" size="30%" title="角色配置"
+      destroy-on-close>
       <el-tabs v-model="activePolicy" class="tabs">
         <el-tab-pane v-BTNVis="'/api/v1/roles/menus:POST'" label="角色菜单" name="menus">
           <el-form>
