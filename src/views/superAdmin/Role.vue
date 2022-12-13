@@ -4,7 +4,7 @@
     <div style="text-align:left; margin:5px 10px;">
       <el-button v-BTNVis="'/api/v1/roles:POST'" type="primary" @click="toAddRole"><el-icon>
           <Plus />
-        </el-icon>&nbsp;新增</el-button>
+        </el-icon>&nbsp;{{ i18n.global.t('button.wadd') }}</el-button>
     </div>
 
     <!-- 角色Form表单 -->
@@ -23,8 +23,8 @@
           <el-input v-model="state.roleFormData.des" placeholder="请输入角色描述"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="resetForm">重置</el-button>
-          <el-button type="primary" @click="handelAddUpdateConfirm">确定</el-button>
+          <el-button @click="resetForm">{{ i18n.global.t('button.wreset') }}</el-button>
+          <el-button type="primary" @click="handelAddUpdateConfirm">{{ i18n.global.t('button.wconfirm') }}</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -43,9 +43,10 @@
               </el-form-item>
             </el-scrollbar>
             <el-form-item>
-              <el-button @click="resetCheckedMenu">清空</el-button>
-              <el-button v-BTNVis="'/api/v1/roles/menuPermissions:PUT'" type="primary"
-                @click="setPermission">确定</el-button>
+              <el-button @click="resetCheckedMenu">{{ i18n.global.t('button.wreset') }}</el-button>
+              <el-button v-BTNVis="'/api/v1/roles/menuPermissions:PUT'" type="primary" @click="setPermission">{{
+                  i18n.global.t('button.wconfirm')
+              }}</el-button>
             </el-form-item>
           </el-form>
 
@@ -61,8 +62,10 @@
               </el-form-item>
             </el-scrollbar>
             <el-form-item>
-              <el-button @click="resetCheckedApi">清空</el-button>
-              <el-button v-BTNVis="'/api/v1/roles/apiPolicy:PUT'" type="primary" @click="setApiPolicy">确定</el-button>
+              <el-button @click="resetCheckedApi">{{ i18n.global.t('button.wreset') }}</el-button>
+              <el-button v-BTNVis="'/api/v1/roles/apiPolicy:PUT'" type="primary" @click="setApiPolicy">{{
+                  i18n.global.t('button.wconfirm')
+              }}</el-button>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -85,15 +88,15 @@
           <template #default="scope">
             <el-button type="primary" link size="small" @click="toSetPermissions(scope.row.id)"><el-icon>
                 <User />
-              </el-icon>&nbsp;授权</el-button>
+              </el-icon>&nbsp;{{ i18n.global.t('button.wempower') }}</el-button>
             <el-button v-BTNVis="'/api/v1/roles:PUT'" type="primary" link size="small"
               @click="updateCurrRole(scope.row)"><el-icon>
                 <Edit />
-              </el-icon>&nbsp;编辑</el-button>
+              </el-icon>&nbsp;{{ i18n.global.t('button.wedit') }}</el-button>
             <el-button v-BTNVis="'/api/v1/roles:DELETE'" type="primary" link size="small"
               @click="deleteCurrRole(scope.row.id)"><el-icon>
                 <DeleteFilled />
-              </el-icon>&nbsp;删除</el-button>
+              </el-icon>&nbsp;{{ i18n.global.t('button.wdelete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -131,6 +134,7 @@ import {
 import type { ElTree } from 'element-plus'
 import { getPagination, getPaginationPrevNext } from '@/api/pagination'
 import { tr } from 'element-plus/es/locale'
+import i18n from '@/i18n'
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const state = reactive({

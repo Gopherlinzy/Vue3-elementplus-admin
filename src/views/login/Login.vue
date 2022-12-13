@@ -4,6 +4,7 @@ import { getCode, login } from '../../api/Auth'
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from "vue-router";
 import { useStore } from '@/store/index'
+import i18n from '@/i18n';
 
 const store = useStore()
 const router = useRouter()
@@ -135,7 +136,9 @@ const handleLogin = () => {
           </div>
         </el-form-item>
         <el-form-item style="border: none; background:none">
-          <el-button type="primary" style="width:100%;  margin-bottom:30px;" @click="handleLogin">登录</el-button>
+          <el-button type="primary" style="width:100%;  margin-bottom:30px;" @click="handleLogin">{{
+              i18n.global.t('button.wLogin')
+          }}</el-button>
         </el-form-item>
       </el-form>
     </div>

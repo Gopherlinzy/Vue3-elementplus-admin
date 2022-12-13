@@ -6,7 +6,8 @@
             </div>
             <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item class="el-dropdown-link" @click="handlelogout">退出登录</el-dropdown-item>
+                    <el-dropdown-item class="el-dropdown-link"
+                        @click="handlelogout">{{ i18n.global.t('button.wLoginOut') }}</el-dropdown-item>
                 </el-dropdown-menu>
             </template>
         </el-dropdown>
@@ -23,6 +24,7 @@
 </template>
 
 <script lang="ts" setup>
+import i18n from '@/i18n';
 import { useStore } from '@/store';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';

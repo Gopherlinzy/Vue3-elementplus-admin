@@ -4,7 +4,7 @@
     <div style="text-align:left; margin:5px 10px;">
       <el-button v-BTNVis="'/api/v1/menus:POST'" type="primary" @click="toAddMenu"><el-icon>
           <Plus />
-        </el-icon>&nbsp;新增</el-button>
+        </el-icon>&nbsp;{{ i18n.global.t('button.wadd') }}</el-button>
     </div>
 
     <!-- api form表单 -->
@@ -46,8 +46,10 @@
           </el-dropdown>
         </el-form-item>
         <el-form-item>
-          <el-button @click="resetForm">重置</el-button>
-          <el-button type="primary" @click="handelAddUpdateConfirm(state.menuFormData.id)">确定</el-button>
+          <el-button @click="resetForm">{{ i18n.global.t('button.wreset') }}</el-button>
+          <el-button type="primary" @click="handelAddUpdateConfirm(state.menuFormData.id)">{{
+              i18n.global.t('button.wconfirm')
+          }}</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -56,22 +58,22 @@
     <div style="margin:0px 10px; text-align:left;">
       <el-table stripe :data="state.menus">
         <el-table-column prop="id" label="ID" width="50px"></el-table-column>
-        <el-table-column prop="name" label="菜单名称" width="120px"></el-table-column>
-        <el-table-column prop="permission" label="权限"></el-table-column>
-        <el-table-column prop="router_name" label="路由名称" width="180px"></el-table-column>
+        <el-table-column prop="name" label="菜单名称"></el-table-column>
+        <el-table-column prop="permission" label="权限" width="220px"></el-table-column>
+        <el-table-column prop="router_name" label="路由名称"></el-table-column>
         <el-table-column prop="router_path" label="路由路径"></el-table-column>
-        <el-table-column prop="vue_path" label="文件路径"></el-table-column>
+        <el-table-column prop="vue_path" label="文件路径" width="250px"></el-table-column>
         <el-table-column prop="status" label="是否显示" width="80px"></el-table-column>
         <el-table-column fixed="right" label="操作" width="150px">
           <template #default="scope">
             <el-button v-BTNVis="'/api/v1/menus:PUT'" type="primary" link size="small"
               @click="updateCurrMenu(scope.row)"><el-icon>
                 <Edit />
-              </el-icon>&nbsp;编辑</el-button>
+              </el-icon>&nbsp;{{ i18n.global.t('button.wedit') }}</el-button>
             <el-button v-BTNVis="'/api/v1/menus:DELETE'" type="primary" link size="small"
               @click="deleteCurrMenu(scope.row.id)"><el-icon>
                 <DeleteFilled />
-              </el-icon>&nbsp;删除</el-button>
+              </el-icon>&nbsp;{{ i18n.global.t('button.wdelete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -99,6 +101,7 @@ import {
   deletemenu
 } from "@/api/system/menu"
 import { getPagination } from '@/api/pagination'
+import i18n from '@/i18n'
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const state = reactive({

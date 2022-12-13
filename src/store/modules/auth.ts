@@ -51,8 +51,8 @@ export const authStore: Module<AuthState, RootState> = {
         // 账号密码登录
         login({ commit, state, dispatch }, requestUser) {
             login(requestUser).then(result => {
-                console.log(requestUser);
-
+                // console.log(requestUser);
+                location.reload()
                 state.userInfo = result.data
                 commit('addToken', result.token)
                 // console.log(result.permissions);

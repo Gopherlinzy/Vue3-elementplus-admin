@@ -5,6 +5,7 @@ import router from './router'
 import { store, key } from './store'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { ElMessageBox, MessageBoxData, ElNotification } from 'element-plus'
+import i18n from './i18n'
 
 // 创建vue实例app
 const app = createApp(App)
@@ -12,7 +13,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 // 启动我们需要的插件
-app.use(router).use(store, key).mount('#app')
+app.use(router).use(store, key).use(i18n).mount('#app')
 
 // 自定义指令 按钮权限
 app.directive("BTNVis", {

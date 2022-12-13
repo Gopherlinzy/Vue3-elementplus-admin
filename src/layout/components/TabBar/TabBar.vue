@@ -6,10 +6,10 @@
     </el-tab-pane>
   </el-tabs>
   <ul v-show="contextMenuVisible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
-    <li @click="closeAllTabs">关闭所有</li>
-    <li @click="closeOtherTabs('left')">关闭左边</li>
-    <li @click="closeOtherTabs('right')">关闭右边</li>
-    <li @click="closeOtherTabs('other')">关闭其它</li>
+    <li @click="closeAllTabs">{{ i18n.global.t('button.wcloseCurrentTabs') }}</li>
+    <li @click="closeOtherTabs('left')">{{ i18n.global.t('button.wcloseLeftTabs') }}</li>
+    <li @click="closeOtherTabs('right')">{{ i18n.global.t('button.wcloseRightTabs') }}</li>
+    <li @click="closeOtherTabs('other')">{{ i18n.global.t('button.wcloseOtherTabs') }}</li>
   </ul>
 </template>
 <script lang="ts" setup>
@@ -18,6 +18,7 @@ import { ComponentInternalInstance, getCurrentInstance, onMounted, Ref, ref, wat
 import { useStore } from '@/store/index'
 import { useRoute, useRouter } from 'vue-router';
 import { Itab } from '@/store/type'
+import i18n from '@/i18n';
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const store = useStore()

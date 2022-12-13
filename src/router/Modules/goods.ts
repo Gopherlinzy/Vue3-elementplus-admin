@@ -1,5 +1,6 @@
 import Layout from '@/layout/index.vue'
 import { RouteRecordRaw } from 'vue-router'
+import i18n from '@/i18n';
 
 const goodsRouter: RouteRecordRaw = {
     path: '/goods',
@@ -7,7 +8,7 @@ const goodsRouter: RouteRecordRaw = {
     component: Layout,
     meta: {
         id: 11,
-        title: '商品管理',
+        title: i18n.global.t('menus.wGoodsManger'),
         permission: "system:goods",
         icon: 'TakeawayBox',
     },
@@ -18,7 +19,7 @@ const goodsRouter: RouteRecordRaw = {
             component: () => import('@/views/goods/GoodsCategory.vue'),
             meta: {
                 id: 12,
-                title: '商品种类',
+                title: i18n.global.t('menus.wGoodsCategory'),
                 permission: 'system:goods:goodsCategory',
                 icon: 'ShoppingBag',
             },
@@ -29,7 +30,7 @@ const goodsRouter: RouteRecordRaw = {
             component: () => import('@/views/goods/GoodsInfo.vue'),
             meta: {
                 id: 13,
-                title: '商品信息',
+                title: i18n.global.t('menus.wGoodsInfo'),
                 permission: 'system:goods:goodsInfo',
                 icon: 'SoldOut',
             },
