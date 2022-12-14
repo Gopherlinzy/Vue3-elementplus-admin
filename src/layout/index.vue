@@ -66,7 +66,7 @@ const autoWidth = computed(() => {
 
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .layout {
   display: flex;
   height: 100vh;
@@ -78,12 +78,17 @@ const autoWidth = computed(() => {
     align-items: center;
     background-color: #fff;
     color: var(--el-text-color-primary);
-
+    height: 70px;
 
   }
 
   .el-footer {
     line-height: 60px;
+  }
+
+  .el-main {
+    padding: 0;
+    height: calc(100vh - 70px); // 设置主体 main 高度
   }
 
   .el-aside {
@@ -92,7 +97,7 @@ const autoWidth = computed(() => {
     text-align: center;
     line-height: 200px;
     width: 200px;
-    height: 100%;
+    height: calc(100vh); // 设置左侧 aside 高度
     overflow: hidden;
   }
 

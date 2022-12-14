@@ -1,8 +1,10 @@
 <template>
-  <el-menu :default-active="activeMenu" active-text-color="#409EFF" text-color="#fff" class="el-menu"
-    :collapse="collapsed" :collapse-transition="false">
-    <menu-item :menus="menus"></menu-item>
-  </el-menu>
+  <el-scrollbar height="640px">
+    <el-menu :default-active="activeMenu" active-text-color="#409EFF" text-color="#fff" class="el-menu"
+      :collapse="collapsed" :collapse-transition="false">
+      <menu-item :menus="menus"></menu-item>
+    </el-menu>
+  </el-scrollbar>
 </template>
 
 <script lang="ts" setup>

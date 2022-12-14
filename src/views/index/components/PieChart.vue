@@ -26,7 +26,7 @@ const init = () => {
     // 数据源
     var option = {
         title: {
-            text: '库存剩余',
+            text: '访问流量',
             // subtext: 'Fake Data',
             left: 'center'
         },
@@ -39,14 +39,16 @@ const init = () => {
         },
         series: [
             {
-                name: '库存',
+                name: '访问',
                 type: 'pie',
-                radius: ['30%', '70%'],
+                radius: [40, 140],
+                center: ['48%', '60%'],
+                roseType: 'radius',
                 data: [
-                    { value: 1048, name: '可乐' },
-                    { value: 735, name: '咖啡' },
-                    { value: 580, name: '汉堡' },
-                    { value: 484, name: '薯条' },
+                    { value: 1048, name: 'PC' },
+                    { value: 735, name: 'IOS' },
+                    { value: 580, name: '安卓' },
+                    { value: 333, name: '其他' },
                 ],
                 emphasis: {
                     label: { show: true, fontSize: '30', fontWeight: 'bold' },
@@ -71,14 +73,19 @@ const init = () => {
 
     // 数据源给予
     mychart.setOption(option)
+
+    //图形宽度随屏幕宽度改变而改变
+    window.addEventListener("resize", () => {
+        mychart.resize();
+    })
 }
 </script>
 <style lang='scss' scoped>
 .pchart {
     width: 100%;
-    height: 300px;
+    height: 400px;
     margin: 15px 0px;
-    border: 1px solid #333;
-    box-shadow: 5px 5px 5px #888888;
+    // border: 1px solid #333;
+    // box-shadow: 5px 5px 5px #888888;
 }
 </style>
