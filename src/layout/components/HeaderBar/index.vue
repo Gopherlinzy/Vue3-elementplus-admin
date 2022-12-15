@@ -2,7 +2,6 @@
 <template>
   <div>
     <el-row :gutter="24">
-<<<<<<< HEAD
       <el-col :span="19" :offset="0" style="display:flex; align-Items:center;">
         <!-- 面包屑 -->
         <bread-crumb />
@@ -10,12 +9,6 @@
       <el-col :span="1">
         <ScreenFullBar></ScreenFullBar>
       </el-col>
-=======
-      <el-col :span="20" :offset="0" style="display:flex; align-Items:center;">
-        <!-- 面包屑 -->
-        <bread-crumb />
-      </el-col>
->>>>>>> 0dadb255e225e856db3b3bd2d57bdd0041cb78e7
       <el-col :span="4">
         <!-- 头像框 -->
         <user-bar />
@@ -27,10 +20,7 @@
 <script setup lang="ts">
 import BreadCrumb from './BreadCrumb.vue'
 import UserBar from './UserBar.vue';
-<<<<<<< HEAD
 import ScreenFullBar from './ScreenFullBar.vue';
-=======
->>>>>>> 0dadb255e225e856db3b3bd2d57bdd0041cb78e7
 </script>
 <style lang='scss' scoped>
 

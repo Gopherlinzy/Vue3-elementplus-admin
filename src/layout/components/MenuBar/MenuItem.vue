@@ -21,10 +21,6 @@
 
 <script setup lang='ts'>
 import { useRouter } from 'vue-router'
-<<<<<<< HEAD
-
-=======
->>>>>>> 0dadb255e225e856db3b3bd2d57bdd0041cb78e7
 defineProps(['menus'])
 const router = useRouter()
 const toPath = (item: string) => {

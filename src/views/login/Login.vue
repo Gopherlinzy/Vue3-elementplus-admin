@@ -4,10 +4,8 @@ import { getCode, login } from '../../api/Auth'
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from "vue-router";
 import { useStore } from '@/store/index'
-<<<<<<< HEAD
 import i18n from '@/i18n';
-=======
->>>>>>> 0dadb255e225e856db3b3bd2d57bdd0041cb78e7
+
 
 const store = useStore()
 const router = useRouter()
@@ -97,11 +95,8 @@ onMounted(() => {
 // 登录事件
 const handleLogin = () => {
   store.dispatch('authStore/login', loginForm)
-<<<<<<< HEAD
   getValidCode()
   loginForm.captcha_answer = ''
-=======
->>>>>>> 0dadb255e225e856db3b3bd2d57bdd0041cb78e7
 }
 </script>
 

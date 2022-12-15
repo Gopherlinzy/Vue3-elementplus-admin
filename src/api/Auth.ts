@@ -19,7 +19,6 @@ export function login(requestUser: object) {
 }
 
 //  通过token登录
-<<<<<<< HEAD
 export function loginByToken() {
     return axiosInstance({
         url: 'v1/user',
@@ -27,13 +26,3 @@ export function loginByToken() {
         // headers: { "Authorization": token }
     })
 }
-=======
-export function loginByToken(token: string) {
-    return axiosInstance({
-        url: 'v1/user',
-        method: 'get',
-        headers: { "Authorization": token }
-    })
-}
-
->>>>>>> 0dadb255e225e856db3b3bd2d57bdd0041cb78e7

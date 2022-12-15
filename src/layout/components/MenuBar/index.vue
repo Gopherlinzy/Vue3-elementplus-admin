@@ -1,17 +1,10 @@
 <template>
-<<<<<<< HEAD
   <el-scrollbar height="640px">
     <el-menu :default-active="activeMenu" active-text-color="#409EFF" text-color="#fff" class="el-menu"
       :collapse="collapsed" :collapse-transition="false">
       <menu-item :menus="menus"></menu-item>
     </el-menu>
   </el-scrollbar>
-=======
-  <el-menu default-active="2" active-text-color="#409EFF" text-color="#fff" class="el-menu" :collapse="collapsed"
-    :collapse-transition="false">
-    <menu-item :menus="menus"></menu-item>
-  </el-menu>
->>>>>>> 0dadb255e225e856db3b3bd2d57bdd0041cb78e7
 </template>
 
 <script lang="ts" setup>
