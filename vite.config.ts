@@ -12,7 +12,11 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
+<<<<<<< HEAD
         target: 'http://120.27.224.251:8080/api/',
+=======
+        target: 'http://127.0.0.1:8888/api/',
+>>>>>>> 0dadb255e225e856db3b3bd2d57bdd0041cb78e7
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
@@ -21,7 +25,11 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
+<<<<<<< HEAD
       "com": path.resolve(__dirname, "src/components"),
+=======
+      "com": path.resolve(__dirname, "src/components")
+>>>>>>> 0dadb255e225e856db3b3bd2d57bdd0041cb78e7
     }
   },
   css: {
@@ -33,9 +41,12 @@ export default defineConfig({
       }
     }
   },
+<<<<<<< HEAD
   build: {
     chunkSizeWarningLimit: 1500
   },
+=======
+>>>>>>> 0dadb255e225e856db3b3bd2d57bdd0041cb78e7
   plugins: [
     vue(),
     viteCompression(),

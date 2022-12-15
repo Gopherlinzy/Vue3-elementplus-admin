@@ -18,10 +18,16 @@
               <!-- header业务 -->
               <header-bar />
             </el-col>
+<<<<<<< HEAD
           </el-row>
         </el-header>
 
         <el-divider style="margin-top:-10px; margin-bottom: -1px" />
+=======
+
+          </el-row>
+        </el-header>
+>>>>>>> 0dadb255e225e856db3b3bd2d57bdd0041cb78e7
         <el-main>
           <!-- tabList -->
           <tab-bar />
@@ -79,7 +85,11 @@ const autoWidth = computed(() => {
     align-items: center;
     background-color: #fff;
     color: var(--el-text-color-primary);
+<<<<<<< HEAD
     height: 70px;
+=======
+
+>>>>>>> 0dadb255e225e856db3b3bd2d57bdd0041cb78e7
 
   }
 
