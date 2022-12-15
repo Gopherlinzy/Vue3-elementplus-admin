@@ -2,8 +2,8 @@
 <template>
     <div @click="onToggle">
         <img v-if="isFullScreen" src="../../../assets/images/isFull.png"
-            style="margin-top: 35px;width:22px;height:22px">
-        <img v-else src="../../../assets/images/notFull.png" style="margin-top: 30px;width:28px;height:28px">
+            style="margin-top: 20px;width:22px;height:22px">
+        <img v-else src="../../../assets/images/notFull.png" style="margin-top: 20px;width:28px;height:28px">
     </div>
 </template>
 

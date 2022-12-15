@@ -4,6 +4,7 @@ import path from "path"
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import viteCompression from 'vite-plugin-compression'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,7 +12,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:8888/api/',
+        target: 'http://120.27.224.251:8080/api/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
@@ -32,8 +33,12 @@ export default defineConfig({
       }
     }
   },
+  build: {
+    chunkSizeWarningLimit: 1500
+  },
   plugins: [
     vue(),
+    viteCompression(),
     AutoImport({
       resolvers: [ElementPlusResolver()],
     }),

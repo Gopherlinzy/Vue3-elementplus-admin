@@ -18,9 +18,10 @@
               <!-- header业务 -->
               <header-bar />
             </el-col>
-
           </el-row>
         </el-header>
+
+        <el-divider style="margin-top:-10px; margin-bottom: -1px" />
         <el-main>
           <!-- tabList -->
           <tab-bar />

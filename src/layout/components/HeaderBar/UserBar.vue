@@ -2,7 +2,7 @@
     <div class="userInfo">
         <el-dropdown>
             <div>
-                <img src="@/assets/avatar.jpg" style="width:50px;height: 50px; border-radius: 50%;margin-top: 15px;">
+                <img src="@/assets/avatar.jpg" style="width:45px;height: 45px; border-radius: 50%;margin-top: 2px;">
             </div>
             <template #dropdown>
                 <el-dropdown-menu>
@@ -11,7 +11,7 @@
             </template>
         </el-dropdown>
         <!-- 用户名和角色名 -->
-        <el-row style="margin-top: 10px;">
+        <el-row style="margin-top: 5px;">
             <el-col>
                 <span style="color: #212121;margin-left:10px;font-size: 15px;">{{ userInfo.name }}</span>
             </el-col>

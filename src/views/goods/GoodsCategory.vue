@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div>Category</div>
-  <button>{{ $t('button.wLogin') }}</button>
+  <button>测试</button>
 </template>
 
 <script setup lang='ts'>

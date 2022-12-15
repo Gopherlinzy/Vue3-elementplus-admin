@@ -27,13 +27,13 @@ const orderRouter: RouteRecordRaw = {
             },
         },
         {
-            path: 'orderManage',
-            name: 'orderManage',
-            component: () => import('@/views/orders/OrderManage.vue'),
+            path: 'OrderProcess',
+            name: 'OrderProcess',
+            component: () => import('@/views/orders/OrderProcess.vue'),
             meta: {
                 id: 10,
                 title: '订单管理',
-                permission: 'system:order:orderManage',
+                permission: 'system:order:OrderProcess',
                 icon: 'Money',
             },
         },

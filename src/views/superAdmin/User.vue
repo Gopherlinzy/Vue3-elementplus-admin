@@ -89,7 +89,7 @@
         <el-table-column fixed="right" label="操作" width="230px">
           <template #default="scope">
             <el-button v-BTNVis="'/api/v1/users/role:PUT'" type="primary" link size="small"
-              @click="updateUserRole(scope.row.id)"><el-icon>
+              @click="updateUserRole(scope.row.id, scope.row.role_name)"><el-icon>
                 <User />
               </el-icon>&nbsp;授权</el-button>
             <el-button v-BTNVis="'/api/v1/users/reset:POST'" type="primary" link size="small"
@@ -367,9 +367,10 @@ const commitStatusChange = (value: string | number | boolean, id: string) => {
 }
 
 // 更新用户角色
-const updateUserRole = (id: string) => {
+const updateUserRole = (id: string, role_name: string) => {
+  getRoles()
   state.userRoleInfo.id = id.toString()
-  state.userRoleInfo.role_name = state.roles[0].role_name
+  state.userRoleInfo.role_name = role_name
   state.roleInfoDialogVis = true
 }
 

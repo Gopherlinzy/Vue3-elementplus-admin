@@ -4,12 +4,23 @@ import { asyncRoutes } from "@/router/Modules";
 import { RouteRecordRaw } from "vue-router";
 import router from "@/router";
 
+interface permissionsRequest {
+    id: number,
+    name: string,
+    permissions: string,
+    router_name: string,
+    router_path: string,
+    vue_path: string,
+    status: boolean,
+    created_at: string
+}
+
 export interface MenuState {
     menuList: RouteRecordRaw[]
 }
 
 
-function hasPermission(permsID: object[], needpermID: number) {
+function hasPermission(permsID: permissionsRequest[], needpermID: number) {
     for (let i = 0; i < permsID?.length; i++) {
         // console.log(permsID[i].id);
         if (permsID[i].id === needpermID) {
@@ -19,7 +30,7 @@ function hasPermission(permsID: object[], needpermID: number) {
     return false
 }
 
-function fileterRouter(routes: RouteRecordRaw[], perms: object[]) {
+function fileterRouter(routes: RouteRecordRaw[], perms: permissionsRequest[]) {
     const res: RouteRecordRaw[] = []
     routes.forEach(route => {
         if (route.children) {
@@ -56,7 +67,7 @@ export const menuStore: Module<MenuState, RootState> = {
         }
     },
     actions: {
-        generateSystemMenus({ commit, state }: any, perms: object[]) {
+        generateSystemMenus({ commit, state }: any, perms: permissionsRequest[]) {
             let routers = fileterRouter(asyncRoutes, perms)
 
             // 添加到动态路由

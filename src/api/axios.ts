@@ -1,4 +1,3 @@
-import { store } from '@/store/index';
 import axios, { AxiosRequestConfig } from 'axios'
 import 'element-plus/es/components/message/style/css'
 import { ElMessageBox, ElMessage } from 'element-plus'
@@ -22,7 +21,8 @@ declare module "axios" {
 const axiosInstance = axios.create({
     timeout: 1000 * 1000000,
     withCredentials: true,
-    baseURL: '/api',
+    baseURL: import.meta.env.VITE_URL,
+    // baseURL: '/api'
 })
 
 // 请求拦截器
