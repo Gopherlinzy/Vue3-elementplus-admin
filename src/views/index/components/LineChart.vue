@@ -128,7 +128,7 @@ const init = () => {
 .pchart {
     width: 100%;
     height: 580px;
-    margin: 15px 3px;
+    margin: 15px 0px;
     // border: 1px solid #333;
     // box-shadow: 5px 5px 5px #888888;
 }

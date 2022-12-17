@@ -35,14 +35,14 @@ const init = () => {
         },
         legend: {
             top: '10%',
-            left: 'left'
+            left: 'center'
         },
         series: [
             {
                 name: '访问',
                 type: 'pie',
                 radius: [40, 140],
-                center: ['48%', '60%'],
+                center: ['50%', '60%'],
                 roseType: 'radius',
                 data: [
                     { value: 1048, name: 'PC' },

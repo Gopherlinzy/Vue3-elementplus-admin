@@ -24,6 +24,7 @@ const homeRouter: RouteRecordRaw = {
                 title: '首页',
                 permission: "system:index",
                 icon: 'house',
+                keepAlive: true,
             },
         },
     ],
