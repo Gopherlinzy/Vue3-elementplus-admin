@@ -37,7 +37,11 @@ export const tabStore: Module<TabState, RootState> = {
 
         // 删除所有tab
         closeAllTabs(state: TabState) {
-            state.tabsList = []
+            const tab: Itab = {
+                path: '/index',
+                title: '首页'
+            }
+            state.tabsList = [tab]
             sessionStorage.removeItem('TABS_ROUTES')
         },
 

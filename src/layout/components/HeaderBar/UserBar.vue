@@ -11,12 +11,12 @@
             </template>
         </el-dropdown>
         <!-- 用户名和角色名 -->
-        <el-row style="margin-top: 5px;">
+        <el-row style="margin-top: 0px;">
             <el-col>
                 <span style="color: #212121;margin-left:10px;font-size: 15px;">{{ userInfo.name }}</span>
             </el-col>
             <el-col>
-                <span style="color: gray;margin-left:10px;font-size: 8px;">{{ userInfo.city }}</span>
+                <span style="color: gray;margin-left:10px;font-size: 8px;">{{ userInfo.role_name }}</span>
             </el-col>
         </el-row>
     </div>

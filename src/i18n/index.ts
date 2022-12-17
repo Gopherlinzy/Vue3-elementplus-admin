@@ -15,7 +15,7 @@ const i18n = createI18n({
     legacy: false,
     locale: 'en', // 设置默认语言
     // fallbackLocale: 'chs',
-    globalInjection: true, // $t保证中英文切换
+    globalInjection: true, // $t保证中英文切换 
     messages: i18nMessage, // 设置资源文件对象
     allowComposition: true,// 允许组合式api
 })

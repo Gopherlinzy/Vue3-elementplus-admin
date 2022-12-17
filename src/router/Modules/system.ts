@@ -10,7 +10,6 @@ const systemRouter: RouteRecordRaw = {
         title: '超级管理员',
         permission: "system:superAdmin",
         icon: 'Avatar',
-        roles: ['admin', 'editor']
     },
     children: [
         {
@@ -22,7 +21,7 @@ const systemRouter: RouteRecordRaw = {
                 title: '角色管理',
                 permission: "system:superAdmin:role",
                 icon: 'UserFilled',
-                roles: ['editor']
+                keepAlive: true,
             }
 
         },
@@ -35,7 +34,7 @@ const systemRouter: RouteRecordRaw = {
                 title: 'API管理',
                 permission: 'system:superAdmin:api',
                 icon: 'Platform',
-                roles: ['admin']
+                keepAlive: true,
             }
         }, {
             path: 'menus',
@@ -46,7 +45,7 @@ const systemRouter: RouteRecordRaw = {
                 title: '菜单管理',
                 permission: "system:superAdmin:menu",
                 icon: 'Menu',
-                roles: ['editor']
+                keepAlive: true,
             }
 
         }, {
@@ -58,7 +57,7 @@ const systemRouter: RouteRecordRaw = {
                 title: '用户管理',
                 permission: "system:superAdmin:user",
                 icon: 'User',
-                roles: ['editor']
+                keepAlive: true,
             }
 
         },
@@ -71,7 +70,7 @@ const systemRouter: RouteRecordRaw = {
                 title: '系统设置',
                 permission: "system:superAdmin:sysSetting",
                 icon: 'Setting',
-                roles: ['admin']
+                keepAlive: true,
             }
         }
     ]

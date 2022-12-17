@@ -46,7 +46,7 @@ export default defineConfig({
     }
   },
   plugins: [
-    vue(),
+    //配置自动导入element start
     viteCompression(),
     AutoImport({
       resolvers: [ElementPlusResolver()],
@@ -54,6 +54,8 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
+    //配置自动导入element end
+    vue(),
   ],
 
 })

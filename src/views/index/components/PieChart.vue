@@ -69,7 +69,7 @@ const init = () => {
                 }
             }
         ]
-    };
+    }
 
     // 数据源给予
     mychart.setOption(option)

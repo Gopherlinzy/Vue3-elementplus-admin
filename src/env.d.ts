@@ -7,6 +7,12 @@ declare module '*.vue' {
   export default component
 }
 
+// declare module 'echarts' {
+//   import * as echarts from 'echarts'
+//   const echarts: echarts
+//   export default echarts
+// }
+
 interface ImportMetaEnv {
   VITE_URL: string
 }

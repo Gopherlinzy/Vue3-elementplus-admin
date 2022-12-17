@@ -1,8 +1,9 @@
 <!--  -->
 <template>
-  <div>Goods</div>
+  <div>Goods
 
-  <button v-BTNVis="'a'">测试按钮</button>
+    <button v-BTNVis="'a'">测试按钮</button>
+  </div>
 </template>
 
 <script setup lang='ts'>
