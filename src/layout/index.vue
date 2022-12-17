@@ -10,7 +10,8 @@
           <el-row :gutter="24" style="width: 100%;display:flex; align-Items:center;">
             <el-col :span="1">
               <!-- 侧边栏展开折叠按钮 -->
-              <el-icon style="font-size: 20px; margin-right: 15px;" @click="() => (collapsed = !collapsed)">
+              <el-icon style="font-size: 20px; margin-right: 15px;cursor: pointer;"
+                @click="() => (collapsed = !collapsed)">
                 <component :is="collapsed ? Expand : Fold" />
               </el-icon>
             </el-col>

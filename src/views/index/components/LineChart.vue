@@ -129,7 +129,7 @@ const init = () => {
     width: 100%;
     height: 580px;
     margin: 15px 3px;
-    border: 1px solid #333;
-    box-shadow: 5px 5px 5px #888888;
+    // border: 1px solid #333;
+    // box-shadow: 5px 5px 5px #888888;
 }
 </style>

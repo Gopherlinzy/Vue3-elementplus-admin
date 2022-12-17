@@ -1,11 +1,37 @@
 <template>
   <div class="dashboard-editor-container">
     <github-corner class="github-corner" />
-    <lineChart />
+    <el-row :gutter="32">
+      <el-col :xs="24" :sm="24" :lg="24">
+        <div class="chart-wrapper">
+          <lineChart />
+        </div>
+      </el-col>
+    </el-row>
 
-    <!-- <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
-    </el-row> -->
+
+    <el-row style="margin-bottom: 15px;">
+      <el-card style="width:100%">
+        <template #header>
+          <div class="card-header">
+            <span>快捷入口</span>
+          </div>
+        </template>
+        <el-row :gutter="32">
+          <el-col v-for="(card, key) in toolCards" :key="key" :span="8" :xs="8" class="quick-entrance-items"
+            @click="toTarget(card.name)">
+            <div class="quick-entrance-item">
+              <div class="quick-entrance-item-icon" :style="{ backgroundColor: card.bg }">
+                <el-icon style="padding-top: 12px;">
+                  <component :is="card.icon" :style="{ color: card.color }" />
+                </el-icon>
+              </div>
+              <p>{{ card.label }}</p>
+            </div>
+          </el-col>
+        </el-row>
+      </el-card>
+    </el-row>
 
     <el-row :gutter="32">
       <el-col :xs="24" :sm="24" :lg="8">
@@ -49,7 +75,57 @@ import pieChart from './components/Piechart.vue'
 import lineChart from './components/LineChart.vue'
 import stackedChart from './components/StackedChart.vue'
 import radarChart from './components/RadarChart.vue'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const toolCards = ref([
+  {
+    label: '用户管理',
+    icon: 'monitor',
+    name: 'users',
+    color: '#ff9c6e',
+    bg: 'rgba(255, 156, 110,.3)'
+  },
+  {
+    label: '角色管理',
+    icon: 'setting',
+    name: 'roles',
+    color: '#69c0ff',
+    bg: 'rgba(105, 192, 255,.3)'
+  },
+  {
+    label: '菜单管理',
+    icon: 'menu',
+    name: 'menus',
+    color: '#b37feb',
+    bg: 'rgba(179, 127, 235,.3)'
+  },
+  {
+    label: 'Api管理',
+    icon: 'cpu',
+    name: 'apis',
+    color: '#ffd666',
+    bg: 'rgba(255, 214, 102,.3)'
+  },
+  // {
+  //   label: '表单生成器',
+  //   icon: 'document-checked',
+  //   name: 'formCreate',
+  //   color: '#ff85c0',
+  //   bg: 'rgba(255, 133, 192,.3)'
+  // },
+  // {
+  //   label: '关于我们',
+  //   icon: 'user',
+  //   name: 'about',
+  //   color: '#5cdbd3',
+  //   bg: 'rgba(92, 219, 211,.3)'
+  // }
+])
+const router = useRouter()
+const toTarget = (name: string) => {
+  router.push({ name })
+}
 </script>
 
 
@@ -76,6 +152,48 @@ import radarChart from './components/RadarChart.vue'
 @media (max-width:1024px) {
   .chart-wrapper {
     padding: 8px;
+  }
+}
+
+.quick-entrance-items {
+  flex: auto;
+  justify-content: center;
+  text-align: center;
+  color: #333;
+
+  .quick-entrance-item {
+    padding: 16px 28px;
+    margin-top: -16px;
+    margin-bottom: -16px;
+    border-radius: 4px;
+    transition: all 0.2s;
+
+    &:hover {
+      box-shadow: 0px 0px 7px 0px rgba(217, 217, 217, 0.55);
+    }
+
+    cursor: pointer;
+    height: auto;
+    text-align: center;
+
+    align-items: center;
+  }
+
+  .quick-entrance-item-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    flex: auto;
+    justify-content: center;
+    margin: 0 auto;
+
+    i {
+      font-size: 24px;
+    }
+  }
+
+  p {
+    margin-top: 10px;
   }
 }
 </style>
