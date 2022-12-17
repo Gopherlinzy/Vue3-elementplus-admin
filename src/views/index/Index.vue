@@ -1,58 +1,62 @@
 <template>
-  <div class="dashboard-editor-container">
-    <github-corner class="github-corner" />
-    <el-row>
-      <el-col :span="23" :xs="24" :sm="8" :lg="23">
-        <div class="chart-wrapper">
-          <lineChart />
-        </div>
-      </el-col>
-    </el-row>
+  <div class="pag">
+    <!-- <github-corner class="github-corner" /> -->
+    <div class="gva-card-box">
+      <div class="chart-wrapper">
+        <lineChart />
+      </div>
+    </div>
 
-    <el-row style="margin-bottom: 15px;">
-      <el-col :span="23" :xs="24" :sm="8" :lg="23">
-        <el-card>
-          <template #header>
-            <div class="card-header">
-              <span>快捷入口</span>
-            </div>
-          </template>
-          <el-row :gutter="32">
-            <el-col v-for="(card, key) in toolCards" :key="key" :span="8" :xs="8" class="quick-entrance-items"
-              @click="toTarget(card.name)">
-              <div class="quick-entrance-item">
-                <div class="quick-entrance-item-icon" :style="{ backgroundColor: card.bg }">
-                  <el-icon style="padding-top: 12px;">
-                    <component :is="card.icon" :style="{ color: card.color }" />
-                  </el-icon>
-                </div>
-                <p>{{ card.label }}</p>
+
+    <div class="gva-card-box" style="margin-bottom: 25px;">
+      <!-- <el-col :span="23" :xs="24" :sm="8" :lg="23"> -->
+      <el-card>
+        <template #header>
+          <div class="card-header">
+            <span>快捷入口</span>
+          </div>
+        </template>
+        <el-row :gutter="20">
+          <el-col v-for="(card, key) in toolCards" :key="key" :span="8" :xs="8" class="quick-entrance-items"
+            @click="toTarget(card.name)">
+            <div class="quick-entrance-item">
+              <div class="quick-entrance-item-icon" :style="{ backgroundColor: card.bg }">
+                <el-icon style="padding-top: 12px;">
+                  <component :is="card.icon" :style="{ color: card.color }" />
+                </el-icon>
               </div>
-            </el-col>
-          </el-row>
-        </el-card>
-      </el-col>
+              <p>{{ card.label }}</p>
+            </div>
+          </el-col>
+        </el-row>
+      </el-card>
+      <!-- </el-col> -->
 
-    </el-row>
+    </div>
 
-    <el-row :gutter="24">
-      <el-col :xs="8" :lg="7">
-        <div class="chart-wrapper">
-          <pieChart />
-        </div>
-      </el-col>
-      <el-col :xs="8" :lg="8">
-        <div class="chart-wrapper">
-          <radarChart />
-        </div>
-      </el-col>
-      <el-col :xs="8" :lg="8">
-        <div class="chart-wrapper">
-          <!-- <bar-chart /> -->
-          <stackedChart />
-        </div>
-      </el-col>
-    </el-row>
+    <div class="gva-card-box">
+      <el-row :gutter="32">
+        <!-- <el-col :span="23" :xs="24" :sm="8"> -->
+        <el-col :xs="8" :lg="8">
+          <div class="chart-wrapper">
+            <pieChart />
+          </div>
+        </el-col>
+        <el-col :xs="8" :lg="8">
+          <div class="chart-wrapper">
+            <radarChart />
+          </div>
+        </el-col>
+        <el-col :xs="8" :lg="8">
+          <div class="chart-wrapper">
+            <!-- <bar-chart /> -->
+            <stackedChart />
+          </div>
+        </el-col>
+        <!-- </el-col> -->
+      </el-row>
+    </div>
+
 
     <!-- <el-row :gutter="8">
       <el-col :xs="{ span: 24 }" :sm="{ span: 24 }" :md="{ span: 24 }" :lg="{ span: 12 }" :xl="{ span: 12 }"
@@ -132,12 +136,21 @@ const toTarget = (name: string) => {
 
 
 <style lang="scss" scoped>
-.dashboard-editor-container {
+.pag {
   width: 100%;
   height: 100%;
-  padding: 32px;
+  // padding: 20px;
   background-color: rgb(240, 242, 245);
   position: relative;
+
+
+  .gva-card-box {
+    padding: 12px 16px;
+
+    &+.gva-card-box {
+      padding-top: 0px;
+    }
+  }
 
   .github-corner {
     position: absolute;
