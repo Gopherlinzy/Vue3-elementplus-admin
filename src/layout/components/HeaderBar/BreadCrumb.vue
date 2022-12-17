@@ -1,9 +1,9 @@
 <!--  -->
 <template>
     <el-breadcrumb>
-        <el-breadcrumb-item :to="{ path: '/' }" v-for="(item,index) in breadcrumb" :key="index">{{ item.meta.title }}
+        <el-breadcrumb-item style="margin-top:-5px" :to="{ path: '/' }" v-for="(item,index) in breadcrumb"
+            :key="index">{{ item.meta.title }}
         </el-breadcrumb-item>
-
     </el-breadcrumb>
 </template>
 

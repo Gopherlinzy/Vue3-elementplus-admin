@@ -1,7 +1,7 @@
 <template>
     <div class="userInfo">
         <el-dropdown>
-            <div>
+            <div style="cursor: pointer;">
                 <img src="@/assets/avatar.jpg" style="width:45px;height: 45px; border-radius: 50%;margin-top: 2px;">
             </div>
             <template #dropdown>

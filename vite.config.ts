@@ -10,6 +10,7 @@ import viteCompression from 'vite-plugin-compression'
 export default defineConfig({
   server: {
     port: 3000,
+    host: '0.0.0.0',
     proxy: {
       '/api': {
         target: 'http://120.27.224.251:8080/api/',
@@ -34,7 +35,15 @@ export default defineConfig({
     }
   },
   build: {
-    chunkSizeWarningLimit: 1500
+    chunkSizeWarningLimit: 1500,
+    // Terser 相对较慢，但大多数情况下构建后的文件体积更小。ESbuild 最小化混淆更快但构建后 的文件相对更大。 
+    // 设置为 false 可以禁用最小化混淆，或是用来指定使用哪种混淆器。默认为 Esbuild，它比 terser 快 20-40 倍，压缩率只差 1%-2%。
+    minify: 'terser',
+    terserOptions: {
+      compress: { // 生产环境去除console 
+        drop_console: true
+      }
+    }
   },
   plugins: [
     vue(),
@@ -45,5 +54,6 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
-  ]
+  ],
+
 })

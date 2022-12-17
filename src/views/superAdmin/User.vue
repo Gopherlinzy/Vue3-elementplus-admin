@@ -78,15 +78,15 @@
         <el-table-column prop="email" label="邮箱" width="180px"></el-table-column>
         <el-table-column prop="phone" label="手机号" width="150px"></el-table-column>
         <el-table-column prop="city" label="所在城市"></el-table-column>
-        <el-table-column prop="introduction" label="用户描述" width="280px"></el-table-column>
-        <el-table-column prop="created_at" label="Date" width="220px"></el-table-column>
-        <el-table-column label="启用状态" width="80px">
+        <el-table-column label="启用状态" width="100px">
           <template #default="scope">
             <el-switch v-model="scope.row.status" active-color="green" inactive-color="gray"
               @change="(value: string | number | boolean) => commitStatusChange(value, scope.row.id)" />
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="230px">
+        <el-table-column prop="introduction" label="用户描述" width="280px"></el-table-column>
+        <el-table-column prop="created_at" label="Date" width="220px"></el-table-column>
+        <el-table-column fixed="right" label="操作" width="280px">
           <template #default="scope">
             <el-button v-BTNVis="'/api/v1/users/role:PUT'" type="primary" link size="small"
               @click="updateUserRole(scope.row.id, scope.row.role_name)"><el-icon>
@@ -96,7 +96,7 @@
               @click="resetPass(scope.row.id)"><el-icon>
                 <MagicStick />
               </el-icon>&nbsp;重置密码</el-button>
-            <el-button v-BTNVis="'/api/v1/users/reset:PUT'" type="primary" link size="small"
+            <el-button v-BTNVis="'/api/v1/users:PUT'" type="primary" link size="small"
               @click="updateUser(scope.row)"><el-icon>
                 <Edit />
               </el-icon>&nbsp;编辑</el-button>
