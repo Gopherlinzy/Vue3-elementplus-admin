@@ -1,6 +1,6 @@
 <template>
 
-  <div>
+  <div class="table-box">
     <div style="text-align:left; margin:5px 10px;">
       <el-button v-BTNVis="'/api/v1/menus:POST'" type="primary" @click="toAddMenu"><el-icon>
           <Plus />
@@ -76,13 +76,13 @@
         </el-table-column>
       </el-table>
       <!-- 分页 -->
-      <el-row style="float:right;">
+      <div class="pagination">
         <el-pagination v-model:current-page="state.currentPage" background
           layout="total, sizes, prev, pager, next, jumper" v-model:page-size="state.pageSize"
           :page-sizes="[5, 10, 15, 20, 25]" :page-count="state.menusPag.TotalPage" :total="state.menusPag.TotalCount"
           @current-change="handelCurrentChange" @size-change="handleSizeChange">
         </el-pagination>
-      </el-row>
+      </div>
     </div>
   </div>
 </template>
@@ -224,6 +224,8 @@ const updateCurrMenu = (selectMenu: object) => {
   state.tips = '更新菜单信息'
   state.menuFormDialogVis = true
   state.menuFormData = JSON.parse(JSON.stringify(selectMenu))
+  state.menuFormData.father_id = state.menuFormData.father_id.toString()
+  state.menuFormData.id = state.menuFormData.id.toString()
   console.log(state.menuFormData);
 
   state.menuFormData.id = state.menuFormData.id.toString()
@@ -281,3 +283,21 @@ const resetForm = () => {
   state.menuFormData.vue_path = ''
 }
 </script>
+
+<style lang="scss" scoped>
+.table-box {
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 2px;
+  // position: relative;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+
+  .el-pagination {
+    padding-top: 20px;
+  }
+}
+</style>

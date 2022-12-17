@@ -1,6 +1,5 @@
 <template>
-
-  <div>
+  <div class="table-box">
     <div style="text-align:left; margin:5px 10px;">
       <el-button v-BTNVis="'/api/v1/apis:POST'" type="primary" @click="toAddApi"><el-icon>
           <Plus />
@@ -63,13 +62,13 @@
         </el-table-column>
       </el-table>
       <!-- 分页 -->
-      <el-row style="float:right;">
-        <el-pagination v-model:current-page="state.currentPage" background
-          layout="total, sizes, prev, pager, next, jumper" v-model:page-size="state.pageSize"
-          :page-sizes="[5, 10, 15, 20, 25]" :page-count="state.apisPag.TotalPage" :total="state.apisPag.TotalCount"
-          @current-change="handelCurrentChange" @size-change="handleSizeChange">
+      <div class="pagination">
+        <el-pagination v-model:current-page="state.currentPage" layout="total, sizes, prev, pager, next, jumper"
+          v-model:page-size="state.pageSize" :page-sizes="[5, 10, 15, 20, 25]" :page-count="state.apisPag.TotalPage"
+          :total="state.apisPag.TotalCount" @current-change="handelCurrentChange" @size-change="handleSizeChange">
         </el-pagination>
-      </el-row>
+      </div>
+
     </div>
   </div>
 </template>
@@ -238,3 +237,21 @@ const deleteCurrApi = (id: string) => {
 }
 
 </script>
+
+<style scoped lang="scss">
+.table-box {
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 2px;
+  // position: relative;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+
+  .el-pagination {
+    padding-top: 20px;
+  }
+}
+</style>

@@ -8,22 +8,22 @@
       <el-container>
         <el-header>
           <el-row :gutter="24" style="width: 100%;display:flex; align-Items:center;">
-            <el-col :span="1">
+            <el-col :xs="6" :sm="6" :md="4" :lg="1" :xl="1">
               <!-- 侧边栏展开折叠按钮 -->
               <el-icon style="font-size: 20px; margin-right: 15px;cursor: pointer;"
                 @click="() => (collapsed = !collapsed)">
                 <component :is="collapsed ? Expand : Fold" />
               </el-icon>
             </el-col>
-            <el-col :span="23">
+            <el-col :xs="18" :sm="18" :md="20" :lg="23" :xl="23">
               <!-- header业务 -->
               <header-bar />
             </el-col>
           </el-row>
         </el-header>
 
-        <el-divider style="margin-top:-10px; margin-bottom: -1px" />
-        <el-main>
+        <el-divider style="margin-top:-10px; margin-bottom: -1px;" />
+        <el-main class="elmain">
           <!-- tabList -->
           <tab-bar />
           <app-main></app-main>
@@ -91,6 +91,7 @@ const autoWidth = computed(() => {
   .el-main {
     padding: 0;
     height: calc(100vh - 70px); // 设置主体 main 高度
+    background-color: #f0f2f5;
   }
 
   .el-aside {
@@ -102,7 +103,5 @@ const autoWidth = computed(() => {
     height: calc(100vh); // 设置左侧 aside 高度
     overflow: hidden;
   }
-
-
 }
 </style>

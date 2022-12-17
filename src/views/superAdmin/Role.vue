@@ -1,6 +1,6 @@
 <template>
 
-  <div>
+  <div class="table-box">
     <div style="text-align:left; margin:5px 10px;">
       <el-button v-BTNVis="'/api/v1/roles:POST'" type="primary" @click="toAddRole"><el-icon>
           <Plus />
@@ -98,13 +98,13 @@
         </el-table-column>
       </el-table>
       <!-- 分页 -->
-      <el-row style="float:right;">
+      <div class="pagination">
         <el-pagination v-model:current-page="state.currentPage" background
           layout="total, sizes, prev, pager, next, jumper" v-model:page-size="state.pageSize"
           :page-sizes="[5, 10, 15, 20, 25]" :page-count="state.rolesPag.TotalPage" :total="state.rolesPag.TotalCount"
           @current-change="handelCurrentChange" @size-change="handleSizeChange">
         </el-pagination>
-      </el-row>
+      </div>
     </div>
   </div>
 </template>
@@ -376,10 +376,26 @@ const setApiPolicy = () => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .auth-drawer {
   .el-drawer__body {
     overflow: hidden;
+  }
+}
+
+.table-box {
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 2px;
+  // position: relative;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+
+  .el-pagination {
+    padding-top: 20px;
   }
 }
 </style>

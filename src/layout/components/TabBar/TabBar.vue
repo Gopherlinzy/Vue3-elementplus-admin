@@ -1,16 +1,19 @@
 <template>
-  <el-tabs class="tabs" v-model="activeKey" type="card" @tab-click="clickHandle" @tab-remove="removeTab"
-    @contextmenu.prevent.native="openContextMenu($event)">
-    <el-tab-pane v-for="item in tabsList" :key="item.path" :label="item.title" :name="item.path" closable>
-      {{ item.content }}
-    </el-tab-pane>
-  </el-tabs>
-  <ul v-show="contextMenuVisible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
-    <li @click="closeAllTabs">关闭所有</li>
-    <li @click="closeOtherTabs('left')">关闭左边</li>
-    <li @click="closeOtherTabs('right')">关闭右边</li>
-    <li @click="closeOtherTabs('other')">关闭其它</li>
-  </ul>
+  <div style="background-color: #fff;height:40px">
+    <el-tabs class="tabs" v-model="activeKey" type="card" @tab-click="clickHandle" @tab-remove="removeTab"
+      @contextmenu.prevent.native="openContextMenu($event)">
+      <el-tab-pane v-for="item in tabsList" :key="item.path" :label="item.title" :name="item.path" closable>
+        {{ item.content }}
+      </el-tab-pane>
+    </el-tabs>
+    <ul v-show="contextMenuVisible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
+      <li @click="closeAllTabs">关闭所有</li>
+      <li @click="closeOtherTabs('left')">关闭左边</li>
+      <li @click="closeOtherTabs('right')">关闭右边</li>
+      <li @click="closeOtherTabs('other')">关闭其它</li>
+    </ul>
+  </div>
+
 </template>
 <script lang="ts" setup>
 import 'element-plus/es/components/message-box/style/css'

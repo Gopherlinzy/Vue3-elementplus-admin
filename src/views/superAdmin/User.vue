@@ -1,6 +1,6 @@
 <!--  -->
 <template>
-  <div>
+  <div class="table-box">
     <div style="text-align:left; margin:5px 10px;">
       <el-button v-BTNVis="'/api/v1/users:POST'" type="primary" @click="toAddUser"><el-icon>
           <Plus />
@@ -108,12 +108,12 @@
         </el-table-column>
       </el-table>
       <!-- 分页 -->
-      <el-row style="float:right">
+      <div class="pagination">
         <el-pagination background layout="total,sizes,prev,pager,next,jumper" v-model:page-size="state.pageSize"
           :page-sizes="[5, 10, 15, 20, 25]" :page-count="state.usersPag.TotalPage" :total="state.usersPag.TotalCount"
           :current-page="state.currentPage" @current-change="handelCurrentChange" @size-change="handleSizeChange">
         </el-pagination>
-      </el-row>
+      </div>
     </div>
   </div>
 </template>
@@ -393,5 +393,21 @@ const setSysUserRole = (role_name: string) => {
   color: #6b778c;
   font-size: 32px;
   font-weight: 600;
+}
+
+.table-box {
+  padding: 24px;
+  background-color: #fff;
+  border-radius: 2px;
+  // position: relative;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+
+  .el-pagination {
+    padding-top: 20px;
+  }
 }
 </style>

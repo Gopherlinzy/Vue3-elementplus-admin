@@ -1,6 +1,6 @@
 <!--  -->
 <template>
-  <div>
+  <div class="table-box">
     <router-view v-slot="{ Component }">
       <keep-alive :include="includeList">
         <transition :name="transtionName">
@@ -35,6 +35,13 @@ watch(() => route, (newVal: any, oldVal: any) => {
 
 </script>
 <style lang='scss' scoped>
+.table-box {
+  // width: 100%;
+  // height: 100%;
+  padding: 20px;
+  background-color: rgb(240, 242, 245);
+}
+
 .slide-right-enter-active,
 .slide-right-leave-active,
 .slide-left-enter-active,
