@@ -3,11 +3,11 @@ import { User, Lock } from '@element-plus/icons-vue'
 import { getCode, login } from '../../api/Auth'
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from "vue-router";
-import { useStore } from '@/store/index'
+// import { useStore } from '@/store/index'
 import i18n from '@/i18n';
+import { authStore } from '@/pinia/authStore';
 
-
-const store = useStore()
+// const store = useStore()
 const router = useRouter()
 
 const loginFormRef = ref(null)
@@ -65,9 +65,16 @@ const loginRules = reactive({
     { whitespace: true, message: '不能为全空格', trigger: 'blur' },
   ]
 })
+
+// 初始化
+onMounted(() => {
+  getValidCode()
+  handleToken()
+})
+
+
 // 获取验证码
 const getValidCode = () => {
-
   getCode().then(result => {
     codeUrl.value = result.captcha_image
     loginForm.captcha_id = result.captcha_id
@@ -79,22 +86,21 @@ const getValidCode = () => {
 const handleToken = () => {
   const token = sessionStorage.getItem('token')
   // console.log(token);
-
   if (token != null) {
-    store.dispatch('authStore/loginToken', token)
+    const userAuthStore = authStore()
+    userAuthStore.loginToken(token)
+    // store.dispatch('authStore/loginToken', token)
   }
 }
 
-// 初始化
-onMounted(() => {
-  getValidCode()
-  handleToken()
-})
+
 
 
 // 登录事件
 const handleLogin = () => {
-  store.dispatch('authStore/login', loginForm)
+  const userAuthStore = authStore()
+  userAuthStore.login(loginForm)
+  // store.dispatch('authStore/login', loginForm)
   getValidCode()
   loginForm.captcha_answer = ''
 }

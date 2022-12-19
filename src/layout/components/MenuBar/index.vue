@@ -9,12 +9,19 @@
 
 <script lang="ts" setup>
 import MenuItem from './MenuItem.vue'
-import { useStore } from '@/store'
 import { useRoute } from 'vue-router';
 import { computed, onMounted, watch } from 'vue';
+import { menuStore } from '@/pinia/menuStore';
+
+defineProps({
+  collapsed: {
+    type: Boolean
+  }
+})
 
 const route = useRoute()
-const store = useStore()
+const userMenuStore = menuStore()
+const menus = userMenuStore.menuList
 
 // 当前激活菜单(刷新后依旧选中)
 const activeMenu = computed(() => {
@@ -43,32 +50,6 @@ const getPath = (path: string | null) => {
   // console.log(s[s.length - 1]);
   return s[s.length - 1]
 }
-
-// 监控
-// watch(() => route.path, () => {
-//   let path = sessionStorage.getItem('ACTIVE_TAB')
-//   // console.log(path);
-//   if (path == null) {
-//     return "/"
-//   }
-//   let s = path.split('"')[1].split('/')
-
-//   if (s[s.length - 1] == 'index') {
-//     return '/'
-//   }
-//   console.log(s[s.length - 1]);
-//   return s[s.length - 1]
-
-// })
-
-defineProps({
-  collapsed: {
-    type: Boolean
-  }
-})
-
-const menus = store.getters['menuStore/getMenus']
-
 </script>
 
 <style lang="scss">

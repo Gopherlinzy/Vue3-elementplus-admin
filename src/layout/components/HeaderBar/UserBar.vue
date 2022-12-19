@@ -23,23 +23,26 @@
 </template>
 
 <script lang="ts" setup>
-import { useStore } from '@/store';
+// import { useStore } from '@/store';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
-const store = useStore()
+import { authStore } from '@/pinia/authStore';
+
+// const store = useStore()
 const router = useRouter()
 
 const handlelogout = () => {
     // 移除 session 和 内存中的token 和 tab标签页
-    store.commit('authStore/delToken')
-    store.commit('tabStore/closeAllTabs')
+    // store.commit('authStore/delToken')
+    // store.commit('tabStore/closeAllTabs')
     router.push('/login')
     sessionStorage.clear()
-    // location.reload()
 }
 
 const userInfo = computed(() => {
-    return store.state.authStore.userInfo
+    const userAuthStore = authStore()
+    return userAuthStore.userInfo
+    // return store.state.authStore.userInfo
 })
 
 </script>

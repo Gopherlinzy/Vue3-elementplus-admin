@@ -1,11 +1,14 @@
 
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import { store } from '@/store'
+// import { store } from '@/store'
 import { loginByToken } from '@/api/auth'
 import 'element-plus/es/components/message/style/css'
 import { ElMessageBox } from 'element-plus'
 import NProgress from 'nprogress'
 import "nprogress/nprogress.css";
+import { authStore } from '@/pinia/authStore'
+import { menuStore } from '@/pinia/menuStore'
+import { buttonStore } from '@/pinia/buttonStore'
 
 // nprogress 配置
 NProgress.configure({
@@ -48,9 +51,11 @@ const router = createRouter({
 // 前置路由守卫
 router.beforeEach((to, from, next) => {
   const token = sessionStorage.getItem('token')
+  // console.log(token);
+  const userAuthStore = authStore()
   NProgress.start()
   // 如果内存中和session中都不存在 token， 表示登录失效了
-  if (!store.state.authStore.token && !token) {
+  if (!userAuthStore.token && !token) {
     // 如果已经是从 login界面的判断则不用跳转
     if (to.path.startsWith("/login"))
       next()
@@ -58,16 +63,22 @@ router.beforeEach((to, from, next) => {
       ElMessageBox.alert("未登录或者登录过期，请登录", "登录错误");
       next("/login")
     }
-  } else if (!store.state.authStore.token && token) {
+  } else if (!userAuthStore.token && token) {
     // console.log(token);
     // 在内存中不存在, 本地中还存在
     loginByToken().then(res => {
-      // console.log(res);
+      // console.log("路由守卫", res);
 
       if (res.success) {
-        store.commit("authStore/addUserInfo", res.data)
-        store.dispatch('menuStore/generateSystemMenus', res.permissions)
-        store.dispatch('buttonStore/generateButtons', res.apiPolicies)
+
+        userAuthStore.userInfo = res.data
+        // store.commit("authStore/addUserInfo", res.data)
+        const userMenuStore = menuStore()
+        userMenuStore.generateSystemMenus(res.permissions)
+        // store.dispatch('menuStore/generateSystemMenus', res.permissions)
+        const userButtonStore = buttonStore()
+        userButtonStore.generateButtons(res.apiPolicies)
+        // store.dispatch('buttonStore/generateButtons', res.apiPolicies)
         // console.log(router.getRoutes());
         if (to.matched.length == 0) {
           router.push(to.path)

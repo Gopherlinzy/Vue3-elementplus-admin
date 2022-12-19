@@ -11,8 +11,6 @@ declare module "axios" {
         token: string;
         success: boolean;
         pager: Array<never>;
-        permissions: object[];
-        apiPolicies: object[];
         // 这里追加你的参数
     }
     export function create(config?: AxiosRequestConfig): AxiosInstance;
@@ -29,9 +27,15 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((requestInfo: AxiosRequestConfig) => {
     // 如果用户已登录，统一给接口设置token
     if (requestInfo.headers) {
-        requestInfo.headers['Authorization'] = `Bearer ${sessionStorage.getItem('token')}` || ""
+        const token = sessionStorage.getItem('token')
+        // console.log(token);
+        if (token) {
+            requestInfo.headers['Authorization'] = `Bearer ${token}`
+        }
         requestInfo.headers['Content-Type'] = 'application/json;charset=utf-8'
     }
+    // console.log(requestInfo);
+
     // 处理完之后一定要把config 返回，否则请求发不出去
     return requestInfo
 }, function (err) {
@@ -50,8 +54,10 @@ axiosInstance.interceptors.response.use(
         const message = error.response.data.message
         // console.log(status);
         if (status === 401) { // token 解析失败或者登录失败，需要删除token
+            console.log(error.response.data);
+
             ElMessageBox.alert(message, "token 解析失败或者登录失败")
-            sessionStorage.removeItem('token')
+            // sessionStorage.removeItem('token')
             sessionStorage.clear()
         } else if (status === 404) { // 资源不存在
             // ElMessageBox.alert(message, "请求资源不存在")

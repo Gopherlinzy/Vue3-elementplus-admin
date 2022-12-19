@@ -56,9 +56,6 @@ const autoWidth = computed(() => {
   }
 })
 
-
-
-
 </script>
 
 <style scoped lang="scss">

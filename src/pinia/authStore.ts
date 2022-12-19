@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import { UserType } from "./type";
 import { login, loginByToken } from '@/api/auth'
 import router from '@/router'
-
+import { menuStore } from './menuStore';
+import { buttonStore } from './buttonStore';
 
 export interface AuthState {
     token: string,
@@ -36,8 +37,14 @@ export const authStore = defineStore('auth', {
                 location.reload()
                 this.userInfo = result.data
                 this.token = result.token
-                sessionStorage.token = result.token
+                sessionStorage.setItem('token', result.token)
+                // console.log(sessionStorage.getItem('token'));
+
                 // console.log(result.permissions);
+                const userMenuStore = menuStore()
+                userMenuStore.generateSystemMenus(result.permissions)
+                const userButtonStore = buttonStore()
+                userButtonStore.generateButtons(result.apiPolicies)
                 // store.dispatch('menuStore/generateSystemMenus', result.permissions)
                 // store.dispatch('buttonStore/generateButtons', result.apiPolicies)
                 router.push({ path: '/index' })
@@ -49,15 +56,22 @@ export const authStore = defineStore('auth', {
             loginByToken().then(result => {
                 // console.log(result);
                 this.token = result.token
-                sessionStorage.token = result.token
+                // sessionStorage.setItem('token', result.token)
+                // sessionStorage.token = result.token
                 this.userInfo = result.data
+                const userMenuStore = menuStore()
+                userMenuStore.generateSystemMenus(result.permissions)
+                const userButtonStore = buttonStore()
+                userButtonStore.generateButtons(result.apiPolicies)
+                // console.log(result);
+
                 // store.dispatch('menuStore/generateSystemMenus', result.permissions)
                 // store.dispatch('buttonStore/generateButtons', result.apiPolicies)
                 if (result.success) {
                     router.push({ path: '/index' })
                 }
             }).catch(() => {
-                localStorage.removeItem('token')
+                sessionStorage.removeItem('token')
             })
         }
     }

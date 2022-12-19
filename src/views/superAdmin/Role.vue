@@ -130,7 +130,6 @@ import {
 } from "@/api/system/role"
 import type { ElTree } from 'element-plus'
 import { getPagination, getPaginationPrevNext } from '@/api/pagination'
-import { tr } from 'element-plus/es/locale'
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const state = reactive({

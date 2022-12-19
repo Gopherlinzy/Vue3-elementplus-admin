@@ -3,7 +3,7 @@
     <el-tabs class="tabs" v-model="activeKey" type="card" @tab-click="clickHandle" @tab-remove="removeTab"
       @contextmenu.prevent.native="openContextMenu($event)">
       <el-tab-pane v-for="item in tabsList" :key="item.path" :label="item.title" :name="item.path" closable>
-        {{ item.content }}
+        <!-- {{ item.title }} -->
       </el-tab-pane>
     </el-tabs>
     <ul v-show="contextMenuVisible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
@@ -18,20 +18,21 @@
 <script lang="ts" setup>
 import 'element-plus/es/components/message-box/style/css'
 import { ComponentInternalInstance, getCurrentInstance, onMounted, Ref, ref, watch, computed, reactive } from 'vue'
-import { useStore } from '@/store/index'
 import { useRoute, useRouter } from 'vue-router';
 import { Itab } from '@/store/type'
+import { tabsStore } from '@/pinia/tabsStore';
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-const store = useStore()
 const route = useRoute()
 const router = useRouter()
+const userTabsStore = tabsStore()
 const state = reactive({
   activePath: ''
 })
 
 const tabsList = computed(() => {
-  return store.getters["tabStore/getAddTab"]
+  // return store.getters["tabStore/getAddTab"]
+  return userTabsStore.tabsList
 })
 // 索引
 const activeKey = ref('')
@@ -43,7 +44,8 @@ const addTab = () => {
     path: path,
     title: meta.title as string
   }
-  store.commit('tabStore/addTab', tab)
+  userTabsStore.addTab(tab)
+  // store.commit('tabStore/addTab', tab)
   sessionStorage.setItem('ACTIVE_TAB', JSON.stringify(path))
 }
 // 监控
@@ -77,7 +79,8 @@ const removeTab = (targetName: string) => {
       }
     })
   }
-  store.commit('tabStore/closeCurrentTab', targetName)
+  userTabsStore.closeCurrentTab(targetName)
+  // store.commit('tabStore/closeCurrentTab', targetName)
 }
 
 // 刷新缓存数据
@@ -90,7 +93,8 @@ const refresh = () => {
   if (sessionTABS) {
     let tabItem = JSON.parse(sessionTABS)
     tabItem.forEach((tab: Itab) => {
-      store.commit('tabStore/addTab', tab)
+      userTabsStore.addTab(tab)
+      // store.commit('tabStore/addTab', tab)
     })
     let sessionActiveTAB = sessionStorage.getItem('ACTIVE_TAB')
     if (sessionActiveTAB) {
@@ -119,7 +123,8 @@ const openContextMenu = (e: any) => {
 
   if (e.srcElement.id) {
     let currentContextTabId = e.srcElement.id.split("-")[1]
-    store.commit("tabStore/saveCurContextTabId", currentContextTabId)
+    userTabsStore.saveCurContextTabId(currentContextTabId)
+    // store.commit("tabStore/saveCurContextTabId", currentContextTabId)
     contextMenuVisible.value = true
     left.value = e.clientX
     top.value = e.clientY + 10
@@ -129,13 +134,15 @@ const openContextMenu = (e: any) => {
 
 // 关闭所有
 const closeAllTabs = () => {
-  store.commit('tabStore/closeAllTabs')
+  userTabsStore.closeAllTabs()
+  // store.commit('tabStore/closeAllTabs')
   contextMenuVisible.value = false
   router.push("/index")
 }
 
 // 关闭其它(包含左,右,选中之外)
 const closeOtherTabs = (par: string) => {
+  userTabsStore.closeOtherTabs(par)
   store.commit('tabStore/closeOtherTabs', par)
   contextMenuVisible.value = false
 }
