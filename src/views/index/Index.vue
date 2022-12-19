@@ -145,7 +145,7 @@ const toTarget = (name: string) => {
 
 
   .gva-card-box {
-    padding: 12px 16px;
+    // padding: 12px 16px;
 
     &+.gva-card-box {
       padding-top: 0px;

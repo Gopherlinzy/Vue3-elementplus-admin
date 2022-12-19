@@ -8,14 +8,14 @@
       <el-container>
         <el-header>
           <el-row :gutter="24" style="width: 100%;display:flex; align-Items:center;">
-            <el-col :xs="6" :sm="6" :md="4" :lg="1" :xl="1">
+            <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1">
               <!-- 侧边栏展开折叠按钮 -->
               <el-icon style="font-size: 20px; margin-right: 15px;cursor: pointer;"
                 @click="() => (collapsed = !collapsed)">
                 <component :is="collapsed ? Expand : Fold" />
               </el-icon>
             </el-col>
-            <el-col :xs="18" :sm="18" :md="20" :lg="23" :xl="23">
+            <el-col :xs="23" :sm="23" :md="23" :lg="23" :xl="23">
               <!-- header业务 -->
               <header-bar />
             </el-col>
@@ -42,19 +42,12 @@ import TabBar from './components/TabBar/TabBar.vue'
 import { Expand, Fold } from '@element-plus/icons-vue'
 import { computed, ref } from 'vue';
 import { isMobile } from '../utils/isMobile';
-// import { useStore } from '@/store/index'
-
-// const store = useStore()
-
-// // 页面刷新时，重新赋值token
-// if (sessionStorage.getItem('token')) {
-//   store.commit('authStore/addToken', sessionStorage.getItem('token'))
-// }
 
 const collapsed = ref<boolean>(false)
 
 const autoWidth = computed(() => {
-  if (collapsed.value && isMobile()) {
+  // console.log(isMobile(), collapsed.value);
+  if (!collapsed.value && isMobile()) {
     return "0px"
   } else if (collapsed.value) {
     return "64px"
