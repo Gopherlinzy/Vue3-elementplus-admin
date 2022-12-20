@@ -54,15 +54,36 @@
 
     <!-- 菜单表格 -->
     <div style="margin:0px 10px; text-align:left;">
-      <el-table stripe :data="state.menus">
-        <el-table-column prop="id" label="ID" width="50px"></el-table-column>
+      <el-table :data="state.menus" row-key="id" default-expand-all>
+        <el-table-column prop="id" label="ID" width="150px">
+          <template #default="scope">
+            <el-tag :type="scope.row.father_id === 0 ? '' : 'success'">
+              {{ scope.row.father_id === 0 ? '目录' : '菜单' }}
+            </el-tag>
+            {{ scope.row.id }}
+          </template>
+        </el-table-column>
         <el-table-column prop="name" label="菜单名称"></el-table-column>
         <el-table-column prop="permission" label="权限" width="220px"></el-table-column>
-        <el-table-column prop="router_name" label="路由名称"></el-table-column>
-        <el-table-column prop="router_path" label="路由路径"></el-table-column>
+        <el-table-column prop="icon" label="Icon图标" width="180px">
+          <template #default="scope">
+            <div v-if="scope.row.icon" class="icon-column">
+              <el-icon>
+                <component :is="scope.row.icon" />
+              </el-icon>
+              <span>{{ scope.row.icon }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="router_name" label="路由名称" width="120px"></el-table-column>
+        <el-table-column prop="router_path" label="路由路径" width="120px"></el-table-column>
         <el-table-column prop="father_id" label="父节点"></el-table-column>
         <el-table-column prop="vue_path" label="文件路径" width="250px"></el-table-column>
-        <el-table-column prop="status" label="是否显示" width="80px"></el-table-column>
+        <el-table-column prop="status" label="是否显示" width="80px">
+          <template #default="scope">
+            <span>{{ scope.row.status ? "显示" : "隐藏" }}</span>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" width="150px">
           <template #default="scope">
             <el-button v-BTNVis="'/api/v1/menus:PUT'" type="primary" link size="small"
@@ -76,14 +97,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <!-- 分页 -->
-      <div class="pagination">
-        <el-pagination v-model:current-page="state.currentPage" background
-          layout="total, sizes, prev, pager, next, jumper" v-model:page-size="state.pageSize"
-          :page-sizes="[5, 10, 15, 20, 25]" :page-count="state.menusPag.TotalPage" :total="state.menusPag.TotalCount"
-          @current-change="handelCurrentChange" @size-change="handleSizeChange">
-        </el-pagination>
-      </div>
     </div>
   </div>
 </template>
@@ -104,10 +117,8 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const state = reactive({
   menus: [],
-  menusPag: [] as any,
   status: ['显示', '隐藏'],
   currentPage: 1,
-  pageSize: 10,
   menuFormDialogVis: false,
   tips: '',
   menuFormData: {
@@ -180,36 +191,11 @@ onMounted(() => {
   getMenus()
 })
 
-// 分页
-// 跳转到指定页数
-const handelCurrentChange = (val: number) => {
-  getPagination("menus/pag", val, "id", "asc", state.pageSize).then(result => {
-    // console.log(result);
-    state.menus = result.data
-    state.menusPag = result.pager
-    state.currentPage = val
-  })
-}
-
-// 制定每页条数
-const handleSizeChange = (val: number) => {
-  state.pageSize = val
-  getPagination("menus/pag", 1, "id", "asc", state.pageSize).then(result => {
-    // console.log(result);
-
-    state.menus = result.data
-    state.menusPag = result.pager
-    state.currentPage = 1
-  })
-}
 
 // 获取菜单
 const getMenus = () => {
-  getPagMenus().then(result => {
-    // console.log(result);
+  getAllMenus().then(result => {
     state.menus = result.data
-    state.menusPag = result.pager
-    handelCurrentChange(state.currentPage)
   })
 }
 
@@ -299,6 +285,15 @@ const resetForm = () => {
 
   .el-pagination {
     padding-top: 20px;
+  }
+}
+
+.icon-column {
+  display: flex;
+  align-items: center;
+
+  .el-icon {
+    margin-right: 8px;
   }
 }
 </style>

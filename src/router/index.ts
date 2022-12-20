@@ -73,9 +73,6 @@ router.beforeEach((to, from, next) => {
         userAuthStore.userInfo = res.data
         userAuthStore.token = res.token
         userAuthStore.changePermission(res.permissions, res.apiPolicies)
-        // if (to.matched.length == 0) {
-        //   router.push(to.path)
-        // }
 
         // 确保动态路由被添加
         next({ ...to, replace: true })
