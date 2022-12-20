@@ -60,6 +60,7 @@
         <el-table-column prop="permission" label="权限" width="220px"></el-table-column>
         <el-table-column prop="router_name" label="路由名称"></el-table-column>
         <el-table-column prop="router_path" label="路由路径"></el-table-column>
+        <el-table-column prop="father_id" label="父节点"></el-table-column>
         <el-table-column prop="vue_path" label="文件路径" width="250px"></el-table-column>
         <el-table-column prop="status" label="是否显示" width="80px"></el-table-column>
         <el-table-column fixed="right" label="操作" width="150px">
@@ -224,9 +225,9 @@ const updateCurrMenu = (selectMenu: object) => {
   state.tips = '更新菜单信息'
   state.menuFormDialogVis = true
   state.menuFormData = JSON.parse(JSON.stringify(selectMenu))
-  state.menuFormData.father_id = state.menuFormData.father_id.toString()
+  // state.menuFormData.father_id = state.menuFormData.father_id
   state.menuFormData.id = state.menuFormData.id.toString()
-  console.log(state.menuFormData);
+  console.log(selectMenu);
 
   state.menuFormData.id = state.menuFormData.id.toString()
 }

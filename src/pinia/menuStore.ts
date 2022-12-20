@@ -75,10 +75,11 @@ export const menuStore = defineStore('menu', {
                 }
                 router.addRoute(route)
             })
-            // console.log(router.getRoutes());
 
             // 添加动态菜单
             this.menuList = routers
+            // router.replace(router.currentRoute.value.fullPath)
+            // console.log(router.currentRoute.value.fullPath);
         }
     }
 })

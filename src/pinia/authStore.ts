@@ -34,7 +34,7 @@ export const authStore = defineStore('auth', {
         login(requestUser: API.loginForm) {
             login(requestUser).then(result => {
                 // console.log(requestUser);
-                location.reload()
+                // location.reload()
                 this.userInfo = result.data
                 this.token = result.token
                 sessionStorage.setItem('token', result.token)
@@ -45,8 +45,6 @@ export const authStore = defineStore('auth', {
                 userMenuStore.generateSystemMenus(result.permissions)
                 const userButtonStore = buttonStore()
                 userButtonStore.generateButtons(result.apiPolicies)
-                // store.dispatch('menuStore/generateSystemMenus', result.permissions)
-                // store.dispatch('buttonStore/generateButtons', result.apiPolicies)
                 router.push({ path: '/index' })
             })
         },
@@ -56,8 +54,6 @@ export const authStore = defineStore('auth', {
             loginByToken().then(result => {
                 // console.log(result);
                 this.token = result.token
-                // sessionStorage.setItem('token', result.token)
-                // sessionStorage.token = result.token
                 this.userInfo = result.data
                 const userMenuStore = menuStore()
                 userMenuStore.generateSystemMenus(result.permissions)
@@ -65,14 +61,19 @@ export const authStore = defineStore('auth', {
                 userButtonStore.generateButtons(result.apiPolicies)
                 // console.log(result);
 
-                // store.dispatch('menuStore/generateSystemMenus', result.permissions)
-                // store.dispatch('buttonStore/generateButtons', result.apiPolicies)
                 if (result.success) {
                     router.push({ path: '/index' })
                 }
             }).catch(() => {
                 sessionStorage.removeItem('token')
             })
+        },
+
+        async changePermission(permissions: object[], apiPolicies: object[]) {
+            const userMenuStore = menuStore()
+            await userMenuStore.generateSystemMenus(permissions)
+            const userButtonStore = buttonStore()
+            await userButtonStore.generateButtons(apiPolicies)
         }
     }
 })

@@ -60,7 +60,7 @@ router.beforeEach((to, from, next) => {
     if (to.path.startsWith("/login"))
       next()
     else {
-      ElMessageBox.alert("未登录或者登录过期，请登录", "登录错误");
+      // ElMessageBox.alert("未登录或者登录过期，请登录", "登录错误");
       next("/login")
     }
   } else if (!userAuthStore.token && token) {
@@ -70,20 +70,18 @@ router.beforeEach((to, from, next) => {
       // console.log("路由守卫", res);
 
       if (res.success) {
-
         userAuthStore.userInfo = res.data
-        // store.commit("authStore/addUserInfo", res.data)
-        const userMenuStore = menuStore()
-        userMenuStore.generateSystemMenus(res.permissions)
-        // store.dispatch('menuStore/generateSystemMenus', res.permissions)
-        const userButtonStore = buttonStore()
-        userButtonStore.generateButtons(res.apiPolicies)
-        // store.dispatch('buttonStore/generateButtons', res.apiPolicies)
-        // console.log(router.getRoutes());
-        if (to.matched.length == 0) {
-          router.push(to.path)
-        }
-        next()
+        userAuthStore.token = res.token
+        userAuthStore.changePermission(res.permissions, res.apiPolicies)
+        // if (to.matched.length == 0) {
+        //   router.push(to.path)
+        // }
+
+        // 确保动态路由被添加
+        next({ ...to, replace: true })
+        // next()
+      } else {
+        next("/login")
       }
     })
   } else {

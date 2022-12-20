@@ -351,6 +351,7 @@ const resetPass = (id: number) => {
     resetPassword(state.userIDInfo).then(res => {
       // console.log(res);
       handelCurrentChange(state.usersPag.CurrentPage)
+      proxy?.$Notify.success("重置用户密码成功")
     })
   }).catch(() => { })
 }
