@@ -2,9 +2,7 @@
 <template>
   <div class="table-box">
     <div style="text-align:left; margin:5px 10px;">
-      <el-button v-BTNVis="'/api/v1/users:POST'" type="primary" @click="toAddUser"><el-icon>
-          <Plus />
-        </el-icon>&nbsp;新增</el-button>
+      <el-button v-BTNVis="'/api/v1/users:POST'" type="primary" @click="toAddUser" icon="Plus">新增</el-button>
     </div>
 
     <!-- 用户form表单 -->
@@ -89,21 +87,15 @@
         <el-table-column fixed="right" label="操作" width="280px">
           <template #default="scope">
             <el-button v-BTNVis="'/api/v1/users/role:PUT'" type="primary" link size="small"
-              @click="updateUserRole(scope.row.id, scope.row.role_name)"><el-icon>
-                <User />
-              </el-icon>&nbsp;授权</el-button>
+              @click="updateUserRole(scope.row.id, scope.row.role_name)" icon="User">授权</el-button>
             <el-button v-BTNVis="'/api/v1/users/reset:POST'" type="primary" link size="small"
               @click="resetPass(scope.row.id)"><el-icon>
                 <MagicStick />
               </el-icon>&nbsp;重置密码</el-button>
-            <el-button v-BTNVis="'/api/v1/users:PUT'" type="primary" link size="small"
-              @click="updateUser(scope.row)"><el-icon>
-                <Edit />
-              </el-icon>&nbsp;编辑</el-button>
+            <el-button v-BTNVis="'/api/v1/users:PUT'" type="primary" link size="small" @click="updateUser(scope.row)"
+              icon="Edit">编辑</el-button>
             <el-button v-BTNVis="'/api/v1/users:DELETE'" type="primary" link size="small"
-              @click="deleteUser(scope.row.id)"><el-icon>
-                <DeleteFilled />
-              </el-icon>&nbsp;删除</el-button>
+              @click="deleteUser(scope.row.id)" icon="DeleteFilled">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

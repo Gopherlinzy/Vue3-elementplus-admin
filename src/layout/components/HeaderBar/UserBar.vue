@@ -36,8 +36,8 @@ const handlelogout = () => {
     // store.commit('authStore/delToken')
     // store.commit('tabStore/closeAllTabs')
     router.push('/login')
-    sessionStorage.clear()
     location.reload()
+    sessionStorage.clear()
 }
 
 const userInfo = computed(() => {

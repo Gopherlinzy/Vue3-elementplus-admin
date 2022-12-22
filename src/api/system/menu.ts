@@ -8,6 +8,14 @@ export function getAllMenus() {
     })
 }
 
+// 获取菜单目录列表
+export function getAllBaseMenus() {
+    return axiosInstance({
+        url: "v1/menus/baseMenus",
+        method: "get"
+    })
+}
+
 // 获取分页menu
 export function getPagMenus() {
     return axiosInstance({

@@ -2,9 +2,7 @@
 
   <div class="table-box">
     <div style="text-align:left; margin:5px 10px;">
-      <el-button v-BTNVis="'/api/v1/roles:POST'" type="primary" @click="toAddRole"><el-icon>
-          <Plus />
-        </el-icon>&nbsp;新增</el-button>
+      <el-button v-BTNVis="'/api/v1/roles:POST'" type="primary" @click="toAddRole" icon="Plus">新增</el-button>
     </div>
 
     <!-- 角色Form表单 -->
@@ -14,9 +12,7 @@
       <el-divider />
       <el-form ref="roleForm" :model="state.roleFormData" :rules="state.rules" label-width="100px">
         <el-form-item label="角色名称" prop="role_name">
-          <el-input v-if="state.tips.startsWith('新增角色')" v-model="state.roleFormData.role_name"
-            placeholder="请输入角色名称"></el-input>
-          <el-input v-else-if="state.tips.startsWith('更新角色信息')" disabled v-model="state.roleFormData.role_name"
+          <el-input :disabled="!state.tips.startsWith('新增角色')" v-model="state.roleFormData.role_name"
             placeholder="请输入角色名称"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="des">
@@ -83,17 +79,12 @@
         </el-table-column>
         <el-table-column label="操作" width="220px">
           <template #default="scope">
-            <el-button type="primary" link size="small" @click="toSetPermissions(scope.row.id)"><el-icon>
-                <User />
-              </el-icon>&nbsp;授权</el-button>
+            <el-button type="primary" link size="small" @click="toSetPermissions(scope.row.id)"
+              icon="User">授权</el-button>
             <el-button v-BTNVis="'/api/v1/roles:PUT'" type="primary" link size="small"
-              @click="updateCurrRole(scope.row)"><el-icon>
-                <Edit />
-              </el-icon>&nbsp;编辑</el-button>
+              @click="updateCurrRole(scope.row)" icon="Edit">编辑</el-button>
             <el-button v-BTNVis="'/api/v1/roles:DELETE'" type="primary" link size="small"
-              @click="deleteCurrRole(scope.row.id)"><el-icon>
-                <DeleteFilled />
-              </el-icon>&nbsp;删除</el-button>
+              @click="deleteCurrRole(scope.row.id)" icon="DeleteFilled">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -238,6 +229,8 @@ const resetForm = () => {
 
 // 更新角色信息
 const updateCurrRole = (selectRole: object) => {
+  // console.log(state.tips.startsWith('新增角色'));
+
   state.roleFormDataVis = true
   state.roleFormData = JSON.parse(JSON.stringify(selectRole))
   state.roleFormData.id = state.roleFormData.id.toString()

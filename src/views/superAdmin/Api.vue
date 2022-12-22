@@ -1,9 +1,7 @@
 <template>
   <div class="table-box">
     <div style="text-align:left; margin:5px 10px;">
-      <el-button v-BTNVis="'/api/v1/apis:POST'" type="primary" @click="toAddApi"><el-icon>
-          <Plus />
-        </el-icon>&nbsp;新增</el-button>
+      <el-button v-BTNVis="'/api/v1/apis:POST'" type="primary" @click="toAddApi" icon="Plus">新增</el-button>
     </div>
 
     <!-- api form表单 -->
@@ -50,14 +48,10 @@
         <el-table-column prop="method" label="请求" width="80px"></el-table-column>
         <el-table-column fixed="right" label="操作" width="180px">
           <template #default="scope">
-            <el-button v-BTNVis="'/api/v1/apis:PUT'" type="primary" link size="small"
-              @click="updateCurrApi(scope.row)"><el-icon>
-                <Edit />
-              </el-icon>&nbsp;编辑</el-button>
+            <el-button v-BTNVis="'/api/v1/apis:PUT'" type="primary" link size="small" @click="updateCurrApi(scope.row)"
+              icon="Edit">编辑</el-button>
             <el-button v-BTNVis="'/api/v1/apis:DELETE'" type="primary" link size="small"
-              @click="deleteCurrApi(scope.row.id)"><el-icon>
-                <DeleteFilled />
-              </el-icon>&nbsp;删除</el-button>
+              @click="deleteCurrApi(scope.row.id)" icon="DeleteFilled">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

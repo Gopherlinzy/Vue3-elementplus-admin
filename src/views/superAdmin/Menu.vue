@@ -2,13 +2,12 @@
 
   <div class="table-box">
     <div style="text-align:left; margin:5px 10px;">
-      <el-button v-BTNVis="'/api/v1/menus:POST'" type="primary" @click="toAddMenu"><el-icon>
-          <Plus />
-        </el-icon>&nbsp;新增</el-button>
+      <el-button v-BTNVis="'/api/v1/menus:POST'" type="primary" @click="toAddMenu" icon="Plus">&nbsp;新增</el-button>
+      <el-button plain icon="Sort" type="primary" @click="toggleExpandAll">展开/折叠</el-button>
     </div>
 
     <!-- api form表单 -->
-    <el-dialog v-model="state.menuFormDialogVis" :title="state.tips">
+    <el-dialog v-model="state.menuFormDialogVis" :title="state.tips" width="680px">
       <el-divider style="margin-top: -30px;" />
       <el-form ref="userForm" :model="state.menuFormData" :rules="state.rules" label-width="100px">
         <el-form-item label="菜单名称" prop="name">
@@ -24,7 +23,10 @@
           <el-input v-model="state.menuFormData.router_path" placeholder="请输入路由路径"></el-input>
         </el-form-item>
         <el-form-item label="父节点" prop="father_id">
-          <el-input v-model="state.menuFormData.father_id" placeholder="请输入父节点"></el-input>
+          <el-cascader v-model="state.menuFormData.father_id" :options="state.menuOptions" :props="{
+            checkStrictly: true, value: 'id', label: 'name', disabled: 'disabled', emitPath: false
+          }" :show-all-levels="false" filterable>
+          </el-cascader>
         </el-form-item>
         <el-form-item label="文件路径" prop="vue_path">
           <el-input v-model="state.menuFormData.vue_path" placeholder="请输入文件路径"></el-input>
@@ -54,7 +56,7 @@
 
     <!-- 菜单表格 -->
     <div style="margin:0px 10px; text-align:left;">
-      <el-table :data="state.menus" row-key="id" default-expand-all>
+      <el-table v-if="refreshTable" :data="state.menus" row-key="id" :default-expand-all="isExpandAll">
         <el-table-column prop="id" label="ID" width="150px">
           <template #default="scope">
             <el-tag :type="scope.row.father_id === 0 ? '' : 'success'">
@@ -63,7 +65,7 @@
             {{ scope.row.id }}
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="菜单名称"></el-table-column>
+        <el-table-column prop="name" label="菜单名称" width="120px"></el-table-column>
         <el-table-column prop="permission" label="权限" width="220px"></el-table-column>
         <el-table-column prop="icon" label="Icon图标" width="180px">
           <template #default="scope">
@@ -87,13 +89,9 @@
         <el-table-column fixed="right" label="操作" width="150px">
           <template #default="scope">
             <el-button v-BTNVis="'/api/v1/menus:PUT'" type="primary" link size="small"
-              @click="updateCurrMenu(scope.row)"><el-icon>
-                <Edit />
-              </el-icon>&nbsp;编辑</el-button>
+              @click="updateCurrMenu(scope.row)" icon="Edit">编辑</el-button>
             <el-button v-BTNVis="'/api/v1/menus:DELETE'" type="primary" link size="small"
-              @click="deleteCurrMenu(scope.row.id)"><el-icon>
-                <DeleteFilled />
-              </el-icon>&nbsp;删除</el-button>
+              @click="deleteCurrMenu(scope.row.id)" icon="DeleteFilled">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -104,15 +102,14 @@
 <script lang="ts" setup>
 import 'element-plus/es/components/message-box/style/css'
 import 'element-plus/es/components/notification/style/css'
-import { ComponentInternalInstance, getCurrentInstance, onMounted, reactive, ref } from 'vue'
+import { ComponentInternalInstance, getCurrentInstance, nextTick, onMounted, reactive, ref } from 'vue'
 import {
   getAllMenus,
-  getPagMenus,
+  getAllBaseMenus,
   addmenu,
   updatemenu,
   deletemenu
 } from "@/api/system/menu"
-import { getPagination } from '@/api/pagination'
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const state = reactive({
@@ -125,17 +122,27 @@ const state = reactive({
     id: '',
     name: '',
     permission: '',
+    icon: '',
     router_name: '',
     router_path: '',
-    father_id: '0',
+    father_id: '',
     vue_path: '',
     status: 'false'
   },
+  menuOptions: [],
+  tableData: [],
   rules: {
     name: [
       {
         required: true,
         message: '请输入菜单名称',
+        trigger: 'blur',
+      },
+    ],
+    father_id: [
+      {
+        required: true,
+        message: '请输入父节点',
         trigger: 'blur',
       },
     ],
@@ -184,12 +191,15 @@ const state = reactive({
     ],
   }
 })
-
-
+// 是否展开
+const isExpandAll = ref(true)
+// 刷新表格
+const refreshTable = ref(true)
 // 初始化
 onMounted(() => {
   getMenus()
 })
+
 
 
 // 获取菜单
@@ -199,11 +209,58 @@ const getMenus = () => {
   })
 }
 
+const setOptions = async () => {
+  state.menuOptions = [
+    {
+      id: '0',
+      name: '根目录',
+      disabled: '',
+    } as never
+  ]
+  await getAllBaseMenus().then(res => {
+    state.tableData = res.data
+  })
+  // console.log(state.tableData);
+
+  setMenuOptions(state.tableData, state.menuOptions, false)
+}
+
+// 获取菜单目录列表
+const setMenuOptions = (menuData, optionsData, disabled) => {
+  menuData && menuData.forEach(menu => {
+    // console.log(menu);
+
+    if (menu.children && menu.children.length) {
+      const option = {
+        name: menu.name,
+        id: String(menu.id),
+        disabled: disabled || menu.id === state.menuFormData.id,
+        children: []
+      }
+      setMenuOptions(
+        menu.children,
+        option.children,
+        disabled || menu.id === state.menuFormData.id
+      )
+      optionsData.push(option)
+    } else {
+      const option = {
+        name: menu.name,
+        id: String(menu.id),
+        disabled: disabled || menu.ID === state.menuFormData.id,
+      }
+      optionsData.push(option)
+    }
+  })
+  // console.log(optionsData);
+}
+
 // 新增菜单
 const toAddMenu = () => {
+  resetForm()
   state.menuFormDialogVis = true
   state.tips = '新增菜单'
-  resetForm()
+  setOptions()
 }
 
 // 更新菜单
@@ -211,15 +268,17 @@ const updateCurrMenu = (selectMenu: object) => {
   state.tips = '更新菜单信息'
   state.menuFormDialogVis = true
   state.menuFormData = JSON.parse(JSON.stringify(selectMenu))
-  // state.menuFormData.father_id = state.menuFormData.father_id
+  state.menuFormData.father_id = selectMenu.father_id.toString()
   state.menuFormData.id = state.menuFormData.id.toString()
-  console.log(selectMenu);
-
-  state.menuFormData.id = state.menuFormData.id.toString()
+  // console.log(selectMenu);
+  setOptions()
 }
 
 // 确认新增/更新菜单
 const handelAddUpdateConfirm = (id: string) => {
+  // console.log(state.menuFormData);
+  state.menuFormData.father_id = state.menuFormData.father_id.toString()
+  state.menuFormData.status = state.menuFormData.status.toString()
   // tips 为新增 api表示新增
   if (state.tips.startsWith('新增菜单')) {
     // console.log(state.userFormData);
@@ -232,6 +291,7 @@ const handelAddUpdateConfirm = (id: string) => {
       }
     })
   } else if (state.tips.startsWith('更新菜单信息')) {
+    // console.log(state.menuFormData);
     updatemenu(state.menuFormData).then(res => {
       if (res.success) {
         state.menuFormDialogVis = false
@@ -249,7 +309,7 @@ const deleteCurrMenu = (id: string) => {
     state.menuFormData.id = id.toString()
     deletemenu(state.menuFormData).then(res => {
       // console.log(res);
-      handelCurrentChange(state.currentPage)
+      getMenus()
       proxy?.$Notify.success("删除成功")
     })
   }).catch(() => { })
@@ -264,10 +324,20 @@ const resetForm = () => {
   state.menuFormData.id = menuid
   state.menuFormData.name = ''
   state.menuFormData.permission = ''
+  state.menuFormData.icon = 'User'
   state.menuFormData.router_name = ''
   state.menuFormData.router_path = ''
-  state.menuFormData.father_id = '0'
+  state.menuFormData.father_id = ''
   state.menuFormData.vue_path = ''
+}
+
+// 展开/折叠事件
+const toggleExpandAll = () => {
+  refreshTable.value = false
+  isExpandAll.value = !isExpandAll.value
+  nextTick(() => {
+    refreshTable.value = true
+  })
 }
 </script>
 
