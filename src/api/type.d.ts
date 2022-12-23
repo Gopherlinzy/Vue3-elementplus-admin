@@ -14,6 +14,7 @@ declare namespace API {
         permissions: string,
         router_name: string,
         router_path: string,
+        father_id: string,
         vue_path: string,
         status: boolean,
         created_at: string

@@ -42,7 +42,7 @@ export const authStore = defineStore('auth', {
 
                 // console.log(result.permissions);
                 const userMenuStore = menuStore()
-                userMenuStore.generateSystemMenus(result.permissions)
+                userMenuStore.generateSystemMenus(result.data.id)
                 const userButtonStore = buttonStore()
                 userButtonStore.generateButtons(result.apiPolicies)
                 router.push({ path: '/index' })
@@ -56,7 +56,7 @@ export const authStore = defineStore('auth', {
                 this.token = result.token
                 this.userInfo = result.data
                 const userMenuStore = menuStore()
-                userMenuStore.generateSystemMenus(result.permissions)
+                userMenuStore.generateSystemMenus(result.data.id)
                 const userButtonStore = buttonStore()
                 userButtonStore.generateButtons(result.apiPolicies)
                 // console.log(result);

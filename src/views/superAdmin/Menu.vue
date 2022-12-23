@@ -25,23 +25,44 @@
         <el-form-item label="父节点" prop="father_id">
           <el-cascader v-model="state.menuFormData.father_id" :options="state.menuOptions" :props="{
             checkStrictly: true, value: 'id', label: 'name', disabled: 'disabled', emitPath: false
-          }" :show-all-levels="false" filterable>
+          }" :show-all-levels="false" filterable placeholder="请选择父节点">
           </el-cascader>
+        </el-form-item>
+        <el-form-item label="icon图标" prop="icon" width="30px">
+          <el-col :span="8">
+            <el-popover placement="bottom-start" :width="540" v-model:visible="state.showSelectIconVis" trigger="click"
+              @show="showSelectIcon">
+              <template #reference>
+                <el-input v-model="state.menuFormData.icon" placeholder="点击选择icon图标" v-click-outside="hideSelectIcon"
+                  readonly>
+                  <template #prefix>
+                    <el-icon style="height:32px;width:16px" v-if="state.menuFormData.icon">
+                      <component :is="state.menuFormData.icon"></component>
+                    </el-icon>
+                    <el-icon style="height:32px;width:16px" v-else>
+                      <Search />
+                    </el-icon>
+                  </template>
+                </el-input>
+              </template>
+              <IconsSelect @selected="selected"></IconsSelect>
+            </el-popover>
+          </el-col>
         </el-form-item>
         <el-form-item label="文件路径" prop="vue_path">
           <el-input v-model="state.menuFormData.vue_path" placeholder="请输入文件路径"></el-input>
         </el-form-item>
         <el-form-item label="是否显示">
           <el-dropdown>
-            <el-button type="default" v-model="state.menuFormData.status"> {{ state.menuFormData.status === 'true' ?
-                '显示'
-                : '隐藏'
+            <el-button type="default" v-model="state.menuFormData.status"> {{
+                state.menuFormData.status === 'true' ? '显示' : '隐藏'
             }}
               <el-icon class="el-icon--right"><arrow-down /></el-icon>
             </el-button>
             <template #dropdown>
               <el-dropdown-menu v-for="item in state.status">
-                <el-dropdown-item @click="() => { state.menuFormData.status = item == '显示' ? 'true' : 'false' }">{{ item
+                <el-dropdown-item @click="() => { state.menuFormData.status = item === '显示' ? 'true' : 'false' }">{{
+                    item
                 }}</el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -49,7 +70,7 @@
         </el-form-item>
         <el-form-item>
           <el-button @click="resetForm">重置</el-button>
-          <el-button type="primary" @click="handelAddUpdateConfirm(state.menuFormData.id)">确定</el-button>
+          <el-button type="primary" @click="handelAddUpdateConfirm()">确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -91,7 +112,7 @@
             <el-button v-BTNVis="'/api/v1/menus:PUT'" type="primary" link size="small"
               @click="updateCurrMenu(scope.row)" icon="Edit">编辑</el-button>
             <el-button v-BTNVis="'/api/v1/menus:DELETE'" type="primary" link size="small"
-              @click="deleteCurrMenu(scope.row.id)" icon="DeleteFilled">删除</el-button>
+              @click="deleteCurrMenu(scope.row)" icon="DeleteFilled">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -110,6 +131,9 @@ import {
   updatemenu,
   deletemenu
 } from "@/api/system/menu"
+import { ClickOutside as vClickOutside } from 'element-plus'
+import { Search } from '@element-plus/icons-vue'
+import IconsSelect from '@/components/iconSelect/iconSelect.vue'
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const state = reactive({
@@ -117,6 +141,7 @@ const state = reactive({
   status: ['显示', '隐藏'],
   currentPage: 1,
   menuFormDialogVis: false,
+  showSelectIconVis: false,
   tips: '',
   menuFormData: {
     id: '',
@@ -127,7 +152,7 @@ const state = reactive({
     router_path: '',
     father_id: '',
     vue_path: '',
-    status: 'false'
+    status: 'true'
   },
   menuOptions: [],
   tableData: [],
@@ -136,13 +161,6 @@ const state = reactive({
       {
         required: true,
         message: '请输入菜单名称',
-        trigger: 'blur',
-      },
-    ],
-    father_id: [
-      {
-        required: true,
-        message: '请输入父节点',
         trigger: 'blur',
       },
     ],
@@ -195,12 +213,11 @@ const state = reactive({
 const isExpandAll = ref(true)
 // 刷新表格
 const refreshTable = ref(true)
+
 // 初始化
 onMounted(() => {
   getMenus()
 })
-
-
 
 // 获取菜单
 const getMenus = () => {
@@ -226,7 +243,9 @@ const setOptions = async () => {
 }
 
 // 获取菜单目录列表
-const setMenuOptions = (menuData, optionsData, disabled) => {
+const setMenuOptions = (menuData: any[], optionsData: any[], disabled: boolean) => {
+  // console.log(state.menuFormData);
+
   menuData && menuData.forEach(menu => {
     // console.log(menu);
 
@@ -234,20 +253,20 @@ const setMenuOptions = (menuData, optionsData, disabled) => {
       const option = {
         name: menu.name,
         id: String(menu.id),
-        disabled: disabled || menu.id === state.menuFormData.id,
-        children: []
+        disabled: disabled || menu.id.toString() === state.menuFormData.id,
+        children: [] as any,
       }
       setMenuOptions(
         menu.children,
         option.children,
-        disabled || menu.id === state.menuFormData.id
+        disabled || menu.id.toString() === state.menuFormData.id
       )
       optionsData.push(option)
     } else {
       const option = {
         name: menu.name,
         id: String(menu.id),
-        disabled: disabled || menu.ID === state.menuFormData.id,
+        disabled: disabled || menu.id.toString() === state.menuFormData.id,
       }
       optionsData.push(option)
     }
@@ -270,15 +289,15 @@ const updateCurrMenu = (selectMenu: object) => {
   state.menuFormData = JSON.parse(JSON.stringify(selectMenu))
   state.menuFormData.father_id = selectMenu.father_id.toString()
   state.menuFormData.id = state.menuFormData.id.toString()
+  state.menuFormData.status = selectMenu.status === true ? 'true' : 'false'
   // console.log(selectMenu);
   setOptions()
 }
 
 // 确认新增/更新菜单
-const handelAddUpdateConfirm = (id: string) => {
+const handelAddUpdateConfirm = () => {
   // console.log(state.menuFormData);
   state.menuFormData.father_id = state.menuFormData.father_id.toString()
-  state.menuFormData.status = state.menuFormData.status.toString()
   // tips 为新增 api表示新增
   if (state.tips.startsWith('新增菜单')) {
     // console.log(state.userFormData);
@@ -292,6 +311,7 @@ const handelAddUpdateConfirm = (id: string) => {
     })
   } else if (state.tips.startsWith('更新菜单信息')) {
     // console.log(state.menuFormData);
+    // state.menuFormData.status = state.menuFormData.status === true ? 'true' : 'false'
     updatemenu(state.menuFormData).then(res => {
       if (res.success) {
         state.menuFormDialogVis = false
@@ -303,8 +323,17 @@ const handelAddUpdateConfirm = (id: string) => {
 }
 
 // 删除菜单
-const deleteCurrMenu = (id: string) => {
-  proxy?.$Confirm('确认要删除此条数据吗？', '删除菜单').then(() => {
+const deleteCurrMenu = (menu: API.menuForm) => {
+  let msg: string
+  let title: string
+  if (menu.father_id === '0') {
+    title = '删除目录'
+    msg = "确认要删除目录名为: <" + menu.name + '> 的数据以及他的子菜单吗？'
+  } else {
+    title = '删除菜单'
+    msg = "确认要删除菜单名为: <" + menu.name + '> 的数据吗？'
+  }
+  proxy?.$Confirm(msg, title).then(() => {
     resetForm()
     state.menuFormData.id = id.toString()
     deletemenu(state.menuFormData).then(res => {
@@ -324,10 +353,11 @@ const resetForm = () => {
   state.menuFormData.id = menuid
   state.menuFormData.name = ''
   state.menuFormData.permission = ''
-  state.menuFormData.icon = 'User'
+  state.menuFormData.icon = ''
   state.menuFormData.router_name = ''
   state.menuFormData.router_path = ''
   state.menuFormData.father_id = ''
+  state.menuFormData.status = 'true'
   state.menuFormData.vue_path = ''
 }
 
@@ -338,6 +368,22 @@ const toggleExpandAll = () => {
   nextTick(() => {
     refreshTable.value = true
   })
+}
+
+// 展开icon的弹窗
+const showSelectIcon = () => {
+  state.showSelectIconVis = true
+}
+
+// 隐藏起泡卡片
+const hideSelectIcon = () => {
+  state.showSelectIconVis = false
+}
+
+// 选择图标
+const selected = (name: string) => {
+  state.menuFormData.icon = name
+  state.showSelectIconVis = false
 }
 </script>
 
