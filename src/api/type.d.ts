@@ -10,13 +10,18 @@ declare namespace API {
 
     type menuForm = {
         id: number,
+        meta: {
+            title: string,
+            permission: string,
+            keepAlive: boolean,
+            icon: string,
+        }
         name: string,
-        permissions: string,
-        router_name: string,
-        router_path: string,
-        father_id: string,
-        vue_path: string,
+        path: string,
+        parent_id: string,
+        component: string,
         status: boolean,
+        sort: number,
         created_at: string
     }
 }

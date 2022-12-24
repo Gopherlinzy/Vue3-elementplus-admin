@@ -2,6 +2,7 @@ import Layout from '@/layout/index.vue'
 import { RouteRecordRaw } from 'vue-router'
 
 const goodsRouter: RouteRecordRaw = {
+    // id: 11,
     path: '/goods',
     name: 'goods',
     component: Layout,

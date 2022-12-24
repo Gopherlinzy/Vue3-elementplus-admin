@@ -67,6 +67,14 @@ export function getRoleApis(roleRequest: object) {
     })
 }
 
+// 查询指定角色的动态菜单权限
+export function getPiniaMenus() {
+    return axiosInstance({
+        url: "v1/piniaMenus",
+        method: "get"
+    })
+}
+
 // 添加角色
 export function addRole(roleRequest: object) {
     return axiosInstance({

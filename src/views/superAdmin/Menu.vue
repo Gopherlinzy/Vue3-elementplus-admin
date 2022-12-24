@@ -8,22 +8,24 @@
 
     <!-- api form表单 -->
     <el-dialog v-model="state.menuFormDialogVis" :title="state.tips" width="680px">
-      <el-divider style="margin-top: -30px;" />
+      <el-alert title="新增菜单，需要在角色管理内配置权限才可使用" type="info" :closable="false" center show-icon
+        style="background-color: #f8dac7  ;size: 16px; color: #dd5e58; margin-bottom: 15px; margin-top: -30px;" />
+      <el-divider style="margin-top: 0px;" />
       <el-form ref="userForm" :model="state.menuFormData" :rules="state.rules" label-width="100px">
-        <el-form-item label="菜单名称" prop="name">
-          <el-input v-model="state.menuFormData.name" placeholder="请输入菜单名称"></el-input>
+        <el-form-item label="菜单名称" prop="title">
+          <el-input v-model="state.menuFormData.title" placeholder="请输入菜单名称"></el-input>
         </el-form-item>
         <el-form-item label="权限" prop="permission">
           <el-input v-model="state.menuFormData.permission" placeholder="请输入权限"></el-input>
         </el-form-item>
-        <el-form-item label="路由名称" prop="router_name">
-          <el-input v-model="state.menuFormData.router_name" placeholder="请输入路由名称"></el-input>
+        <el-form-item label="路由名称" prop="name">
+          <el-input v-model="state.menuFormData.name" placeholder="请输入路由名称"></el-input>
         </el-form-item>
-        <el-form-item label="路由路径" prop="router_path">
-          <el-input v-model="state.menuFormData.router_path" placeholder="请输入路由路径"></el-input>
+        <el-form-item label="路由路径" prop="path">
+          <el-input v-model="state.menuFormData.path" placeholder="请输入路由路径"></el-input>
         </el-form-item>
-        <el-form-item label="父节点" prop="father_id">
-          <el-cascader v-model="state.menuFormData.father_id" :options="state.menuOptions" :props="{
+        <el-form-item label="父节点" prop="parent_id">
+          <el-cascader v-model="state.menuFormData.parent_id" :options="state.menuOptions" :props="{
             checkStrictly: true, value: 'id', label: 'name', disabled: 'disabled', emitPath: false
           }" :show-all-levels="false" filterable placeholder="请选择父节点">
           </el-cascader>
@@ -49,8 +51,8 @@
             </el-popover>
           </el-col>
         </el-form-item>
-        <el-form-item label="文件路径" prop="vue_path">
-          <el-input v-model="state.menuFormData.vue_path" placeholder="请输入文件路径"></el-input>
+        <el-form-item label="文件路径" prop="component">
+          <el-input v-model="state.menuFormData.component" placeholder="请输入文件路径"></el-input>
         </el-form-item>
         <el-form-item label="是否显示">
           <el-dropdown>
@@ -68,6 +70,12 @@
             </template>
           </el-dropdown>
         </el-form-item>
+        <el-form-item label="是否缓存" prop="keepAlive">
+          <el-radio-group v-model="state.menuFormData.keepAlive">
+            <el-radio :label="true">是</el-radio>
+            <el-radio :label="false">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item>
           <el-button @click="resetForm">重置</el-button>
           <el-button type="primary" @click="handelAddUpdateConfirm()">确定</el-button>
@@ -80,28 +88,28 @@
       <el-table v-if="refreshTable" :data="state.menus" row-key="id" :default-expand-all="isExpandAll">
         <el-table-column prop="id" label="ID" width="150px">
           <template #default="scope">
-            <el-tag :type="scope.row.father_id === 0 ? '' : 'success'">
-              {{ scope.row.father_id === 0 ? '目录' : '菜单' }}
+            <el-tag :type="scope.row.parent_id === 0 ? '' : 'success'">
+              {{ scope.row.parent_id === 0 ? '目录' : '菜单' }}
             </el-tag>
             {{ scope.row.id }}
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="菜单名称" width="120px"></el-table-column>
-        <el-table-column prop="permission" label="权限" width="220px"></el-table-column>
-        <el-table-column prop="icon" label="Icon图标" width="180px">
+        <el-table-column prop="meta.title" label="菜单名称" width="120px"></el-table-column>
+        <el-table-column prop="meta.permission" label="权限" width="220px"></el-table-column>
+        <el-table-column prop="meta.icon" label="Icon图标" width="180px">
           <template #default="scope">
-            <div v-if="scope.row.icon" class="icon-column">
+            <div v-if="scope.row.meta.icon" class="icon-column">
               <el-icon>
-                <component :is="scope.row.icon" />
+                <component :is="scope.row.meta.icon" />
               </el-icon>
-              <span>{{ scope.row.icon }}</span>
+              <span>{{ scope.row.meta.icon }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="router_name" label="路由名称" width="120px"></el-table-column>
-        <el-table-column prop="router_path" label="路由路径" width="120px"></el-table-column>
-        <el-table-column prop="father_id" label="父节点"></el-table-column>
-        <el-table-column prop="vue_path" label="文件路径" width="250px"></el-table-column>
+        <el-table-column prop="name" label="路由名称" width="120px"></el-table-column>
+        <el-table-column prop="path" label="路由路径" width="120px"></el-table-column>
+        <el-table-column prop="parent_id" label="父节点"></el-table-column>
+        <el-table-column prop="component" label="文件路径" width="250px"></el-table-column>
         <el-table-column prop="status" label="是否显示" width="80px">
           <template #default="scope">
             <span>{{ scope.row.status ? "显示" : "隐藏" }}</span>
@@ -139,25 +147,28 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 const state = reactive({
   menus: [],
   status: ['显示', '隐藏'],
+  ka: ['缓存', '不缓存'],
   currentPage: 1,
   menuFormDialogVis: false,
   showSelectIconVis: false,
   tips: '',
   menuFormData: {
     id: '',
-    name: '',
+    title: '',
     permission: '',
     icon: '',
-    router_name: '',
-    router_path: '',
-    father_id: '',
-    vue_path: '',
-    status: 'true'
+    name: '',
+    path: '',
+    parent_id: '',
+    component: '',
+    sort: '',
+    status: 'true',
+    keepAlive: 'true',
   },
   menuOptions: [],
   tableData: [],
   rules: {
-    name: [
+    title: [
       {
         required: true,
         message: '请输入菜单名称',
@@ -176,14 +187,14 @@ const state = reactive({
         trigger: 'blur'
       },
     ],
-    router_name: [
+    name: [
       {
         required: true,
         message: '请输入路由名称',
         trigger: 'blur',
       },
     ],
-    router_path: [
+    path: [
       {
         required: true,
         message: '请输入路由路径',
@@ -195,7 +206,7 @@ const state = reactive({
         trigger: 'blur'
       },
     ],
-    vue_path: [
+    component: [
       {
         required: true,
         message: '请输入文件路径',
@@ -222,6 +233,7 @@ onMounted(() => {
 // 获取菜单
 const getMenus = () => {
   getAllMenus().then(result => {
+    // console.log(result.data);
     state.menus = result.data
   })
 }
@@ -283,13 +295,18 @@ const toAddMenu = () => {
 }
 
 // 更新菜单
-const updateCurrMenu = (selectMenu: object) => {
+const updateCurrMenu = (selectMenu: API.menuForm) => {
   state.tips = '更新菜单信息'
   state.menuFormDialogVis = true
   state.menuFormData = JSON.parse(JSON.stringify(selectMenu))
-  state.menuFormData.father_id = selectMenu.father_id.toString()
-  state.menuFormData.id = state.menuFormData.id.toString()
+  state.menuFormData.id = selectMenu.id.toString()
+  state.menuFormData.title = selectMenu.meta.title
+  state.menuFormData.icon = selectMenu.meta.icon
+  state.menuFormData.permission = selectMenu.meta.permission
+  state.menuFormData.parent_id = selectMenu.parent_id.toString()
+  state.menuFormData.sort = selectMenu.sort.toString()
   state.menuFormData.status = selectMenu.status === true ? 'true' : 'false'
+  state.menuFormData.keepAlive = selectMenu.meta.keepAlive === true ? 'true' : 'false'
   // console.log(selectMenu);
   setOptions()
 }
@@ -297,7 +314,7 @@ const updateCurrMenu = (selectMenu: object) => {
 // 确认新增/更新菜单
 const handelAddUpdateConfirm = () => {
   // console.log(state.menuFormData);
-  state.menuFormData.father_id = state.menuFormData.father_id.toString()
+  state.menuFormData.parent_id = state.menuFormData.parent_id.toString()
   // tips 为新增 api表示新增
   if (state.tips.startsWith('新增菜单')) {
     // console.log(state.userFormData);
@@ -310,7 +327,7 @@ const handelAddUpdateConfirm = () => {
       }
     })
   } else if (state.tips.startsWith('更新菜单信息')) {
-    // console.log(state.menuFormData);
+    console.log(state.menuFormData);
     // state.menuFormData.status = state.menuFormData.status === true ? 'true' : 'false'
     updatemenu(state.menuFormData).then(res => {
       if (res.success) {
@@ -326,7 +343,7 @@ const handelAddUpdateConfirm = () => {
 const deleteCurrMenu = (menu: API.menuForm) => {
   let msg: string
   let title: string
-  if (menu.father_id === '0') {
+  if (menu.parent_id === '0') {
     title = '删除目录'
     msg = "确认要删除目录名为: <" + menu.name + '> 的数据以及他的子菜单吗？'
   } else {
@@ -335,7 +352,7 @@ const deleteCurrMenu = (menu: API.menuForm) => {
   }
   proxy?.$Confirm(msg, title).then(() => {
     resetForm()
-    state.menuFormData.id = id.toString()
+    state.menuFormData.id = menu.id.toString()
     deletemenu(state.menuFormData).then(res => {
       // console.log(res);
       getMenus()
@@ -351,14 +368,14 @@ const resetForm = () => {
     menuid = state.menuFormData.id.toString()
   }
   state.menuFormData.id = menuid
-  state.menuFormData.name = ''
+  state.menuFormData.title = ''
   state.menuFormData.permission = ''
   state.menuFormData.icon = ''
-  state.menuFormData.router_name = ''
-  state.menuFormData.router_path = ''
-  state.menuFormData.father_id = ''
+  state.menuFormData.name = ''
+  state.menuFormData.path = ''
+  state.menuFormData.parent_id = ''
   state.menuFormData.status = 'true'
-  state.menuFormData.vue_path = ''
+  state.menuFormData.component = ''
 }
 
 // 展开/折叠事件

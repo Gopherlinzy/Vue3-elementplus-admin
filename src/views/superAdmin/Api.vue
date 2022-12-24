@@ -6,7 +6,9 @@
 
     <!-- api form表单 -->
     <el-dialog v-model="state.apiFormDialogVis" :title="state.tips">
-      <el-divider style="margin-top: -30px;" />
+      <el-alert title="新增API，需要在角色管理内配置权限才可使用" type="info" :closable="false" center show-icon
+        style="background-color: #f8dac7  ;size: 16px; color: #dd5e58; margin-bottom: 10px; margin-top: -30px;" />
+      <el-divider style="margin-top: 0px;" />
       <el-form ref="userForm" :model="state.apiFormData" :rules="state.rules" label-width="100px">
         <el-form-item label="Api路由" prop="path">
           <el-input v-model="state.apiFormData.path" placeholder="请输入Api路由"></el-input>

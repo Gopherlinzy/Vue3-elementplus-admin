@@ -4,8 +4,8 @@ import {
 } from "vue-router";
 
 const homeRouter: RouteRecordRaw = {
-    path: '/',
-    redirect: '/index',
+    path: '',
+    // redirect: '/index',
     name: 'Index',
     component: Layout,
     meta: {

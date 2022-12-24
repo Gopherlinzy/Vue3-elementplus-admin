@@ -42,7 +42,7 @@ export const authStore = defineStore('auth', {
 
                 // console.log(result.permissions);
                 const userMenuStore = menuStore()
-                userMenuStore.generateSystemMenus(result.data.id)
+                userMenuStore.generateSystemMenus()
                 const userButtonStore = buttonStore()
                 userButtonStore.generateButtons(result.apiPolicies)
                 router.push({ path: '/index' })
@@ -56,7 +56,7 @@ export const authStore = defineStore('auth', {
                 this.token = result.token
                 this.userInfo = result.data
                 const userMenuStore = menuStore()
-                userMenuStore.generateSystemMenus(result.data.id)
+                userMenuStore.generateSystemMenus()
                 const userButtonStore = buttonStore()
                 userButtonStore.generateButtons(result.apiPolicies)
                 // console.log(result);
@@ -69,9 +69,9 @@ export const authStore = defineStore('auth', {
             })
         },
 
-        async changePermission(permissions: object[], apiPolicies: object[]) {
+        async changePermission(apiPolicies: object[]) {
             const userMenuStore = menuStore()
-            await userMenuStore.generateSystemMenus(permissions)
+            await userMenuStore.generateSystemMenus()
             const userButtonStore = buttonStore()
             await userButtonStore.generateButtons(apiPolicies)
         }

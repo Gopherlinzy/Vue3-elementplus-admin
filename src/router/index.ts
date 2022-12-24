@@ -72,7 +72,7 @@ router.beforeEach((to, from, next) => {
       if (res.success) {
         userAuthStore.userInfo = res.data
         userAuthStore.token = res.token
-        userAuthStore.changePermission(res.permissions, res.apiPolicies)
+        userAuthStore.changePermission(res.apiPolicies)
 
         // 确保动态路由被添加
         next({ ...to, replace: true })

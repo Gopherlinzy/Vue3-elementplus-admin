@@ -34,7 +34,6 @@ axiosInstance.interceptors.request.use((requestInfo: AxiosRequestConfig) => {
         }
         requestInfo.headers['Content-Type'] = 'application/json;charset=utf-8'
     }
-    // console.log(requestInfo);
 
     // 处理完之后一定要把config 返回，否则请求发不出去
     return requestInfo

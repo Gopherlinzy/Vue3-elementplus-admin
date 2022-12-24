@@ -294,8 +294,9 @@ const toSetPermissions = (id: string) => {
   let menu = false
   let api = false
   getRoleMenus(state.roleFormData).then(res => {
+    // console.log(res);
     for (let i of res.data) {
-      state.permissions.push(i.permission as never)
+      state.permissions.push(i.meta.permission as never)
     }
     activePolicy.value = 'menus'
     menu = true
